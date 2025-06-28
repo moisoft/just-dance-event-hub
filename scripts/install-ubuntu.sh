@@ -422,9 +422,19 @@ EOF
 main() {
     log "Iniciando instalação do Just Dance Event Hub..."
     
-    # Verificar se o ZIP existe
+    # Gerar ZIP de produção se não existir
     if [ ! -f "just-dance-hub-backend-production.zip" ]; then
-        error "Arquivo just-dance-hub-backend-production.zip não encontrado!"
+        log "Arquivo just-dance-hub-backend-production.zip não encontrado. Gerando automaticamente..."
+        if [ ! -d "just-dance-event-hub" ]; then
+            git clone https://github.com/moisoft/just-dance-event-hub.git
+        fi
+        cd just-dance-event-hub/backend
+        npm install
+        npm run build
+        cd ..
+        zip -r ../just-dance-hub-backend-production.zip backend
+        cd ..
+        log "Arquivo just-dance-hub-backend-production.zip gerado com sucesso!"
     fi
     
     # Perguntar email e senha do admin
