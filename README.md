@@ -51,21 +51,20 @@ Uma plataforma completa para gerenciamento de eventos de Just Dance, incluindo s
 
 ### Instalação Automática (Ubuntu)
 ```bash
-# 1. Clone o repositório
-git clone https://github.com/moisoft/just-dance-event-hub.git
-cd just-dance-event-hub
+# 1. Baixe o instalador
+curl -O https://raw.githubusercontent.com/moisoft/just-dance-event-hub/main/scripts/install-ubuntu.sh
 
-# 2. Execute o script de instalação
-chmod +x scripts/install-ubuntu.sh
-./scripts/install-ubuntu.sh
+# 2. Dê permissão de execução
+chmod +x install-ubuntu.sh
 
-# 3. Verifique a instalação
-./scripts/health-check-ubuntu.sh
+# 3. Execute o instalador
+./install-ubuntu.sh
 ```
 
 ### Instalação Manual
 ```bash
 # 1. Clone o repositório
+# (Apenas se quiser instalar manualmente)
 git clone https://github.com/moisoft/just-dance-event-hub.git
 cd just-dance-event-hub
 
