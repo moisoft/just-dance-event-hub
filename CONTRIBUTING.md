@@ -47,7 +47,7 @@ git clone https://github.com/seu-usuario/just-dance-event-hub.git
 cd just-dance-event-hub
 
 # 3. Adicione o repositório original como upstream
-git remote add upstream https://github.com/original-owner/just-dance-event-hub.git
+git remote add upstream https://github.com/moisoft/just-dance-event-hub.git
 
 # 4. Configure o backend
 cd backend
@@ -408,9 +408,9 @@ Contribuições significativas serão reconhecidas:
 
 Se você tiver dúvidas sobre como contribuir:
 
-- 📧 Email: seu-email@exemplo.com
+- 📧 Email: moise@moisoft.com
 - 💬 Discord: [Link do servidor]
-- 🐛 Issues: [GitHub Issues](https://github.com/seu-usuario/just-dance-event-hub/issues)
+- 🐛 Issues: [GitHub Issues](https://github.com/moisoft/just-dance-event-hub/issues)
 
 ---
 
