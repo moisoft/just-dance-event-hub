@@ -39,21 +39,21 @@ Uma plataforma completa para gerenciamento de eventos de Just Dance, incluindo s
 ### Instalação Automática (Ubuntu)
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/seu-usuario/just-dance-event-hub.git
+git clone https://github.com/moisoft/just-dance-event-hub.git
 cd just-dance-event-hub
 
 # 2. Execute o script de instalação
-chmod +x install-ubuntu.sh
-./install-ubuntu.sh
+chmod +x scripts/install-ubuntu.sh
+./scripts/install-ubuntu.sh
 
 # 3. Verifique a instalação
-./health-check-ubuntu.sh
+./scripts/health-check-ubuntu.sh
 ```
 
 ### Instalação Manual
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/seu-usuario/just-dance-event-hub.git
+git clone https://github.com/moisoft/just-dance-event-hub.git
 cd just-dance-event-hub
 
 # 2. Configure o backend
@@ -98,10 +98,10 @@ just-dance-event-hub/
 ## 🔧 Scripts de Deploy
 
 ### Ubuntu
-- `install-ubuntu.sh` - Instalação automática completa
-- `uninstall-ubuntu.sh` - Desinstalação completa
-- `backup-ubuntu.sh` - Backup automático
-- `health-check-ubuntu.sh` - Verificação de saúde
+- `scripts/install-ubuntu.sh` - Instalação automática completa
+- `scripts/uninstall-ubuntu.sh` - Desinstalação completa
+- `scripts/backup-ubuntu.sh` - Backup automático
+- `scripts/health-check-ubuntu.sh` - Verificação de saúde
 
 ### Comandos de Gerenciamento
 ```bash
@@ -121,10 +121,10 @@ sudo just-dance-hub monit
 ## 📚 Documentação
 
 - [📖 Documentação Completa](docs/README.md)
-- [🚀 Guia de Deploy](docs/DEPLOY.md)
-- [🔧 Scripts Ubuntu](docs/UBUNTU_SCRIPTS.md)
-- [🏥 Health Check](docs/HEALTH_CHECK.md)
-- [🔄 Backup e Restauração](docs/BACKUP.md)
+- [🚀 Guia de Deploy](docs/DEPLOY_INSTRUCTIONS.md)
+- [🔧 Scripts Ubuntu](docs/UBUNTU_SCRIPTS_README.md)
+- [🏥 Health Check](docs/README.md#health-check)
+- [🔄 Backup e Restauração](docs/README.md#backup)
 
 ## 🎯 Funcionalidades
 
@@ -210,7 +210,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ## 👥 Autores
 
-- **Seu Nome** - *Desenvolvimento inicial* - [SeuGitHub](https://github.com/seu-usuario)
+- **Moise** - *Desenvolvimento inicial* - [Moise](https://github.com/moisoft)
 
 ## 🙏 Agradecimentos
 
@@ -220,9 +220,9 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ## 📞 Suporte
 
-- 📧 Email: seu-email@exemplo.com
-- 🐛 Issues: [GitHub Issues](https://github.com/seu-usuario/just-dance-event-hub/issues)
-- 📖 Wiki: [GitHub Wiki](https://github.com/seu-usuario/just-dance-event-hub/wiki)
+- 📧 Email: moise@moisoft.com
+- 🐛 Issues: [GitHub Issues](https://github.com/moisoft/just-dance-event-hub/issues)
+- 📖 Wiki: [GitHub Wiki](https://github.com/moisoft/just-dance-event-hub/wiki)
 
 ---
 

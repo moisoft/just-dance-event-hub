@@ -16,8 +16,8 @@ Bem-vindo à documentação completa do Just Dance Event Hub! Esta documentaçã
 - [Frontend](FRONTEND.md) - Guia do frontend React
 
 ### 🚀 Deploy e Produção
-- [Deploy Ubuntu](UBUNTU_SCRIPTS.md) - Scripts automatizados para Ubuntu
-- [Deploy Manual](DEPLOY.md) - Instruções de deploy manual
+- [Deploy Ubuntu](UBUNTU_SCRIPTS_README.md) - Scripts automatizados para Ubuntu
+- [Deploy Manual](DEPLOY_INSTRUCTIONS.md) - Instruções de deploy manual
 - [Backup](BACKUP.md) - Sistema de backup e restauração
 - [Monitoramento](MONITORING.md) - Health check e monitoramento
 
@@ -103,7 +103,7 @@ just-dance-event-hub/
 ### Instalação
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/just-dance-event-hub.git
+git clone https://github.com/moisoft/just-dance-event-hub.git
 cd just-dance-event-hub
 
 # Backend
@@ -122,9 +122,9 @@ npm start
 
 ## 📞 Suporte
 
-- 📧 Email: seu-email@exemplo.com
-- 🐛 Issues: [GitHub Issues](https://github.com/seu-usuario/just-dance-event-hub/issues)
-- 📖 Wiki: [GitHub Wiki](https://github.com/seu-usuario/just-dance-event-hub/wiki)
+- 📧 Email: moise@moisoft.com
+- 🐛 Issues: [GitHub Issues](https://github.com/moisoft/just-dance-event-hub/issues)
+- 📖 Wiki: [GitHub Wiki](https://github.com/moisoft/just-dance-event-hub/wiki)
 
 ## 🤝 Contribuindo
 
