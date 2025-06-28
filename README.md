@@ -1,6 +1,16 @@
 # 🎵 Just Dance Event Hub
 
-Uma plataforma completa para gerenciamento de eventos de Just Dance, incluindo sistema de filas, torneios, autenticação de usuários e muito mais.
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green)](https://nodejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-4.9+-blue)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-18+-blue)](https://reactjs.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-12+-blue)](https://www.postgresql.org/)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+[![Open Source](https://img.shields.io/badge/Open%20Source-Yes-brightgreen)](https://github.com/moisoft/just-dance-event-hub)
+[![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-brightgreen)](CONTRIBUTING.md)
+
+> 🎮 **Uma plataforma completa e open source para gerenciamento de eventos de Just Dance**
+
+Uma plataforma completa para gerenciamento de eventos de Just Dance, incluindo sistema de filas, torneios, autenticação de usuários e muito mais. **100% Open Source** e construída com tecnologias modernas.
 
 ## 🌟 Características
 
@@ -11,6 +21,9 @@ Uma plataforma completa para gerenciamento de eventos de Just Dance, incluindo s
 - **📊 Dashboard em Tempo Real** - Interface moderna e responsiva
 - **🔧 Módulos Configuráveis** - Sistema flexível de módulos
 - **🚀 Deploy Automatizado** - Scripts de instalação para Ubuntu
+- **🔒 Segurança Robusta** - Rate limiting, validação e headers de segurança
+- **📱 Responsivo** - Funciona em desktop e mobile
+- **🌍 Internacionalização** - Suporte a múltiplos idiomas
 
 ## 🏗️ Arquitetura
 
@@ -198,11 +211,21 @@ npm test
 
 ## 🤝 Contribuindo
 
+**Contribuições são sempre bem-vindas!** 🎉
+
 1. Fork o projeto
 2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
 3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
 4. Push para a branch (`git push origin feature/AmazingFeature`)
 5. Abra um Pull Request
+
+Veja nosso [Guia de Contribuição](CONTRIBUTING.md) para mais detalhes.
+
+### 🏆 Contribuidores
+
+<a href="https://github.com/moisoft/just-dance-event-hub/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=moisoft/just-dance-event-hub" />
+</a>
 
 ## 📝 Licença
 
@@ -217,13 +240,31 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 - Comunidade Just Dance
 - Contribuidores do projeto
 - Bibliotecas open source utilizadas
+- Todos que testaram e reportaram bugs
 
 ## 📞 Suporte
 
 - 📧 Email: moise@moisoft.com
 - 🐛 Issues: [GitHub Issues](https://github.com/moisoft/just-dance-event-hub/issues)
 - 📖 Wiki: [GitHub Wiki](https://github.com/moisoft/just-dance-event-hub/wiki)
+- 💬 Discussões: [GitHub Discussions](https://github.com/moisoft/just-dance-event-hub/discussions)
+
+## 🌟 Stargazers
+
+[![Stargazers repo roster for @moisoft/just-dance-event-hub](https://reporoster.com/stars/moisoft/just-dance-event-hub)](https://github.com/moisoft/just-dance-event-hub/stargazers)
+
+## 📈 Estatísticas
+
+![GitHub stars](https://img.shields.io/github/stars/moisoft/just-dance-event-hub?style=social)
+![GitHub forks](https://img.shields.io/github/forks/moisoft/just-dance-event-hub?style=social)
+![GitHub issues](https://img.shields.io/github/issues/moisoft/just-dance-event-hub)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/moisoft/just-dance-event-hub)
+![GitHub license](https://img.shields.io/github/license/moisoft/just-dance-event-hub)
 
 ---
 
 ⭐ **Se este projeto te ajudou, considere dar uma estrela no GitHub!**
+
+---
+
+**🎵 Just Dance Event Hub - Feito com ❤️ pela comunidade open source**

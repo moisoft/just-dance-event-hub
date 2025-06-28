@@ -129,9 +129,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 ## 🔗 Links
 
 - [Documentação](docs/README.md)
-- [Guia de Deploy](docs/DEPLOY.md)
+- [Guia de Deploy](docs/DEPLOY_INSTRUCTIONS.md)
 - [Contribuição](CONTRIBUTING.md)
-- [Issues](https://github.com/seu-usuario/just-dance-event-hub/issues)
+- [Issues](https://github.com/moisoft/just-dance-event-hub/issues)
 
 ## 📝 Notas de Versão
 

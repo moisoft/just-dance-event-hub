@@ -69,7 +69,7 @@ git status
 
 ```bash
 # Adicionar remote do GitHub
-git remote add origin https://github.com/SEU_USUARIO/just-dance-event-hub.git
+git remote add origin https://github.com/moisoft/just-dance-event-hub.git
 
 # Verificar remotes
 git remote -v
@@ -130,9 +130,9 @@ ubuntu-deploy
 
 ### No README.md
 Substitua:
-- `seu-usuario` pelo seu username do GitHub
-- `seu-email@exemplo.com` pelo seu email
-- `Seu Nome` pelo seu nome real
+- `moisoft` pelo seu username do GitHub
+- `moise@moisoft.com` pelo seu email
+- `Moise` pelo seu nome real
 
 ### Nos Scripts
 Verifique se os scripts estão funcionando corretamente:
