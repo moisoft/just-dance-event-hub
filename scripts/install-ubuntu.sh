@@ -42,11 +42,6 @@ cat << "EOF"
 EOF
 echo -e "${NC}"
 
-# Verificar se está rodando como root
-if [[ $EUID -eq 0 ]]; then
-   error "Este script não deve ser executado como root. Use um usuário com sudo."
-fi
-
 # Verificar se é Ubuntu
 if ! grep -q "Ubuntu" /etc/os-release; then
     warn "Este script foi testado no Ubuntu. Outras distribuições podem não funcionar corretamente."
@@ -102,10 +97,9 @@ setup_postgresql() {
     sudo systemctl start postgresql
     sudo systemctl enable postgresql
     
-    # Obter senha do PostgreSQL
-    echo -e "${YELLOW}Configuração do PostgreSQL:${NC}"
-    read -s -p "Digite a senha para o usuário postgres: " POSTGRES_PASSWORD
-    echo
+    # Gerar senha aleatória para o usuário postgres
+    POSTGRES_PASSWORD=$(openssl rand -base64 16)
+    log "Senha aleatória gerada para o usuário postgres."
     
     # Alterar senha do postgres
     sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '$POSTGRES_PASSWORD';"
@@ -189,7 +183,7 @@ install_app_dependencies() {
     
     # Configurar banco de dados
     log "Configurando banco de dados..."
-    sudo -u $SERVICE_USER node scripts/setup-prod-db.js
+    sudo -u $SERVICE_USER ADMIN_EMAIL="$ADMIN_EMAIL" ADMIN_PASSWORD="$ADMIN_PASSWORD" node scripts/setup-prod-db.js
     
     # Compilar TypeScript
     log "Compilando TypeScript..."
@@ -432,6 +426,12 @@ main() {
     if [ ! -f "just-dance-hub-backend-production.zip" ]; then
         error "Arquivo just-dance-hub-backend-production.zip não encontrado!"
     fi
+    
+    # Perguntar email e senha do admin
+    read -p "Digite o email do usuário admin: " ADMIN_EMAIL
+    read -s -p "Digite a senha do usuário admin: " ADMIN_PASSWORD
+    export ADMIN_EMAIL
+    export ADMIN_PASSWORD
     
     # Executar etapas de instalação
     install_system_dependencies
