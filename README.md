@@ -232,7 +232,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ## 👥 Autores
 
-- **Moise** - *Desenvolvimento inicial* - [Moise](https://github.com/moisoft)
+- **Moises** - *Desenvolvimento inicial* - [Moise](https://github.com/moisoft)
 
 ## 🙏 Agradecimentos
 
