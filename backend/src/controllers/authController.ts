@@ -13,7 +13,7 @@ class AuthController {
             if (existingUser) {
                 res.status(400).json({ 
                     success: false,
-                    message: 'Email já está em uso' 
+                    message: res.__('error.invalid_input')
                 });
                 return;
             }
@@ -22,7 +22,7 @@ class AuthController {
             if (existingNickname) {
                 res.status(400).json({ 
                     success: false,
-                    message: 'Nickname já está em uso' 
+                    message: res.__('error.invalid_input')
                 });
                 return;
             }
@@ -44,7 +44,7 @@ class AuthController {
 
             res.status(201).json({ 
                 success: true,
-                message: 'Usuário criado com sucesso!',
+                message: res.__('user.created'),
                 token,
                 user: {
                     id: newUser.id,
@@ -59,7 +59,7 @@ class AuthController {
             console.error('Erro ao criar usuário:', error);
             res.status(500).json({ 
                 success: false,
-                message: 'Erro interno do servidor' 
+                message: res.__('error.internal')
             });
         }
     }
@@ -74,7 +74,7 @@ class AuthController {
             if (!user) {
                 res.status(401).json({ 
                     success: false,
-                    message: 'Email ou senha incorretos' 
+                    message: res.__('auth.invalid_credentials')
                 });
                 return;
             }
@@ -84,7 +84,7 @@ class AuthController {
             if (!isMatch) {
                 res.status(401).json({ 
                     success: false,
-                    message: 'Email ou senha incorretos' 
+                    message: res.__('auth.invalid_credentials')
                 });
                 return;
             }
@@ -98,7 +98,7 @@ class AuthController {
 
             res.status(200).json({ 
                 success: true,
-                message: 'Login realizado com sucesso',
+                message: res.__('auth.login_success'),
                 token,
                 user: {
                     id: user.id,
@@ -114,7 +114,7 @@ class AuthController {
             console.error('Erro ao fazer login:', error);
             res.status(500).json({ 
                 success: false,
-                message: 'Erro interno do servidor' 
+                message: res.__('error.internal')
             });
         }
     }
@@ -125,7 +125,7 @@ class AuthController {
             if (!userId) {
                 res.status(401).json({ 
                     success: false,
-                    message: 'Usuário não autenticado' 
+                    message: res.__('auth.unauthorized')
                 });
                 return;
             }
@@ -134,7 +134,7 @@ class AuthController {
             if (!user) {
                 res.status(404).json({ 
                     success: false,
-                    message: 'Usuário não encontrado' 
+                    message: res.__('auth.user_not_found')
                 });
                 return;
             }
@@ -155,7 +155,7 @@ class AuthController {
             console.error('Erro ao buscar perfil:', error);
             res.status(500).json({ 
                 success: false,
-                message: 'Erro interno do servidor' 
+                message: res.__('error.internal')
             });
         }
     }

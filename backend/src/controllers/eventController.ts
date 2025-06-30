@@ -12,7 +12,7 @@ export class EventController {
         if (!userId) {
             res.status(401).json({ 
                 success: false,
-                message: 'Usuário não autenticado' 
+                message: res.__('auth.unauthorized')
             });
             return;
         }
@@ -23,7 +23,7 @@ export class EventController {
             if (!user || !['organizador', 'admin'].includes(user.papel)) {
                 res.status(403).json({ 
                     success: false,
-                    message: 'Sem permissão para criar eventos' 
+                    message: res.__('auth.forbidden')
                 });
                 return;
             }
@@ -33,7 +33,7 @@ export class EventController {
             if (existingEvent) {
                 res.status(400).json({ 
                     success: false,
-                    message: 'Código do evento já existe' 
+                    message: res.__('error.invalid_input')
                 });
                 return;
             }
@@ -51,14 +51,14 @@ export class EventController {
 
             res.status(201).json({ 
                 success: true,
-                message: 'Evento criado com sucesso',
+                message: res.__('event.created'),
                 event: newEvent 
             });
         } catch (error) {
             console.error('Erro ao criar evento:', error);
             res.status(500).json({ 
                 success: false,
-                message: 'Erro interno do servidor' 
+                message: res.__('error.internal')
             });
         }
     }
@@ -80,7 +80,7 @@ export class EventController {
             if (!event) {
                 res.status(404).json({ 
                     success: false,
-                    message: 'Evento não encontrado' 
+                    message: res.__('event.not_found')
                 });
                 return;
             }
@@ -99,7 +99,7 @@ export class EventController {
             console.error('Erro ao obter evento:', error);
             res.status(500).json({ 
                 success: false,
-                message: 'Erro interno do servidor' 
+                message: res.__('error.internal')
             });
         }
     }
@@ -124,7 +124,7 @@ export class EventController {
             console.error('Erro ao listar eventos:', error);
             res.status(500).json({ 
                 success: false,
-                message: 'Erro interno do servidor' 
+                message: res.__('error.internal')
             });
         }
     }
@@ -138,7 +138,7 @@ export class EventController {
         if (!userId) {
             res.status(401).json({ 
                 success: false,
-                message: 'Usuário não autenticado' 
+                message: res.__('auth.unauthorized')
             });
             return;
         }
@@ -148,7 +148,7 @@ export class EventController {
             if (!event) {
                 res.status(404).json({ 
                     success: false,
-                    message: 'Evento não encontrado' 
+                    message: res.__('event.not_found')
                 });
                 return;
             }
@@ -158,7 +158,7 @@ export class EventController {
             if (!user || (event.id_organizador !== userId && user.papel !== 'admin')) {
                 res.status(403).json({ 
                     success: false,
-                    message: 'Sem permissão para atualizar este evento' 
+                    message: res.__('auth.forbidden')
                 });
                 return;
             }
@@ -169,7 +169,7 @@ export class EventController {
                 if (existingEvent) {
                     res.status(400).json({ 
                         success: false,
-                        message: 'Código do evento já existe' 
+                        message: res.__('error.invalid_input')
                     });
                     return;
                 }
@@ -183,14 +183,14 @@ export class EventController {
 
             res.status(200).json({ 
                 success: true,
-                message: 'Evento atualizado com sucesso',
+                message: res.__('event.updated'),
                 event 
             });
         } catch (error) {
             console.error('Erro ao atualizar evento:', error);
             res.status(500).json({ 
                 success: false,
-                message: 'Erro interno do servidor' 
+                message: res.__('error.internal')
             });
         }
     }
@@ -203,7 +203,7 @@ export class EventController {
         if (!userId) {
             res.status(401).json({ 
                 success: false,
-                message: 'Usuário não autenticado' 
+                message: res.__('auth.unauthorized')
             });
             return;
         }
@@ -213,7 +213,7 @@ export class EventController {
             if (!event) {
                 res.status(404).json({ 
                     success: false,
-                    message: 'Evento não encontrado' 
+                    message: res.__('event.not_found')
                 });
                 return;
             }
@@ -223,7 +223,7 @@ export class EventController {
             if (!user || (event.id_organizador !== userId && user.papel !== 'admin')) {
                 res.status(403).json({ 
                     success: false,
-                    message: 'Sem permissão para deletar este evento' 
+                    message: res.__('auth.forbidden')
                 });
                 return;
             }
@@ -231,13 +231,13 @@ export class EventController {
             await event.destroy();
             res.status(200).json({ 
                 success: true,
-                message: 'Evento deletado com sucesso' 
+                message: res.__('event.deleted')
             });
         } catch (error) {
             console.error('Erro ao deletar evento:', error);
             res.status(500).json({ 
                 success: false,
-                message: 'Erro interno do servidor' 
+                message: res.__('error.internal')
             });
         }
     }
@@ -254,7 +254,7 @@ export class EventController {
             console.error('Erro ao obter módulos:', error);
             res.status(500).json({ 
                 success: false,
-                message: 'Erro interno do servidor' 
+                message: res.__('error.internal')
             });
         }
     }

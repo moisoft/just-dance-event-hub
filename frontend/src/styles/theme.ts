@@ -9,7 +9,8 @@ const theme: DefaultTheme = {
     border: '#4B0082', // Roxo
   },
   fonts: {
-    main: 'Arial, sans-serif',
+    main: '"Montserrat", sans-serif',
+    title: '"Righteous", cursive',
   },
   breakpoints: {
     mobile: '768px',

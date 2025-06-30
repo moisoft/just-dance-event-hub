@@ -138,7 +138,7 @@ export class QueueController {
             console.error('Erro ao adicionar à fila:', error);
             res.status(500).json({ 
                 success: false,
-                message: 'Erro interno do servidor' 
+                message: res.__('error.internal') 
             });
         }
     }
@@ -191,7 +191,7 @@ export class QueueController {
             console.error('Erro ao obter fila:', error);
             res.status(500).json({ 
                 success: false,
-                message: 'Erro interno do servidor' 
+                message: res.__('error.internal') 
             });
         }
     }
@@ -253,7 +253,7 @@ export class QueueController {
             console.error('Erro ao remover da fila:', error);
             res.status(500).json({ 
                 success: false,
-                message: 'Erro interno do servidor' 
+                message: res.__('error.internal') 
             });
         }
     }
@@ -318,7 +318,7 @@ export class QueueController {
             console.error('Erro ao marcar como tocada:', error);
             res.status(500).json({ 
                 success: false,
-                message: 'Erro interno do servidor' 
+                message: res.__('error.internal') 
             });
         }
     }

@@ -34,7 +34,7 @@ class Music extends Model<MusicAttributes, MusicCreationAttributes> implements M
 }
 
 // Usar banco de teste se estiver em modo de teste
-const db = process.env['NODE_ENV'] === 'test' ? testSequelize : sequelize;
+const db = (process.env['NODE_ENV'] === 'test' && testSequelize) ? testSequelize : sequelize;
 
 Music.init(
     {

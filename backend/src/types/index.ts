@@ -6,7 +6,6 @@ declare global {
             user?: {
                 id: string;
                 papel: string;
-                [key: string]: any;
             };
         }
     }

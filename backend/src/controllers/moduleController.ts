@@ -63,7 +63,7 @@ export class ModuleController {
             console.error('Erro ao obter módulos do evento:', error);
             res.status(500).json({ 
                 success: false,
-                message: 'Erro interno do servidor' 
+                message: res.__('error.internal') 
             });
         }
     }
@@ -141,7 +141,7 @@ export class ModuleController {
             console.error('Erro ao atualizar configuração do módulo:', error);
             res.status(500).json({ 
                 success: false,
-                message: 'Erro interno do servidor' 
+                message: res.__('error.internal') 
             });
         }
     }
@@ -229,7 +229,7 @@ export class ModuleController {
             console.error('Erro ao atualizar configurações dos módulos:', error);
             res.status(500).json({ 
                 success: false,
-                message: 'Erro interno do servidor' 
+                message: res.__('error.internal') 
             });
         }
     }
@@ -287,7 +287,7 @@ export class ModuleController {
             console.error('Erro ao resetar configurações:', error);
             res.status(500).json({ 
                 success: false,
-                message: 'Erro interno do servidor' 
+                message: res.__('error.internal') 
             });
         }
     }

@@ -47,7 +47,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
 }
 
 // Usar banco de teste se estiver em modo de teste
-const db = process.env['NODE_ENV'] === 'test' ? testSequelize : sequelize;
+const db = (process.env['NODE_ENV'] === 'test' && testSequelize) ? testSequelize : sequelize;
 
 User.init(
     {
@@ -121,13 +121,11 @@ User.init(
             beforeCreate: async (user: any) => {
                 if (user.password) {
                     user.senha_hash = await User.hashPassword(user.password);
-                    delete user.password;
                 }
             },
             beforeUpdate: async (user: any) => {
-                if (user.changed('password')) {
+                if (user.password) {
                     user.senha_hash = await User.hashPassword(user.password);
-                    delete user.password;
                 }
             },
         },

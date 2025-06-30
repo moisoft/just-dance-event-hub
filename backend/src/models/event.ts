@@ -28,7 +28,7 @@ class Event extends Model<EventAttributes, EventCreationAttributes> implements E
 }
 
 // Usar banco de teste se estiver em modo de teste
-const db = process.env['NODE_ENV'] === 'test' ? testSequelize : sequelize;
+const db = (process.env['NODE_ENV'] === 'test' && testSequelize) ? testSequelize : sequelize;
 
 Event.init(
     {

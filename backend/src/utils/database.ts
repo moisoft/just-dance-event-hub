@@ -1,15 +1,6 @@
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 
-// Importar todos os modelos para garantir sincronização
-import './models/user';
-import './models/event';
-import './models/eventConfig';
-import './models/music';
-import './models/queue';
-import './models/tournament';
-import './models/avatar';
-
 dotenv.config();
 
 const env = process.env;

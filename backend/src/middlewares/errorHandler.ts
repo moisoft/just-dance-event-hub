@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 export interface AppError extends Error {
     statusCode?: number;
     isOperational?: boolean;
+    translationKey?: string;
 }
 
 export const errorHandler = (
@@ -32,41 +33,49 @@ export const errorHandler = (
         const message = Object.values((err as any).errors).map((val: any) => val.message).join(', ');
         error.message = message;
         error.statusCode = 400;
+        error.translationKey = 'error.invalid_input';
     }
 
     // Sequelize unique constraint error
     if (err.name === 'SequelizeUniqueConstraintError') {
-        const message = 'Duplicate field value entered';
-        error.message = message;
+        error.message = 'Duplicate field value entered';
         error.statusCode = 400;
+        error.translationKey = 'error.invalid_input';
     }
 
     // JWT errors
     if (err.name === 'JsonWebTokenError') {
         error.message = 'Invalid token';
         error.statusCode = 401;
+        error.translationKey = 'auth.unauthorized';
     }
 
     if (err.name === 'TokenExpiredError') {
         error.message = 'Token expired';
         error.statusCode = 401;
+        error.translationKey = 'auth.unauthorized';
     }
 
     // Cast error (invalid ID)
     if (err.name === 'CastError') {
         error.message = 'Resource not found';
         error.statusCode = 404;
+        error.translationKey = 'error.not_found';
     }
 
     res.status(error.statusCode || 500).json({
         success: false,
-        error: error.message || 'Server Error',
-        ...(env['NODE_ENV'] === 'development' && { stack: err.stack })
+        error: error.translationKey ? res.__(error.translationKey) : res.__('error.internal'),
+        ...(env['NODE_ENV'] === 'development' && { 
+            originalError: error.message,
+            stack: err.stack 
+        })
     });
 };
 
-export const notFound = (_req: Request, _res: Response, next: NextFunction): void => {
+export const notFound = (_req: Request, res: Response, next: NextFunction): void => {
     const error = new Error(`Not Found - ${_req.originalUrl}`) as AppError;
     error.statusCode = 404;
+    error.translationKey = 'error.route_not_found';
     next(error);
-}; 
+};

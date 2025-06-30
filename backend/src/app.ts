@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
+import { Request, Response } from 'express';
 
 // Importar rotas
 import authRoutes from './routes/authRoutes';
@@ -11,9 +12,11 @@ import queueRoutes from './routes/queueRoutes';
 import tournamentRoutes from './routes/tournamentRoutes';
 import moduleRoutes from './routes/moduleRoutes';
 import mockRoutes from './routes/mockRoutes';
+import pluginRoutes from './routes/pluginRoutes';
 
 // Importar middlewares
 import { errorHandler } from './middlewares/errorHandler';
+import { i18nMiddleware } from './middlewares/i18nMiddleware';
 
 // Importar modelos para sincronização
 import './models/user';
@@ -32,27 +35,30 @@ dotenv.config();
 
 const app = express();
 
+// Middleware de segurança
+app.use(helmet());
+
+// Middleware de internacionalização (deve vir antes dos rate limiters)
+app.use(i18nMiddleware);
+
 // Configuração de rate limiting
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutos
     max: 100, // limite de 100 requests por IP
-    message: {
+    message: (req: Request, res: Response) => ({
         success: false,
-        error: 'Muitas requisições, tente novamente mais tarde'
-    }
+        error: res.__('error.rate_limit')
+    })
 });
 
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutos
     max: 5, // limite de 5 tentativas de login por IP
-    message: {
+    message: (req: Request, res: Response) => ({
         success: false,
-        error: 'Muitas tentativas de login, tente novamente mais tarde'
-    }
+        error: res.__('error.auth_rate_limit')
+    })
 });
-
-// Middleware de segurança
-app.use(helmet());
 
 // Configuração do CORS
 app.use(cors({
@@ -78,51 +84,37 @@ app.use('/api/modules', moduleRoutes);
 // Rotas Mock (para teste sem banco de dados)
 app.use('/api/mock', mockRoutes);
 
+// Rotas de plugins
+app.use('/api/plugins', pluginRoutes);
+
+// Rota de health check
+app.get('/health', (_req: Request, res: Response) => {
+    res.status(200).json({
+        success: true,
+        message: res.__('system.health_check')
+    });
+});
+
 // Middleware de erro 404
-app.use('*', (_req, res) => {
+app.use('*', (_req: Request, res: Response) => {
     res.status(404).json({
         success: false,
-        error: 'Rota não encontrada'
+        error: res.__('error.route_not_found')
     });
 });
 
 // Middleware de tratamento de erros (deve ser o último)
 app.use(errorHandler);
 
-// Rota de health check
-app.get('/health', (_req, res) => {
-    res.status(200).json({
-        success: true,
-        message: 'Just Dance Event Hub API está funcionando!',
-        timestamp: new Date().toISOString(),
-        environment: process.env['NODE_ENV'] || 'development'
+// Conectar ao banco de dados e iniciar servidor
+connectDB().then(() => {
+    const port = process.env['PORT'] || 3001;
+    app.listen(port, () => {
+        console.log(`Servidor rodando na porta ${port}`);
     });
+}).catch(error => {
+    console.error('Erro ao conectar ao banco de dados:', error);
+    process.exit(1);
 });
-
-// Inicializar aplicação
-const PORT = process.env['PORT'] || 3001;
-
-const startServer = async () => {
-    try {
-        // Não conectar ao banco em ambiente de teste
-        if (process.env['NODE_ENV'] !== 'test') {
-            await connectDB();
-        }
-        
-        app.listen(PORT, () => {
-            console.log(`🚀 Servidor rodando na porta ${PORT}`);
-            console.log(`📊 Health check: http://localhost:${PORT}/health`);
-            console.log(`🔗 API Base URL: http://localhost:${PORT}/api`);
-        });
-    } catch (error) {
-        console.error('❌ Erro ao iniciar servidor:', error);
-        process.exit(1);
-    }
-};
-
-// Só iniciar o servidor se não estiver em ambiente de teste
-if (process.env['NODE_ENV'] !== 'test') {
-    startServer();
-}
 
 export default app;
