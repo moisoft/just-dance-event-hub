@@ -40,7 +40,7 @@ git status
 git add .
 
 # Fazer commit inicial
-git commit -m "feat: initial release v1.0.0
+git commit -m "feat: initial release v0.0.7-alpha
 
 - Sistema completo de gerenciamento de eventos Just Dance
 - Backend Node.js/TypeScript com PostgreSQL
@@ -116,8 +116,8 @@ ubuntu-deploy
 1. Vá em Releases
 2. "Create a new release"
 3. Configure:
-   - **Tag version**: `v1.0.0`
-   - **Release title**: `Just Dance Event Hub v1.0.0`
+   - **Tag version**: `v0.0.7-alpha`
+   - **Release title**: `Just Dance Event Hub v0.0.7-alpha`
    - **Description**: Use o conteúdo do CHANGELOG.md
 
 ### 7. Configurar Issues e Pull Requests
@@ -272,7 +272,7 @@ Use badges para mostrar:
 - [ ] Código enviado com sucesso
 - [ ] README personalizado
 - [ ] Documentação completa
-- [ ] Release v1.0.0 criado
+- [ ] Release v0.0.7-alpha criado
 - [ ] Topics configurados
 - [ ] Issues e PRs configurados
 - [ ] Badges adicionados (opcional)

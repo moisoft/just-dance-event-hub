@@ -327,7 +327,7 @@ sudo just-dance-hub logs --err
 
 ---
 
-**Versão:** 1.0.0  
+**Versão:** 0.0.7-alpha  
 **Compatibilidade:** Ubuntu 18.04+  
 **Autor:** Just Dance Event Hub Team  
 **Última atualização:** $(date)

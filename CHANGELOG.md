@@ -19,43 +19,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - Otimizações de performance
 - Atualização de dependências
 
-## [1.0.0] - 2024-01-XX
-
-### Adicionado
-- 🎵 Sistema de filas inteligente para músicas
-- 🏆 Sistema completo de torneios com brackets
-- 👥 Autenticação de usuários com JWT
-- 📊 Dashboard em tempo real
-- 🔧 Sistema de módulos configuráveis
-- 🎮 Gerenciamento de eventos de Just Dance
-- 📱 Interface responsiva com React
-- 🔒 Sistema de segurança robusto
-- 📈 Sistema de XP e níveis
-- 🎯 Modo equipe para jogadores
-
-### Funcionalidades Principais
-- **Autenticação**: Registro e login seguro com JWT
-- **Eventos**: Criação e gerenciamento de eventos
-- **Filas**: Sistema inteligente de filas de músicas
-- **Torneios**: Sistema completo de competições
-- **Usuários**: Perfis e sistema de níveis
-- **Músicas**: Biblioteca e configurações
-- **Dashboard**: Interface administrativa
-
-### Tecnologias
-- **Backend**: Node.js, Express, TypeScript, PostgreSQL, Sequelize
-- **Frontend**: React, TypeScript, Material-UI
-- **Segurança**: JWT, bcrypt, helmet, rate limiting
-- **DevOps**: PM2, Nginx, scripts de deploy
-
-### Arquitetura
-- API RESTful com TypeScript
-- ORM Sequelize para PostgreSQL
-- Middleware de autenticação e validação
-- Sistema de logs e monitoramento
-- Backup automático de dados
-
-## [0.9.0] - 2024-01-XX
+## [0.0.7-alpha] - 2024-XX-XX
 
 ### Adicionado
 - Estrutura inicial do projeto

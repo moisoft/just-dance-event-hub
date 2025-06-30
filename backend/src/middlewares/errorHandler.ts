@@ -73,7 +73,7 @@ export const errorHandler = (
     });
 };
 
-export const notFound = (_req: Request, res: Response, next: NextFunction): void => {
+export const notFound = (_req: Request, _res: Response, next: NextFunction): void => {
     const error = new Error(`Not Found - ${_req.originalUrl}`) as AppError;
     error.statusCode = 404;
     error.translationKey = 'error.route_not_found';

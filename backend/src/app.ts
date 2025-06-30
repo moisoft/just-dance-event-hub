@@ -45,7 +45,7 @@ app.use(i18nMiddleware);
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutos
     max: 100, // limite de 100 requests por IP
-    message: (req: Request, res: Response) => ({
+    message: (_req: Request, res: Response) => ({
         success: false,
         error: res.__('error.rate_limit')
     })
@@ -54,7 +54,7 @@ const limiter = rateLimit({
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutos
     max: 5, // limite de 5 tentativas de login por IP
-    message: (req: Request, res: Response) => ({
+    message: (_req: Request, res: Response) => ({
         success: false,
         error: res.__('error.auth_rate_limit')
     })

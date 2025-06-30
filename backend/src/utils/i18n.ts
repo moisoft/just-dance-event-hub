@@ -95,7 +95,11 @@ export function getLanguageFromHeader(req: Request): string {
 
     let languages: string[] = [];
     const acceptLangStr = typeof acceptLanguage === 'string' ? acceptLanguage : '';
-    languages = (acceptLangStr as string).split(',').map(lang => (lang || '').split(';')[0].trim());
+    if (acceptLangStr) {
+        languages = acceptLangStr.split(',').map(lang => String(lang).split(';')[0].trim());
+    } else {
+        languages = [];
+    }
     
     for (const lang of languages) {
         if (translations[lang]) {
@@ -126,10 +130,12 @@ export function translate(key: string, lang: string): string {
     const enTranslations = translations['en'];
     let translation: string = key;
     if (langTranslations && typeof langTranslations[key] === 'string') {
-        translation = langTranslations[key];
+        translation = langTranslations[key] as string;
     } else if (enTranslations && typeof enTranslations[key] === 'string') {
-        translation = enTranslations[key];
+        translation = enTranslations[key] as string;
+    } else {
+        translation = key;
     }
-    translationCache[language][key] = translation;
+    (translationCache[language]!)[key] = translation;
     return translation;
 }

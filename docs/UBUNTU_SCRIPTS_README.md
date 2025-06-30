@@ -302,7 +302,7 @@ sudo just-dance-hub restart
 
 ---
 
-**Versão:** 1.0.0  
+**Versão:** 0.0.7-alpha  
 **Última atualização:** $(date)  
 **Compatibilidade:** Ubuntu 18.04+  
 **Autor:** Just Dance Event Hub Team 

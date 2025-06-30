@@ -1,6 +1,6 @@
 {
   "name": "just-dance-event-hub-backend",
-  "version": "1.0.0",
+  "version": "0.0.7-alpha",
   "description": "Backend for Just Dance Event Hub application.",
   "main": "dist/app.js",
   "scripts": {
