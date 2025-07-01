@@ -128,10 +128,10 @@ const MusicSelectionScreen: React.FC = () => {
             <MusicGrid>
                 {musicList.map((music) => (
                     <MusicCard key={music.id}>
-                        <MusicTitle>{music.nome_musica}</MusicTitle>
-                        <MusicInfo>Artista: {music.artista}</MusicInfo>
-                        <DifficultyBadge difficulty={music.dificuldade}>
-                            {music.dificuldade} ★
+                        <MusicTitle>{music.name}</MusicTitle>
+                        <MusicInfo>Artista: {music.artist || 'Desconhecido'}</MusicInfo>
+                        <DifficultyBadge difficulty={music.difficulty}>
+                            {music.difficulty} ★
                         </DifficultyBadge>
                     </MusicCard>
                 ))}

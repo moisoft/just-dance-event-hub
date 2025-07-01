@@ -39,6 +39,14 @@ export interface Event {
     status?: string;
 }
 
+export interface EventDetails {
+    id: number;
+    nome_evento: string;
+    id_organizador: string;
+    tipo: 'casual' | 'torneio';
+    status: string;
+}
+
 export interface Queue {
     id: number;
     eventId: number;
@@ -52,21 +60,51 @@ export interface Queue {
     addedAt?: string;
 }
 
-export interface Tournament {
-    eventId: number;
-    tournamentModel: string;
-    maxParticipants: number;
+// Enhanced Tournament Types
+export interface TournamentPlayer {
+    id: string;
+    nickname: string;
+    avatarUrl: string;
+    score?: number;
+    rank?: number;
+    userId: string; // Reference to User
+    status: 'registered' | 'active' | 'eliminated';
 }
 
 export interface TournamentMatch {
-    id: number;
+    id: string;
     eventId: number;
     round: number;
-    player1Id: string;
-    player2Id: string;
-    drawnMusicId: number;
-    player1Score?: number;
-    player2Score?: number;
+    matchNumber: number;
+    player1: TournamentPlayer;
+    player2: TournamentPlayer;
+    score1: number;
+    score2: number;
+    musicId: number;
+    isActive: boolean;
+    startTime?: Date;
+    endTime?: Date;
+    status: 'pending' | 'in_progress' | 'completed';
     winnerId?: string;
-    status?: string;
+}
+
+export interface Tournament {
+    id: string;
+    eventId: number;
+    name: string;
+    startDate: Date;
+    endDate?: Date;
+    players: TournamentPlayer[];
+    matches: TournamentMatch[];
+    currentRound: number;
+    maxParticipants: number;
+    status: 'registration' | 'in_progress' | 'completed';
+    winner?: TournamentPlayer;
+    tournamentModel: string;
+}
+
+export interface TournamentBracketProps {
+    tournament: Tournament;
+    onMatchClick?: (match: TournamentMatch) => void;
+    onPlayerClick?: (player: TournamentPlayer) => void;
 }

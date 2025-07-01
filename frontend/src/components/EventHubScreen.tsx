@@ -1,163 +1,67 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import { eventAPI } from '../services/api';
-import { EventDetails } from '../types';
 
-const EventContainer = styled.div`
-    min-height: 100vh;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
+// Contexto global para eventId
+export const EventContext = React.createContext<{ eventId: string | null, setEventId: (id: string) => void }>({ eventId: null, setEventId: () => {} });
 
-const EventCard = styled.div`
-    class-name: card;
-    max-width: 800px;
-    width: 100%;
-    margin-top: 2rem;
-`;
-
-const EventTitle = styled.h1`
-    font-size: 3rem;
-    text-align: center;
-    margin-bottom: 2rem;
-    class-name: gradient-text;
-`;
-
-const EventInfo = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-`;
-
-const InfoItem = styled.div`
-    class-name: card pulse-element;
-    padding: 1.5rem;
-    text-align: center;
-
-    h3 {
-        font-size: 1.2rem;
-        margin-bottom: 1rem;
-        class-name: neon-text;
-    }
-
-    p {
-        font-size: 1.1rem;
-    }
-`;
-
-const LoadingContainer = styled.div`
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    font-size: 1.5rem;
-    class-name: neon-text;
-`;
-
-const DancerIcon = styled.div`
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    class-name: floating-element;
-    &::after {
-        content: '💃';
-    }
-`;
-
-const ErrorContainer = styled.div`
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 2rem;
-    
-    p {
-        font-size: 1.5rem;
-        class-name: neon-text;
-    }
-`;
-
-const EventHubScreen: React.FC = () => {
-    const { code } = useParams<{ code: string }>();
-    const [eventDetails, setEventDetails] = useState<EventDetails | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        const fetchEventDetails = async () => {
-            try {
-                if (!code) {
-    setError('Código do evento não fornecido.');
-    setLoading(false);
-    return;
+interface EventHubScreenProps {
+    user: { nickname: string };
 }
-const data = await eventAPI.getByCode(code);
-                setEventDetails(data);
-            } catch (err) {
-                setError('Erro ao carregar os detalhes do evento.');
-            } finally {
-                setLoading(false);
-            }
-        };
 
-        fetchEventDetails();
-    }, [code]);
+const EventHubScreen: React.FC<EventHubScreenProps> = ({ user }) => {
+    const [eventCode, setEventCode] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const history = useHistory();
+    const { setEventId } = useContext(EventContext);
 
-    if (loading) {
-        return (
-            <LoadingContainer>
-                <DancerIcon />
-                <p>Carregando...</p>
-            </LoadingContainer>
-        );
-    }
-
-    if (error) {
-        return (
-            <ErrorContainer>
-                <DancerIcon />
-                <p>{error}</p>
-            </ErrorContainer>
-        );
-    }
-
-    if (!eventDetails) {
-        return (
-            <ErrorContainer>
-                <DancerIcon />
-                <p>Evento não encontrado.</p>
-            </ErrorContainer>
-        );
-    }
+    const handleEnterEvent = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError('');
+        if (!eventCode.trim()) {
+            setError('Digite o código do evento.');
+            return;
+        }
+        setLoading(true);
+        try {
+            await eventAPI.getByCode(eventCode.trim());
+            setEventId(eventCode.trim());
+            history.push(`/player-dashboard`);
+        } catch (err) {
+            setError('Código inválido ou evento não encontrado.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
-        <EventContainer>
-            <EventCard>
-                <DancerIcon />
-                <EventTitle>{eventDetails.nome_evento}</EventTitle>
-                <EventInfo>
-                    <InfoItem>
-                        <h3>Organizador</h3>
-                        <p>{eventDetails.id_organizador}</p>
-                    </InfoItem>
-                    <InfoItem>
-                        <h3>Tipo</h3>
-                        <p>{eventDetails.tipo}</p>
-                    </InfoItem>
-                    <InfoItem>
-                        <h3>Status</h3>
-                        <p>{eventDetails.status}</p>
-                    </InfoItem>
-                </EventInfo>
-            </EventCard>
-        </EventContainer>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#101624] px-2">
+            <h1 className="text-3xl md:text-5xl font-bold text-white text-center mb-2 mt-8">Bem-vindo(a), {user.nickname}!</h1>
+            <p className="text-cyan-400 text-lg text-center mb-10">Pronto(a) para o show?</p>
+            <div className="w-full max-w-md bg-[#181f2e] rounded-2xl shadow-2xl p-8 border border-[#232a3a] flex flex-col items-center">
+                <form className="w-full flex flex-col items-center" onSubmit={handleEnterEvent}>
+                    <label className="block text-sm font-medium text-gray-400 mb-2 text-center w-full">Insira o Código do Evento</label>
+                    <input
+                        type="text"
+                        className="w-full text-center text-2xl tracking-widest bg-[#232a3a] border border-[#232a3a] rounded-lg uppercase px-4 py-6 mb-6 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                        placeholder="CÓDIGO"
+                        value={eventCode}
+                        onChange={e => setEventCode(e.target.value)}
+                        maxLength={12}
+                        autoFocus
+                    />
+                    {error && <div className="text-red-400 text-center font-semibold mb-4 w-full">{error}</div>}
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full py-4 text-lg font-bold rounded-lg bg-pink-600 hover:bg-pink-700 transition-colors flex items-center justify-center disabled:opacity-50"
+                    >
+                        <span className="mr-2">🎵</span> Entrar no Evento
+                    </button>
+                </form>
+            </div>
+        </div>
     );
 };
 

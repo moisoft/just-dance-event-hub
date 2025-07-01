@@ -8,9 +8,9 @@ const fadeIn = keyframes`
 `;
 
 const neonPulse = keyframes`
-  0% { box-shadow: 0 0 10px ${({ theme }) => theme.colors.primary}; }
-  50% { box-shadow: 0 0 20px ${({ theme }) => theme.colors.secondary}; }
-  100% { box-shadow: 0 0 10px ${({ theme }) => theme.colors.primary}; }
+  0% { box-shadow: 0 0 10px #FF007F; }
+  50% { box-shadow: 0 0 20px #00FFFF; }
+  100% { box-shadow: 0 0 10px #FF007F; }
 `;
 
 const Container = styled.div`

@@ -1,79 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { authAPI } from '../services/api';
-
-const LoginContainer = styled.div`
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-`;
-
-const LoginCard = styled.div.attrs({
-    className: 'card'
-})`
-    max-width: 400px;
-    width: 100%;
-`;
-
-const Title = styled.h2.attrs({
-    className: 'gradient-text'
-})`
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-    text-align: center;
-`;
-
-const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-`;
-
-const FormGroup = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-`;
-
-const Label = styled.label`
-    font-size: 1rem;
-    color: ${({ theme }) => theme.colors.text};
-`;
-
-const ErrorMessage = styled.p.attrs({
-    className: 'neon-text'
-})`
-    color: ${({ theme }) => theme.colors.primary};
-    text-align: center;
-    margin: 1rem 0;
-`;
-
-const RegisterLink = styled(Link)`
-    text-align: center;
-    margin-top: 1rem;
-    color: ${({ theme }) => theme.colors.text};
-    text-decoration: none;
-    transition: all 0.3s ease;
-
-    &:hover {
-        color: ${({ theme }) => theme.colors.primary};
-        text-shadow: 0 0 10px ${({ theme }) => theme.colors.primary};
-    }
-`;
-
-const DancerIcon = styled.div.attrs({
-    className: 'floating-element'
-})`
-    font-size: 3rem;
-    margin-bottom: 2rem;
-    &::after {
-        content: '💃';
-    }
-`;
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -84,12 +11,23 @@ const Login = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
-
         try {
             const response = await authAPI.login(email, password);
-            if (response.token) {
+            if (response.token && response.user) {
                 localStorage.setItem('token', response.token);
-                history.push('/event-hub');
+                switch (response.user.papel) {
+                    case 'admin':
+                        history.push('/admin/plugins');
+                        break;
+                    case 'staff':
+                    case 'organizador':
+                        history.push('/staff-panel');
+                        break;
+                    case 'jogador':
+                    default:
+                        history.push('/event-hub/' + (response.user.eventCode || ''));
+                        break;
+                }
             }
         } catch (err) {
             setError('Email ou senha incorretos.');
@@ -97,37 +35,43 @@ const Login = () => {
     };
 
     return (
-        <LoginContainer>
-            <LoginCard>
-                <DancerIcon />
-                <Title>Login</Title>
-                <Form onSubmit={handleSubmit}>
-                    <FormGroup>
-                        <Label>Email:</Label>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Senha:</Label>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </FormGroup>
-                    {error && <ErrorMessage>{error}</ErrorMessage>}
-                    <button type="submit" className="pulse-element">Entrar</button>
-                    <RegisterLink to="/register" className="neon-text">
-                        Não tem uma conta? Registre-se aqui!
-                    </RegisterLink>
-                </Form>
-            </LoginCard>
-        </LoginContainer>
+        <div className="min-h-screen flex items-center justify-center bg-[#101624]">
+            <div className="w-full max-w-md bg-[#181f2e] rounded-2xl shadow-2xl p-8 border border-[#232a3a] relative animate-fade-in">
+                <div className="flex flex-col items-center mb-8">
+                    <div className="inline-block p-2 bg-[#232a3a] rounded-full mb-2">
+                        <div className="w-12 h-12 flex items-center justify-center bg-pink-500 rounded-full">
+                            <span className="text-3xl text-[#181f2e]">-</span>
+                        </div>
+                    </div>
+                    <h1 className="text-3xl md:text-4xl font-bold mt-2 tracking-wider text-white text-center">Just Dance Hub</h1>
+                    <p className="text-cyan-400 mt-2 text-center">Sua Fila. Seu Progresso. Sua Pista de Dança.</p>
+                </div>
+                <div className="flex justify-center mb-6 border-b border-pink-400">
+                    <button className="w-1/2 py-3 text-lg font-semibold text-pink-400 border-b-2 border-pink-400">Entrar</button>
+                    <Link to="/register" className="w-1/2 py-3 text-lg font-semibold text-gray-500 text-center">Criar Conta</Link>
+                </div>
+                <form className="space-y-4" onSubmit={handleSubmit}>
+                    <input
+                        type="email"
+                        className="w-full px-4 py-3 bg-[#232a3a] border border-[#232a3a] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                        placeholder="exemplo@email.com"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        required
+                    />
+                    <input
+                        type="password"
+                        className="w-full px-4 py-3 bg-[#232a3a] border border-[#232a3a] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        required
+                    />
+                    {error && <div className="text-red-400 text-center font-semibold">{error}</div>}
+                    <button type="submit" className="w-full py-4 text-lg font-bold rounded-lg bg-pink-600 hover:bg-pink-700 transition-colors">Entrar no Ritmo!</button>
+                </form>
+            </div>
+        </div>
     );
 };
 

@@ -198,7 +198,7 @@ const ModuleSettings: React.FC<ModuleSettingsProps> = ({ eventId, isOrganizer })
                                         control={
                                             <Switch
                                                 checked={module.ativo}
-                                                onChange={(e) => toggleModule(module.modulo, e.target.checked)}
+                                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => toggleModule(module.modulo, e.target.checked)}
                                                 disabled={saving}
                                             />
                                         }
@@ -242,4 +242,4 @@ const ModuleSettings: React.FC<ModuleSettingsProps> = ({ eventId, isOrganizer })
     );
 };
 
-export default ModuleSettings; 
+export default ModuleSettings;

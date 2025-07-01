@@ -119,6 +119,29 @@ export const tournamentAPI = {
     getEventTournaments: (eventId: string) => apiRequest(`/tournaments/${eventId}`),
 };
 
+// Funções de plugins
+export const pluginAPI = {
+    // Upload de plugin (formData com arquivo)
+    upload: async (formData: FormData) => {
+        const url = `${API_BASE_URL}/plugins/upload`;
+        const token = localStorage.getItem('token');
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+            },
+            body: formData,
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || 'Erro no upload do plugin');
+        return data;
+    },
+    // Listar plugins
+    list: () => apiRequest('/plugins'),
+    // Remover plugin
+    remove: (name: string) => apiRequest(`/plugins/${name}`, { method: 'DELETE' }),
+};
+
 export default {
     auth: authAPI,
     events: eventAPI,
@@ -126,4 +149,5 @@ export default {
     queue: queueAPI,
     music: musicAPI,
     tournament: tournamentAPI,
+    plugin: pluginAPI,
 };
