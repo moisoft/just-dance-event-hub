@@ -1,110 +1,58 @@
-// frontend/src/types/index.ts
 export interface User {
-    id: string;
-    nickname: string;
-    email: string;
-    passwordHash: string;
-    role: 'jogador' | 'staff' | 'organizador' | 'admin';
-    xp: number;
-    level: number;
-    activeAvatarUrl?: string;
+  id: string;
+  nickname: string;
+  email: string;
+  papel: 'jogador' | 'staff' | 'admin';
+  xp: number;
+  nivel: number;
+  avatar_ativo_url: string;
+}
+
+export interface Song {
+  id: string;
+  name: string;
+  artist: string;
+  artwork_url: string;
+  game_mode: 'Solo' | 'Dueto' | 'Team';
+  coach_images: string[];
+  video_file_url: string;
 }
 
 export interface Avatar {
-    id: number;
-    name: string;
-    imageUrl: string;
-    unlockType: 'inicial' | 'nivel' | 'conquista' | 'exclusivo';
-    requiredLevel?: number;
-    requiredAchievementId?: number;
+  id: string;
+  name: string;
+  image_url: string;
 }
 
-export interface Music {
-    id: number;
-    name: string;
-    artist?: string;
-    gameVersion?: string;
-    difficulty: number;
-    artworkUrl?: string;
-    videoPreviewUrl?: string;
-    mode: 'Solo' | 'Dueto' | 'Trio' | 'Quarteto';
-}
-
-export interface Event {
-    id: number;
-    name: string;
-    organizerId: string;
-    type: 'casual' | 'torneio';
-    eventCode: string;
-    status?: string;
-}
-
-export interface EventDetails {
-    id: number;
-    nome_evento: string;
-    id_organizador: string;
-    tipo: 'casual' | 'torneio';
-    status: string;
-}
-
-export interface Queue {
-    id: number;
-    eventId: number;
-    userId: string;
-    musicId: number;
-    teamId?: string;
-    selectedCoach: string;
-    status: 'na_fila' | 'jogando' | 'finalizado';
-    score?: number;
-    stars?: number;
-    addedAt?: string;
-}
-
-// Enhanced Tournament Types
-export interface TournamentPlayer {
-    id: string;
-    nickname: string;
-    avatarUrl: string;
-    score?: number;
-    rank?: number;
-    userId: string; // Reference to User
-    status: 'registered' | 'active' | 'eliminated';
-}
-
-export interface TournamentMatch {
-    id: string;
-    eventId: number;
-    round: number;
-    matchNumber: number;
-    player1: TournamentPlayer;
-    player2: TournamentPlayer;
-    score1: number;
-    score2: number;
-    musicId: number;
-    isActive: boolean;
-    startTime?: Date;
-    endTime?: Date;
-    status: 'pending' | 'in_progress' | 'completed';
-    winnerId?: string;
+export interface QueueItem {
+  id: string;
+  type: 'solo' | 'team' | 'tournament_match';
+  player?: User;
+  players?: User[];
+  song: Song;
+  coach_image_url: string;
+  tournament_name?: string;
+  status: string;
 }
 
 export interface Tournament {
-    id: string;
-    eventId: number;
-    name: string;
-    startDate: Date;
-    endDate?: Date;
-    players: TournamentPlayer[];
-    matches: TournamentMatch[];
-    currentRound: number;
-    maxParticipants: number;
-    status: 'registration' | 'in_progress' | 'completed';
-    winner?: TournamentPlayer;
-    tournamentModel: string;
+  id: string;
+  name: string;
+  status: 'Open for Registration' | 'Coming Soon' | 'Closed';
+  start_time: string;
+  registered_players: string[]; // Array of user IDs
 }
 
-export interface TournamentBracketProps {
-    tournament: Tournament;
-    onMatchClick?: (match: TournamentMatch) => void;
-    onPlayerClick?: (player: TournamentPlayer) => void;
+export interface RankingEntry {
+  score: number;
+  stars: number;
 }
+
+export interface Rankings {
+  [songId: string]: {
+    [userId: string]: RankingEntry;
+  };
+}
+
+export type AppState = 'auth' | 'hub' | 'in_event' | 'staff_panel' | 'admin_panel' | 'team_hub' | 'kiosk_mode';
+export type InEventScreen = 'dashboard' | 'music' | 'competitions' | 'settings';

@@ -1,68 +1,56 @@
-import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
-import { eventAPI } from '../services/api';
-
-// Contexto global para eventId
-export const EventContext = React.createContext<{ eventId: string | null, setEventId: (id: string) => void }>({ eventId: null, setEventId: () => {} });
+import React, { useState } from 'react';
+import { User } from '../types';
 
 interface EventHubScreenProps {
-    user: { nickname: string };
+  user: User;
+  onEnterEvent: (eventCode: string) => void;
 }
 
-const EventHubScreen: React.FC<EventHubScreenProps> = ({ user }) => {
-    const [eventCode, setEventCode] = useState('');
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
-    const history = useHistory();
-    const { setEventId } = useContext(EventContext);
+const EventHubScreen: React.FC<EventHubScreenProps> = ({ user, onEnterEvent }) => {
+  const [eventCode, setEventCode] = useState('');
 
-    const handleEnterEvent = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError('');
-        if (!eventCode.trim()) {
-            setError('Digite o código do evento.');
-            return;
-        }
-        setLoading(true);
-        try {
-            await eventAPI.getByCode(eventCode.trim());
-            setEventId(eventCode.trim());
-            history.push(`/player-dashboard`);
-        } catch (err) {
-            setError('Código inválido ou evento não encontrado.');
-        } finally {
-            setLoading(false);
-        }
-    };
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (eventCode.trim()) {
+      onEnterEvent(eventCode);
+    } else {
+      alert('Por favor, insira um código de evento.');
+    }
+  };
 
-    return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-[#101624] px-2">
-            <h1 className="text-3xl md:text-5xl font-bold text-white text-center mb-2 mt-8">Bem-vindo(a), {user.nickname}!</h1>
-            <p className="text-cyan-400 text-lg text-center mb-10">Pronto(a) para o show?</p>
-            <div className="w-full max-w-md bg-[#181f2e] rounded-2xl shadow-2xl p-8 border border-[#232a3a] flex flex-col items-center">
-                <form className="w-full flex flex-col items-center" onSubmit={handleEnterEvent}>
-                    <label className="block text-sm font-medium text-gray-400 mb-2 text-center w-full">Insira o Código do Evento</label>
-                    <input
-                        type="text"
-                        className="w-full text-center text-2xl tracking-widest bg-[#232a3a] border border-[#232a3a] rounded-lg uppercase px-4 py-6 mb-6 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400"
-                        placeholder="CÓDIGO"
-                        value={eventCode}
-                        onChange={e => setEventCode(e.target.value)}
-                        maxLength={12}
-                        autoFocus
-                    />
-                    {error && <div className="text-red-400 text-center font-semibold mb-4 w-full">{error}</div>}
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full py-4 text-lg font-bold rounded-lg bg-pink-600 hover:bg-pink-700 transition-colors flex items-center justify-center disabled:opacity-50"
-                    >
-                        <span className="mr-2">🎵</span> Entrar no Evento
-                    </button>
-                </form>
-            </div>
-        </div>
-    );
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 to-purple-900 text-white p-4">
+      <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md border border-purple-700 text-center">
+        <h2 className="text-3xl font-bold mb-4 text-pink-400">
+          Bem-vindo, {user.nickname}!
+        </h2>
+        <p className="text-lg text-gray-300 mb-6">
+          Insira o código do evento para começar a dançar!
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label htmlFor="eventCode" className="sr-only">Código do Evento</label>
+            <input
+              type="text"
+              id="eventCode"
+              className="shadow appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-purple-500 bg-gray-900 text-center text-xl uppercase tracking-wider"
+              placeholder="Código do Evento"
+              value={eventCode}
+              onChange={(e) => setEventCode(e.target.value)}
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline transition-colors duration-300 text-xl"
+          >
+            Entrar no Evento
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default EventHubScreen;

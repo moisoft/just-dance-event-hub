@@ -1,56 +1,46 @@
-# Just Dance Event Hub - Frontend Documentation
+# Getting Started with Create React App
 
-## Visão Geral
-O Just Dance Event Hub é uma aplicação web projetada para gerenciar eventos de Just Dance, proporcionando uma experiência interativa e gamificada para jogadores e organizadores. O frontend é construído com React e TypeScript, oferecendo uma interface moderna e responsiva.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Estrutura do Projeto
-A estrutura do frontend é organizada da seguinte forma:
+## Available Scripts
 
-```
-frontend
-├── src
-│   ├── components          # Componentes reutilizáveis da aplicação
-│   │   ├── AuthScreen.tsx  # Tela de autenticação
-│   │   ├── EventHubScreen.tsx # Tela principal para interação com eventos
-│   │   ├── PlayerDashboard.tsx # Painel do jogador
-│   │   ├── MusicSelectionScreen.tsx # Seleção de músicas
-│   │   ├── StaffPanel.tsx  # Painel de controle para staff
-│   │   └── TournamentBracket.tsx # Exibição da árvore do torneio
-│   ├── pages               # Páginas da aplicação
-│   │   ├── Home.tsx        # Página inicial
-│   │   ├── Login.tsx       # Página de login
-│   │   └── Register.tsx     # Página de registro
-│   ├── services            # Serviços para interagir com a API
-│   │   └── api.ts          # Funções para chamadas à API
-│   ├── types               # Tipos TypeScript
-│   │   └── index.ts        # Definições de tipos
-│   ├── styles              # Estilos da aplicação
-│   │   └── theme.ts        # Tema de estilo
-│   ├── App.tsx             # Componente principal da aplicação
-│   └── index.tsx           # Ponto de entrada da aplicação React
-├── package.json            # Configuração do npm
-├── tsconfig.json           # Configuração do TypeScript
-└── README.md               # Documentação do projeto frontend
-```
+In the project directory, you can run:
 
-## Instalação
-Para instalar as dependências do projeto, execute o seguinte comando na raiz do diretório `frontend`:
+### `npm start`
 
-```
-npm install
-```
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-## Execução
-Para iniciar a aplicação em modo de desenvolvimento, utilize o comando:
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-```
-npm start
-```
+### `npm test`
 
-A aplicação estará disponível em `http://localhost:3000`.
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-## Contribuição
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull requests para melhorias e correções.
+### `npm run build`
 
-## Licença
-Este projeto está licenciado sob a MIT License. Veja o arquivo LICENSE para mais detalhes.
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `npm run eject`
+
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
