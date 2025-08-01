@@ -96,7 +96,10 @@ export function getLanguageFromHeader(req: Request): string {
     let languages: string[] = [];
     const acceptLangStr = typeof acceptLanguage === 'string' ? acceptLanguage : '';
     if (acceptLangStr) {
-        languages = acceptLangStr.split(',').map(lang => String(lang).split(';')[0].trim());
+        languages = acceptLangStr.split(',').map(lang => {
+            const parts = String(lang).split(';');
+            return parts[0]?.trim() || '';
+        }).filter(lang => lang.length > 0);
     } else {
         languages = [];
     }

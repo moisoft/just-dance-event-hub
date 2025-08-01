@@ -16,7 +16,22 @@ const ManageSongsScreen: React.FC<ManageSongsScreenProps> = ({ onBack }) => {
   };
 
   const handleAddSong = () => {
-    setEditingSong({ id: '', name: '', artist: '', artwork_url: '', game_mode: 'Solo', coach_images: [], video_file_url: '' });
+    setEditingSong({ 
+      id: '', 
+      name: '', 
+      artist: '', 
+      artwork_url: '', 
+      game_mode: 'Solo', 
+      coach_images: [], 
+      video_file_url: '',
+      video_preview_url: '',
+      duration: 0,
+      difficulty: 'Fácil',
+      year: new Date().getFullYear(),
+      genre: '',
+      approved: false,
+      coaches: []
+    });
   };
 
   const handleSaveSong = (updatedSong: Song) => {

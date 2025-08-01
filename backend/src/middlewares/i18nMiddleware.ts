@@ -1,11 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { getLanguageFromHeader, translate } from '../utils/i18n';
+import '../types';
 
 declare global {
     namespace Express {
-        interface Response {
-            __: (key: string) => string;
-        }
         interface Locals {
             lang: string;
         }

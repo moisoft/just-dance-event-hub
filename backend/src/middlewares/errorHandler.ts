@@ -17,15 +17,14 @@ export const errorHandler = (
     const env = process.env;
 
     // Log error
-    console.error('Error:', {
+    console.log('Error details:', {
         message: err.message,
         stack: err.stack,
         url: _req.url,
         method: _req.method,
         body: _req.body,
         params: _req.params,
-        query: _req.query,
-        user: _req.user
+        query: _req.query
     });
 
     // Sequelize validation error
@@ -65,7 +64,7 @@ export const errorHandler = (
 
     res.status(error.statusCode || 500).json({
         success: false,
-        error: error.translationKey ? res.__(error.translationKey) : res.__('error.internal'),
+        error: error.translationKey || 'Internal server error',
         ...(env['NODE_ENV'] === 'development' && { 
             originalError: error.message,
             stack: err.stack 

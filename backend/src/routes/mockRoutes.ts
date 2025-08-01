@@ -601,4 +601,69 @@ router.get('/tournaments/:eventId', (req, res) => {
     });
 });
 
-export default router; 
+// Mock Staff Routes
+router.get('/staff/queue', (_req, res) => {
+    // Retorna a fila do primeiro evento ativo para o painel de staff
+    const activeEvent = mockEvents.find(e => e.status === 'ativo');
+    const eventQueue = activeEvent ? mockQueue.filter(q => q.id_evento === activeEvent.id) : [];
+    
+    // Mapear para o formato esperado pelo frontend
+    const formattedQueue = eventQueue.map(item => ({
+        id: item.id,
+        type: 'solo' as const,
+        player: item.jogador,
+        song: {
+            id: item.musica?.id || '1',
+            name: item.musica?.titulo || 'Música desconhecida',
+            artist: item.musica?.artista || 'Artista desconhecido',
+            artwork_url: item.musica?.url_thumbnail || 'https://via.placeholder.com/200x200/FF6B6B/FFFFFF?text=Music',
+            game_mode: 'Solo' as const,
+            coach_images: ['https://via.placeholder.com/150x200/4ECDC4/FFFFFF?text=Coach'],
+            video_file_url: 'https://example.com/video.mp4'
+        },
+        coach_image_url: 'https://via.placeholder.com/150x200/4ECDC4/FFFFFF?text=Coach',
+        status: item.status
+    }));
+    
+    res.json({
+        success: true,
+        data: formattedQueue
+    });
+});
+
+router.put('/staff/queue/:itemId', (req, res) => {
+    const { itemId } = req.params;
+    const { status } = req.body;
+    
+    const queueItemIndex = mockQueue.findIndex(q => q.id === itemId);
+    
+    if (queueItemIndex === -1) {
+        res.status(404).json({
+            success: false,
+            error: 'Item da fila não encontrado'
+        });
+        return;
+    }
+    
+    // Atualizar o status do item na fila
+    const queueItem = mockQueue[queueItemIndex];
+    if (queueItem) {
+        queueItem.status = status;
+        
+        res.json({
+            success: true,
+            message: 'Status do item atualizado com sucesso',
+            data: {
+                id: queueItem.id,
+                status: status
+            }
+        });
+    } else {
+        res.status(500).json({
+            success: false,
+            error: 'Erro interno do servidor'
+        });
+    }
+});
+
+export default router;

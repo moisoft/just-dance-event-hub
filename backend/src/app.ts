@@ -13,6 +13,7 @@ import tournamentRoutes from './routes/tournamentRoutes';
 import moduleRoutes from './routes/moduleRoutes';
 import mockRoutes from './routes/mockRoutes';
 import pluginRoutes from './routes/pluginRoutes';
+import adminRoutes from './routes/adminRoutes';
 
 // Importar middlewares
 import { errorHandler } from './middlewares/errorHandler';
@@ -80,6 +81,7 @@ app.use('/api/events', eventRoutes);
 app.use('/api/queues', queueRoutes);
 app.use('/api/tournaments', tournamentRoutes);
 app.use('/api/modules', moduleRoutes);
+app.use('/admin', adminRoutes);
 
 // Rotas Mock (para teste sem banco de dados)
 app.use('/api/mock', mockRoutes);

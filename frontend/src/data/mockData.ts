@@ -38,7 +38,20 @@ export const mockSongs: Song[] = [
     video_file_url: 'https://www.w3schools.com/html/mov_bbb.mp4',
     artwork_url: 'https://via.placeholder.com/200x200/FF1493/FFFFFF?text=Bad+Romance',
     game_mode: 'Solo',
-    coach_images: ['https://via.placeholder.com/50/FF1493?text=C1']
+    coach_images: ['https://via.placeholder.com/50/FF1493?text=C1'],
+    video_preview_url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    duration: 240,
+    difficulty: 'Médio',
+    year: 2009,
+    genre: 'Pop',
+    approved: true,
+    coaches: [{
+      id: 'coach1',
+      name: 'Gaga Coach',
+      image_url: 'https://via.placeholder.com/50/FF1493?text=C1',
+      description: 'Expert em pop dance',
+      specialty: 'Pop Dance'
+    }]
   },
   {
     id: 'song2',
@@ -47,7 +60,20 @@ export const mockSongs: Song[] = [
     video_file_url: 'https://www.w3schools.com/html/mov_bbb.mp4',
     artwork_url: 'https://via.placeholder.com/200x200/00FFFF/000000?text=Blinding+Lights',
     game_mode: 'Solo',
-    coach_images: ['https://via.placeholder.com/50/00FFFF?text=C2']
+    coach_images: ['https://via.placeholder.com/50/00FFFF?text=C2'],
+    video_preview_url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    duration: 200,
+    difficulty: 'Fácil',
+    year: 2019,
+    genre: 'Synthpop',
+    approved: true,
+    coaches: [{
+      id: 'coach2',
+      name: 'Neon Coach',
+      image_url: 'https://via.placeholder.com/50/00FFFF?text=C2',
+      description: 'Especialista em synthpop',
+      specialty: 'Synthpop'
+    }]
   },
   {
     id: 'song3',
@@ -56,7 +82,26 @@ export const mockSongs: Song[] = [
     video_file_url: 'https://www.w3schools.com/html/mov_bbb.mp4',
     artwork_url: 'https://via.placeholder.com/200x200/FF69B4/000000?text=Despacito',
     game_mode: 'Dueto',
-    coach_images: ['https://via.placeholder.com/50/FF69B4?text=C3', 'https://via.placeholder.com/50/FF69B4?text=C4']
+    coach_images: ['https://via.placeholder.com/50/FF69B4?text=C3', 'https://via.placeholder.com/50/FF69B4?text=C4'],
+    video_preview_url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    duration: 228,
+    difficulty: 'Difícil',
+    year: 2017,
+    genre: 'Reggaeton',
+    approved: true,
+    coaches: [{
+      id: 'coach3',
+      name: 'Latin Coach 1',
+      image_url: 'https://via.placeholder.com/50/FF69B4?text=C3',
+      description: 'Expert em reggaeton',
+      specialty: 'Reggaeton'
+    }, {
+      id: 'coach4',
+      name: 'Latin Coach 2',
+      image_url: 'https://via.placeholder.com/50/FF69B4?text=C4',
+      description: 'Especialista em dança latina',
+      specialty: 'Latin Dance'
+    }]
   },
   {
     id: 'song4',
@@ -65,7 +110,20 @@ export const mockSongs: Song[] = [
     video_file_url: 'https://www.w3schools.com/html/mov_bbb.mp4',
     artwork_url: 'https://via.placeholder.com/200x200/8A2BE2/FFFFFF?text=Uptown+Funk',
     game_mode: 'Solo',
-    coach_images: ['https://via.placeholder.com/50/8A2BE2?text=C5']
+    coach_images: ['https://via.placeholder.com/50/8A2BE2?text=C5'],
+    video_preview_url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    duration: 270,
+    difficulty: 'Extremo',
+    year: 2014,
+    genre: 'Funk',
+    approved: true,
+    coaches: [{
+      id: 'coach5',
+      name: 'Funk Master',
+      image_url: 'https://via.placeholder.com/50/8A2BE2?text=C5',
+      description: 'Mestre do funk',
+      specialty: 'Funk'
+    }]
   },
   {
     id: 'song5',
@@ -74,7 +132,20 @@ export const mockSongs: Song[] = [
     video_file_url: 'https://www.w3schools.com/html/mov_bbb.mp4',
     artwork_url: 'https://via.placeholder.com/200x200/FFD700/000000?text=Shape+of+You',
     game_mode: 'Solo',
-    coach_images: ['https://via.placeholder.com/50/FFD700?text=C6']
+    coach_images: ['https://via.placeholder.com/50/FFD700?text=C6'],
+    video_preview_url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    duration: 233,
+    difficulty: 'Médio',
+    year: 2017,
+    genre: 'Pop',
+    approved: false,
+    coaches: [{
+      id: 'coach6',
+      name: 'Pop Coach',
+      image_url: 'https://via.placeholder.com/50/FFD700?text=C6',
+      description: 'Especialista em pop moderno',
+      specialty: 'Modern Pop'
+    }]
   }
 ];
 

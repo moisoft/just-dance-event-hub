@@ -8,6 +8,9 @@ declare global {
                 papel: string;
             };
         }
+        interface Response {
+            __: (key: string) => string;
+        }
     }
 }
 

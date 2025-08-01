@@ -16,6 +16,51 @@ export interface Song {
   game_mode: 'Solo' | 'Dueto' | 'Team';
   coach_images: string[];
   video_file_url: string;
+  video_preview_url?: string;
+  duration: number;
+  difficulty: 'Fácil' | 'Médio' | 'Difícil' | 'Extremo';
+  year: number;
+  genre: string;
+  approved: boolean;
+  coaches: Coach[];
+}
+
+export interface Coach {
+  id: string;
+  name: string;
+  image_url: string;
+  description?: string;
+  specialty?: string;
+}
+
+export interface Event {
+  id: string;
+  name: string;
+  organizer_id: string;
+  type: 'casual' | 'workshop' | 'party' | 'practice';
+  event_code: string;
+  status: 'active' | 'inactive' | 'finished';
+  created_at: string;
+  description?: string;
+  max_participants?: number;
+  location?: string;
+}
+
+export interface Competition {
+  id: string;
+  name: string;
+  organizer_id: string;
+  type: 'tournament' | 'championship' | 'league' | 'battle';
+  competition_code: string;
+  status: 'registration' | 'ongoing' | 'finished' | 'cancelled';
+  created_at: string;
+  start_date: string;
+  end_date?: string;
+  prize_pool?: string;
+  max_participants: number;
+  current_participants: number;
+  rules?: string;
+  entry_fee?: number;
 }
 
 export interface Avatar {

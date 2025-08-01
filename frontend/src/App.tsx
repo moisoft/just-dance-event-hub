@@ -34,12 +34,16 @@ function App() {
   }, [currentUser]);
 
   const handleLogin = (user: User) => {
+    console.log('handleLogin chamado com usuário:', user);
     setCurrentUser(user);
     if (user.papel === 'admin') {
+      console.log('Redirecionando para admin_panel');
       setAppState('admin_panel');
     } else if (user.papel === 'staff') {
+      console.log('Redirecionando para staff_panel');
       setAppState('staff_panel');
     } else {
+      console.log('Redirecionando para hub');
       setAppState('hub');
     }
   };
@@ -60,14 +64,23 @@ function App() {
     }
   };
 
+  const handleLogout = () => {
+    setCurrentUser(null);
+    setAppState('auth');
+    setActiveScreen('dashboard');
+    setSelectedTournament(null);
+    setRegisteredTournament(null);
+    setEventCode('');
+    setAdminSubScreen('main');
+  };
+
   const renderScreen = () => {
+    // Se não há usuário logado, mostrar tela de autenticação
     if (!currentUser) {
       return <AuthScreen onLogin={handleLogin} />;
     }
 
     switch (appState) {
-      case 'auth':
-        return <AuthScreen onLogin={handleLogin} />;
       case 'hub':
         return <EventHubScreen user={currentUser} onEnterEvent={handleEnterEvent} />;
       case 'in_event':
@@ -78,7 +91,7 @@ function App() {
               <MusicSelectionScreen
                 user={currentUser}
                 onViewCompetitions={() => setActiveScreen('competitions')}
-                onNavigateToTeamHub={() => setAppState('team_hub')} // Navigate to TeamHubScreen
+                onNavigateToTeamHub={() => setAppState('team_hub')}
               />
             )}
             {activeScreen === 'competitions' && (
@@ -103,15 +116,23 @@ function App() {
           </div>
         );
       case 'staff_panel':
-        return <StaffPanelScreen onLogout={() => setAppState('auth')} />;
+        return <StaffPanelScreen onLogout={handleLogout} />;
       case 'admin_panel':
-        return <AdminScreen onLogout={() => setAppState('auth')} />;
+        return <AdminScreen onLogout={handleLogout} />;
       case 'kiosk_mode':
-        return <KioskScreen onExitKioskMode={() => setAppState('staff_panel')} />;
+        return <KioskScreen onExitKioskMode={handleLogout} />;
       case 'team_hub':
         return <TeamHubScreen onBack={() => setAppState('in_event')} />;
       default:
-        return <div className="text-white">Tela não encontrada.</div>;
+        // Se o usuário está logado mas não há estado válido, redirecionar baseado no papel
+        if (currentUser.papel === 'admin') {
+          setAppState('admin_panel');
+        } else if (currentUser.papel === 'staff') {
+          setAppState('staff_panel');
+        } else {
+          setAppState('hub');
+        }
+        return <div className="min-h-screen bg-gray-900 flex items-center justify-center text-white">Redirecionando...</div>;
     }
   };
 

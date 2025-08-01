@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import User from '../models/user';
 import jwt from 'jsonwebtoken';
+import '../types';
 
 class AuthController {
     async register(req: Request, res: Response): Promise<void> {
