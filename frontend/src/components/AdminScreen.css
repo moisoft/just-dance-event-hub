@@ -624,6 +624,99 @@
   background-color: white;
 }
 
+/* File Upload Styles */
+.form-group input[type="file"] {
+  padding: 0.5rem;
+  border: 2px dashed #e9ecef;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.form-group input[type="file"]:hover {
+  border-color: #667eea;
+  background-color: #f0f2ff;
+}
+
+.file-preview {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: #e8f5e8;
+  border-radius: 4px;
+  border-left: 4px solid #4CAF50;
+}
+
+.image-preview {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Coaches Section */
+.coaches-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #f0f0f0;
+}
+
+.coaches-section h4 {
+  margin-bottom: 1rem;
+  color: #333;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.coaches-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.coach-item {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  position: relative;
+}
+
+.btn-add-coach {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.btn-add-coach:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.btn-remove-coach {
+  background: linear-gradient(135deg, #f44336, #d32f2f);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.btn-remove-coach:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(244, 67, 54, 0.3);
+}
+
 /* Video Preview */
 .video-preview-overlay {
   position: fixed;

@@ -29,8 +29,6 @@ export interface Coach {
   id: string;
   name: string;
   image_url: string;
-  description?: string;
-  specialty?: string;
 }
 
 export interface Event {
@@ -47,20 +45,61 @@ export interface Event {
 }
 
 export interface Competition {
-  id: string;
-  name: string;
-  organizer_id: string;
-  type: 'tournament' | 'championship' | 'league' | 'battle';
-  competition_code: string;
-  status: 'registration' | 'ongoing' | 'finished' | 'cancelled';
+  id: number;
+  id_evento: number;
+  nome: string;
+  tipo: 'individual' | 'team';
+  formato: 'eliminacao_simples' | 'round_robin' | 'suico';
+  status: 'criada' | 'inscricoes_abertas' | 'em_andamento' | 'finalizada' | 'cancelada';
+  max_participantes: number;
+  participantes_atuais: number;
+  data_inicio: string;
+  data_fim?: string;
+  premio?: string;
+  taxa_inscricao?: number;
+  regras?: string;
+  chaveamento?: any;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface Team {
+  id: number;
+  id_evento: number;
+  nome: string;
+  lider_id: number;
+  max_membros: number;
+  status: 'ativa' | 'inativa' | 'dissolvida';
+  codigo_convite: string;
   created_at: string;
-  start_date: string;
-  end_date?: string;
-  prize_pool?: string;
-  max_participants: number;
-  current_participants: number;
-  rules?: string;
-  entry_fee?: number;
+  updated_at: string;
+  lider?: User;
+  membros?: TeamMember[];
+}
+
+export interface TeamMember {
+  id: number;
+  id_team: number;
+  id_usuario: number;
+  papel: 'lider' | 'membro';
+  status: 'ativo' | 'inativo' | 'removido';
+  data_entrada: string;
+  usuario?: User;
+  team?: Team;
+}
+
+export interface CompetitionParticipant {
+  id: number;
+  id_competition: number;
+  id_usuario?: number;
+  id_team?: number;
+  tipo_participacao: 'individual' | 'team';
+  status: 'inscrito' | 'confirmado' | 'eliminado' | 'desistente';
+  posicao_final?: number;
+  pontuacao_total?: number;
+  data_inscricao: string;
+  usuario?: User;
+  team?: Team;
 }
 
 export interface Avatar {

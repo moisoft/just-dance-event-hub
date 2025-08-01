@@ -1,16 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { adminApi } from '../api/api';
 import { Song, Coach, QueueItem } from '../types';
+import { useEvent } from '../contexts/EventContext';
+import { useWebSocket } from '../hooks/useWebSocket';
+import ConnectionStatus from './ConnectionStatus';
 import './AdminScreen.css';
 
 interface AdminScreenProps {
   onLogout: () => void;
 }
 
+// Função para determinar a quantidade de coaches baseada no modo de jogo
+const getCoachCount = (gameMode: string): number => {
+  switch (gameMode) {
+    case 'Solo':
+      return 1;
+    case 'Dueto':
+      return 2;
+    case 'Team':
+      return 4; // Assumindo quarteto para Team
+    default:
+      return 1;
+  }
+};
+
 const AdminScreen: React.FC<AdminScreenProps> = ({ onLogout }) => {
+  const { state, dispatch } = useEvent();
+  const { sendMessage } = useWebSocket({ 
+    eventId: state.currentEvent?.id || '', 
+    userRole: 'admin', 
+    userId: 'admin-user' 
+  });
   const [activeTab, setActiveTab] = useState('musics');
   const [musics, setMusics] = useState<Song[]>([]);
-  const [coaches, setCoaches] = useState<Coach[]>([]);
+
   const [queue, setQueue] = useState<QueueItem[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'create' | 'edit'>('create');
@@ -24,15 +47,13 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onLogout }) => {
 
   const loadData = async () => {
     try {
-      const [musicsResponse, coachesResponse, queueResponse] = await Promise.all([
-        adminApi.getMusics(),
-        adminApi.getCoaches(),
-        adminApi.getQueue()
-      ]);
+      const [musicsResponse, queueResponse] = await Promise.all([
+      adminApi.getMusics(),
+      adminApi.getQueue()
+    ]);
 
-      setMusics(musicsResponse.data as Song[] || []);
-      setCoaches(coachesResponse.data as Coach[] || []);
-      setQueue(queueResponse.data as QueueItem[] || []);
+    setMusics(musicsResponse.data as Song[] || []);
+    setQueue(queueResponse.data as QueueItem[] || []);
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
     }
@@ -57,7 +78,6 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onLogout }) => {
       let response;
       const apiMap: any = {
         musics: adminApi,
-        coaches: adminApi,
         queue: adminApi
       };
 
@@ -65,9 +85,6 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onLogout }) => {
         switch (currentEntity) {
           case 'musics':
             response = await apiMap.musics.createMusic(currentItem);
-            break;
-          case 'coaches':
-            response = await apiMap.coaches.createCoach(currentItem);
             break;
           case 'queue':
             response = await apiMap.queue.createQueueItem(currentItem);
@@ -77,9 +94,6 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onLogout }) => {
         switch (currentEntity) {
           case 'musics':
             response = await apiMap.musics.updateMusic(currentItem.id, currentItem);
-            break;
-          case 'coaches':
-            response = await apiMap.coaches.updateCoach(currentItem.id, currentItem);
             break;
           case 'queue':
             response = await apiMap.queue.updateQueueItem(currentItem.id, currentItem);
@@ -105,9 +119,6 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onLogout }) => {
         case 'musics':
           response = await adminApi.deleteMusic(id);
           break;
-        case 'coaches':
-          response = await adminApi.deleteCoach(id);
-          break;
         case 'queue':
           response = await adminApi.deleteQueueItem(id);
           break;
@@ -131,14 +142,12 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onLogout }) => {
         return (
           <div className="tab-content">
             <div className="tab-header">
-              <h2>Gerenciar Músicas & Coaches</h2>
+              <h2>Gerenciar Músicas</h2>
               <div className="header-actions">
                 <button className="btn-primary" onClick={() => openModal('musics', 'create')}>
                   Adicionar Música
                 </button>
-                <button className="btn-secondary" onClick={() => openModal('coaches', 'create')}>
-                  Adicionar Coach
-                </button>
+
               </div>
             </div>
             
@@ -175,27 +184,6 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onLogout }) => {
                         <div className="song-actions">
                           <button className="btn-edit" onClick={() => openModal('musics', 'edit', song)}>Editar</button>
                           <button className="btn-delete" onClick={() => handleDelete('musics', song.id)}>Deletar</button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="coaches-section">
-                <h3>Coaches Disponíveis</h3>
-                <div className="coaches-grid">
-                  {coaches.map(coach => (
-                    <div key={coach.id} className="coach-card">
-                      <div className="coach-avatar">
-                        <img src={coach.image_url} alt={coach.name} />
-                      </div>
-                      <div className="coach-info">
-                        <h4>{coach.name}</h4>
-                        <p className="coach-style">{coach.specialty}</p>
-                        <div className="coach-actions">
-                          <button className="btn-edit" onClick={() => openModal('coaches', 'edit', coach)}>Editar</button>
-                          <button className="btn-delete" onClick={() => handleDelete('coaches', coach.id)}>Deletar</button>
                         </div>
                       </div>
                     </div>
@@ -311,12 +299,22 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onLogout }) => {
               />
             </div>
             <div className="form-group">
-              <label>URL do Vídeo</label>
+              <label>Upload do Vídeo</label>
               <input
-                type="url"
-                value={currentItem.video_file_url || ''}
-                onChange={(e) => setCurrentItem({...currentItem, video_file_url: e.target.value})}
+                type="file"
+                accept="video/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    setCurrentItem({...currentItem, video_file: file, video_file_url: URL.createObjectURL(file)});
+                  }
+                }}
               />
+              {currentItem.video_file_url && (
+                <div className="file-preview">
+                  <small>Arquivo selecionado: {currentItem.video_file?.name || 'URL externa'}</small>
+                </div>
+              )}
             </div>
             <div className="form-group">
               <label>URL do Preview</label>
@@ -392,42 +390,56 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onLogout }) => {
                 Aprovada
               </label>
             </div>
-          </div>
-        );
-
-      case 'coaches':
-        return (
-          <div className="form-grid">
-            <div className="form-group">
-              <label>Nome do Coach</label>
-              <input
-                type="text"
-                value={currentItem.name || ''}
-                onChange={(e) => setCurrentItem({...currentItem, name: e.target.value})}
-              />
-            </div>
-            <div className="form-group">
-              <label>URL da Imagem</label>
-              <input
-                type="url"
-                value={currentItem.image_url || ''}
-                onChange={(e) => setCurrentItem({...currentItem, image_url: e.target.value})}
-              />
-            </div>
-            <div className="form-group">
-              <label>Especialidade</label>
-              <input
-                type="text"
-                value={currentItem.specialty || ''}
-                onChange={(e) => setCurrentItem({...currentItem, specialty: e.target.value})}
-              />
-            </div>
-            <div className="form-group">
-              <label>Descrição</label>
-              <textarea
-                value={currentItem.description || ''}
-                onChange={(e) => setCurrentItem({...currentItem, description: e.target.value})}
-              />
+            
+            <div className="coaches-section">
+              <h4>Coaches da Música ({getCoachCount(currentItem.game_mode)} coaches)</h4>
+              <div className="coaches-list">
+                {Array.from({length: getCoachCount(currentItem.game_mode)}).map((_, index) => {
+                  const coach = (currentItem.coaches || [])[index] || {name: '', image_url: '', id: ''};
+                  return (
+                    <div key={index} className="coach-item">
+                      <div className="form-group">
+                        <label>Nome do Coach {index + 1}</label>
+                        <input
+                          type="text"
+                          value={coach.name || ''}
+                          onChange={(e) => {
+                            const newCoaches = [...(currentItem.coaches || [])];
+                            while (newCoaches.length <= index) {
+                               newCoaches.push({name: '', image_url: '', id: ''});
+                             }
+                            newCoaches[index] = {...newCoaches[index], name: e.target.value};
+                            setCurrentItem({...currentItem, coaches: newCoaches});
+                          }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Upload da Imagem do Coach</label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              const newCoaches = [...(currentItem.coaches || [])];
+                              while (newCoaches.length <= index) {
+                                 newCoaches.push({name: '', image_url: '', id: ''});
+                               }
+                              newCoaches[index] = {...newCoaches[index], image_file: file, image_url: URL.createObjectURL(file)};
+                              setCurrentItem({...currentItem, coaches: newCoaches});
+                            }
+                          }}
+                      />
+                      {coach.image_url && (
+                        <div className="image-preview">
+                          <img src={coach.image_url} alt={coach.name} style={{width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px'}} />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         );
@@ -512,17 +524,17 @@ const AdminScreen: React.FC<AdminScreenProps> = ({ onLogout }) => {
 
       <div className="admin-tabs">
         <button 
-          className={`tab-btn ${activeTab === 'musics' ? 'active' : ''}`}
-          onClick={() => setActiveTab('musics')}
-        >
-          🎵 Músicas & Coaches
-        </button>
-        <button 
-          className={`tab-btn ${activeTab === 'queue' ? 'active' : ''}`}
-          onClick={() => setActiveTab('queue')}
-        >
-          📋 Fila de Eventos
-        </button>
+            className={`tab-btn ${activeTab === 'musics' ? 'active' : ''}`}
+            onClick={() => setActiveTab('musics')}
+          >
+            Músicas
+          </button>
+          <button 
+            className={`tab-btn ${activeTab === 'queue' ? 'active' : ''}`}
+            onClick={() => setActiveTab('queue')}
+          >
+            Fila de Eventos
+          </button>
       </div>
 
       <div className="admin-content">

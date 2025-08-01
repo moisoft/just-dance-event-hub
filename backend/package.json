@@ -11,7 +11,9 @@
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "type-check": "tsc --noEmit",
-    "setup-db": "node scripts/setup-prod-db.js"
+    "setup-db": "node scripts/setup-prod-db.js",
+    "websocket": "node websocket-server.js",
+    "websocket:dev": "nodemon websocket-server.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -26,7 +28,8 @@
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.6.5",
     "unzipper": "^0.10.14",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "ws": "^8.14.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

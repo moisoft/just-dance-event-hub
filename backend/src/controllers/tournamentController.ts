@@ -7,7 +7,7 @@ export class TournamentController {
         const { eventId, userId } = req.body;
 
         try {
-            const tournament = await Tournament.findOne({ where: { id_evento: eventId } });
+            const tournament = await Tournament.findOne({ where: { id_evento: eventId } as any });
             if (!tournament) {
                 res.status(404).json({ 
                     success: false,
@@ -46,7 +46,7 @@ export class TournamentController {
         const { eventId } = req.params;
 
         try {
-            const tournament = await Tournament.findOne({ where: { id_evento: eventId || '' } });
+            const tournament = await Tournament.findOne({ where: { id_evento: eventId || '' } as any });
             if (!tournament) {
                 res.status(404).json({ 
                     success: false,

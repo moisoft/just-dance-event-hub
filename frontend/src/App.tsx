@@ -15,10 +15,17 @@ import ManageAvatarsScreen from './components/ManageAvatarsScreen';
 import KioskScreen from './components/KioskScreen';
 import TeamHubScreen from './components/TeamHubScreen';
 import BottomNavBar from './components/BottomNavBar';
+import NotificationCenter from './components/NotificationCenter';
+import ConnectionStatus from './components/ConnectionStatus';
+import RealTimeChat from './components/RealTimeChat';
+import { EventProvider, useEvent } from './contexts/EventContext';
+import { WebSocketProvider } from './contexts/WebSocketContext';
+import { AuthProvider } from './contexts/AuthContext';
 import { User, AppState, InEventScreen, Tournament } from './types';
 import { mockTournaments } from './data/mockData';
+import { eventApi } from './api/api';
 
-function App() {
+function AppContent() {
   const [appState, setAppState] = useState<AppState>('auth');
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [activeScreen, setActiveScreen] = useState<InEventScreen>('dashboard');
@@ -26,6 +33,7 @@ function App() {
   const [registeredTournament, setRegisteredTournament] = useState<Tournament | null>(null);
   const [eventCode, setEventCode] = useState('');
   const [adminSubScreen, setAdminSubScreen] = useState<'main' | 'songs' | 'users' | 'avatars'>('main');
+  const { dispatch } = useEvent();
 
   useEffect(() => {
     if (currentUser) {
@@ -52,6 +60,28 @@ function App() {
     setEventCode(code);
     setAppState('in_event');
     setActiveScreen('dashboard');
+    
+    // Fetch event data by code
+    eventApi.getEventByCode(code)
+      .then(response => {
+        if (response.success && response.data && response.data.event) {
+          // Dispatch event data to EventContext
+          dispatch({
+            type: 'SET_EVENT',
+            payload: {
+              id: response.data.event.id,
+              name: response.data.event.nome_evento,
+              code: response.data.event.codigo_evento
+            }
+          });
+          console.log('Event data fetched successfully:', response.data.event);
+        } else {
+          console.error('Failed to fetch event data:', response.error);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching event data:', error);
+      });
   };
 
   const handleRegisterTournament = (tournamentId: string) => {
@@ -137,9 +167,37 @@ function App() {
   };
 
   return (
-    <div className="App bg-gray-900 min-h-screen">
+    <div className="App bg-gray-900 min-h-screen relative">
       {renderScreen()}
+      
+      {/* Componentes de comunicação em tempo real - apenas quando usuário está logado */}
+      {currentUser && (
+        <>
+          <NotificationCenter />
+          <RealTimeChat 
+            userType={currentUser.papel as 'admin' | 'staff' | 'player'} 
+            userName={currentUser.nickname}
+          />
+          
+          {/* Status de conexão no canto inferior esquerdo */}
+          <div className="fixed bottom-4 left-4 z-30">
+            <ConnectionStatus />
+          </div>
+        </>
+      )}
     </div>
+  );
+}
+
+function App() {
+  return (
+    <EventProvider>
+      <AuthProvider>
+        <WebSocketProvider>
+          <AppContent />
+        </WebSocketProvider>
+      </AuthProvider>
+    </EventProvider>
   );
 }
 

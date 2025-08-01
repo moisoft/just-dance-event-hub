@@ -14,6 +14,8 @@ import moduleRoutes from './routes/moduleRoutes';
 import mockRoutes from './routes/mockRoutes';
 import pluginRoutes from './routes/pluginRoutes';
 import adminRoutes from './routes/adminRoutes';
+import teamRoutes from './routes/teamRoutes';
+import competitionRoutes from './routes/competitionRoutes';
 
 // Importar middlewares
 import { errorHandler } from './middlewares/errorHandler';
@@ -27,6 +29,10 @@ import './models/avatar';
 import './models/tournament';
 import './models/queue';
 import './models/eventConfig';
+import './models/team';
+import './models/teamMember';
+import './models/competition';
+import './models/competitionParticipant';
 
 // Importar configuração do banco
 import { connectDB } from './utils/database';
@@ -81,6 +87,8 @@ app.use('/api/events', eventRoutes);
 app.use('/api/queues', queueRoutes);
 app.use('/api/tournaments', tournamentRoutes);
 app.use('/api/modules', moduleRoutes);
+app.use('/api/teams', teamRoutes);
+app.use('/api/competitions', competitionRoutes);
 app.use('/admin', adminRoutes);
 
 // Rotas Mock (para teste sem banco de dados)

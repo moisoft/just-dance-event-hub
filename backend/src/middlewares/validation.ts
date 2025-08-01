@@ -95,7 +95,7 @@ export const moduleSchemas = {
         ativo: Joi.boolean().required(),
         configuracao: Joi.object().optional()
     }),
-    
+
     updateMultiple: Joi.object({
         modules: Joi.array().items(
             Joi.object({
@@ -105,4 +105,55 @@ export const moduleSchemas = {
             })
         ).required()
     })
-}; 
+};
+
+export const teamSchemas = {
+    create: Joi.object({
+        nome: Joi.string().min(3).max(50).required(),
+        max_membros: Joi.number().integer().min(2).max(10).optional().default(4)
+    }),
+
+    join: Joi.object({
+        codigo_convite: Joi.string().length(8).required()
+    }),
+
+    update: Joi.object({
+        nome: Joi.string().min(3).max(50).optional(),
+        max_membros: Joi.number().integer().min(2).max(10).optional()
+    })
+};
+
+export const competitionSchemas = {
+    create: Joi.object({
+        nome: Joi.string().min(3).max(100).required(),
+        tipo: Joi.string().valid('torneio', 'batalha', 'freestyle', 'coreografia').optional().default('torneio'),
+        formato: Joi.string().valid('individual', 'equipe', 'misto').optional().default('individual'),
+        max_participantes: Joi.number().integer().min(2).max(128).required(),
+        data_inicio: Joi.date().iso().required(),
+        data_fim: Joi.date().iso().optional(),
+        premio: Joi.string().max(500).optional(),
+        taxa_inscricao: Joi.number().min(0).optional().default(0),
+        regras: Joi.string().max(2000).optional()
+    }),
+
+    register: Joi.object({
+        team_id: Joi.string().uuid().optional()
+    }),
+
+    updateResult: Joi.object({
+        winner_id: Joi.string().uuid().required(),
+        score: Joi.alternatives().try(
+            Joi.string(),
+            Joi.object()
+        ).optional()
+    })
+};
+
+// Middlewares de validação específicos
+export const validateTeamCreation = validate(teamSchemas.create);
+export const validateTeamJoin = validate(teamSchemas.join);
+export const validateTeamUpdate = validate(teamSchemas.update);
+
+export const validateCompetitionCreation = validate(competitionSchemas.create);
+export const validateCompetitionRegistration = validate(competitionSchemas.register);
+export const validateCompetitionResult = validate(competitionSchemas.updateResult);

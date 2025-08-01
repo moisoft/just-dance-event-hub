@@ -45,6 +45,26 @@ export const authApi = {
   mockLogin: (credentials: any) => callApi('/api/mock/auth/login', 'POST', credentials),
 };
 
+// Define the event response type
+interface EventResponse {
+  event: {
+    id: string;
+    nome_evento: string;
+    codigo_evento: string;
+    descricao?: string;
+    data_inicio?: string;
+    data_fim?: string;
+    local?: string;
+    status?: string;
+    organizador?: string;
+    [key: string]: any; // For other properties
+  };
+}
+
+export const eventApi = {
+  getEventByCode: (code: string) => callApi<EventResponse>(`/api/mock/events/${code}`, 'GET'),
+};
+
 export const adminApi = {
   // Usuários
   getUsers: () => callApi('/admin/users', 'GET'),

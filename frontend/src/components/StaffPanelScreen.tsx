@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { staffApi } from '../api/api';
 import { QueueItem } from '../types';
+import { useEvent } from '../contexts/EventContext';
+import { useWebSocket } from '../hooks/useWebSocket';
+import ConnectionStatus from './ConnectionStatus';
 
 interface StaffPanelScreenProps {
   onLogout: () => void;
@@ -13,6 +16,12 @@ interface Toast {
 }
 
 const StaffPanelScreen: React.FC<StaffPanelScreenProps> = ({ onLogout }) => {
+  const { state, dispatch } = useEvent();
+  const { sendMessage } = useWebSocket({ 
+    eventId: state.currentEvent?.id || '', 
+    userRole: 'staff', 
+    userId: 'staff-user' 
+  });
   const [queue, setQueue] = useState<QueueItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -70,6 +79,35 @@ const StaffPanelScreen: React.FC<StaffPanelScreenProps> = ({ onLogout }) => {
       if (response.success) {
         showToast('Item da fila atualizado com sucesso!', 'success');
         fetchQueue(true);
+        
+        // Encontrar o item atualizado para notificação
+        const updatedItem = queue.find(item => item.id === itemId);
+        if (updatedItem) {
+          // Enviar notificação via WebSocket
+          sendMessage('QUEUE_UPDATE', {
+            itemId,
+            status,
+            playerName: updatedItem.player?.nickname,
+            songName: updatedItem.song.name,
+            updatedBy: 'staff'
+          });
+          
+          // Adicionar notificação local
+          const statusText = status === 'playing' ? 'tocando' : 
+                           status === 'completed' ? 'concluída' : 
+                           status === 'skipped' ? 'pulada' : status;
+          
+          dispatch({
+            type: 'ADD_NOTIFICATION',
+            payload: {
+              id: Date.now().toString(),
+              message: `🎵 ${updatedItem.song.name} - ${statusText} (${updatedItem.player?.nickname})`,
+              type: 'info',
+              from: 'staff',
+              timestamp: new Date()
+            }
+          });
+        }
       } else {
         showToast(response.error || 'Falha ao atualizar item da fila', 'error');
       }

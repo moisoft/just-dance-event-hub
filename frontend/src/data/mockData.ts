@@ -48,9 +48,7 @@ export const mockSongs: Song[] = [
     coaches: [{
       id: 'coach1',
       name: 'Gaga Coach',
-      image_url: 'https://via.placeholder.com/50/FF1493?text=C1',
-      description: 'Expert em pop dance',
-      specialty: 'Pop Dance'
+      image_url: 'https://via.placeholder.com/50/FF1493?text=C1'
     }]
   },
   {
@@ -70,9 +68,7 @@ export const mockSongs: Song[] = [
     coaches: [{
       id: 'coach2',
       name: 'Neon Coach',
-      image_url: 'https://via.placeholder.com/50/00FFFF?text=C2',
-      description: 'Especialista em synthpop',
-      specialty: 'Synthpop'
+      image_url: 'https://via.placeholder.com/50/00FFFF?text=C2'
     }]
   },
   {
@@ -92,15 +88,11 @@ export const mockSongs: Song[] = [
     coaches: [{
       id: 'coach3',
       name: 'Latin Coach 1',
-      image_url: 'https://via.placeholder.com/50/FF69B4?text=C3',
-      description: 'Expert em reggaeton',
-      specialty: 'Reggaeton'
+      image_url: 'https://via.placeholder.com/50/FF69B4?text=C3'
     }, {
       id: 'coach4',
       name: 'Latin Coach 2',
-      image_url: 'https://via.placeholder.com/50/FF69B4?text=C4',
-      description: 'Especialista em dança latina',
-      specialty: 'Latin Dance'
+      image_url: 'https://via.placeholder.com/50/FF69B4?text=C4'
     }]
   },
   {
@@ -120,9 +112,7 @@ export const mockSongs: Song[] = [
     coaches: [{
       id: 'coach5',
       name: 'Funk Master',
-      image_url: 'https://via.placeholder.com/50/8A2BE2?text=C5',
-      description: 'Mestre do funk',
-      specialty: 'Funk'
+      image_url: 'https://via.placeholder.com/50/8A2BE2?text=C5'
     }]
   },
   {
@@ -142,9 +132,7 @@ export const mockSongs: Song[] = [
     coaches: [{
       id: 'coach6',
       name: 'Pop Coach',
-      image_url: 'https://via.placeholder.com/50/FFD700?text=C6',
-      description: 'Especialista em pop moderno',
-      specialty: 'Modern Pop'
+      image_url: 'https://via.placeholder.com/50/FFD700?text=C6'
     }]
   }
 ];
