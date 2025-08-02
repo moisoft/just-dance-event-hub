@@ -1,44 +1,58 @@
 # 🚀 Como Usar os Scripts de Ubuntu
 
-## 📋 Preparação no Windows
+## 🐧 Instalação Direta no Ubuntu
 
-1. **Copie os arquivos para o servidor Ubuntu:**
-   ```bash
-   # Via SCP (do Windows)
-   scp install-ubuntu.sh user@seu-servidor:/home/user/
-   scp uninstall-ubuntu.sh user@seu-servidor:/home/user/
-   scp backup-ubuntu.sh user@seu-servidor:/home/user/
-   scp just-dance-hub-backend-production.zip user@seu-servidor:/home/user/
-   scp UBUNTU_SCRIPTS_README.md user@seu-servidor:/home/user/
-   ```
-
-2. **Ou via transferência de arquivos:**
-   - Use FileZilla, WinSCP ou similar
-   - Faça upload dos arquivos para o servidor Ubuntu
-
-## 🐧 Execução no Ubuntu
-
-### 1. Conectar ao servidor
+### 1. Conectar ao servidor Ubuntu
 ```bash
 ssh user@seu-servidor
 ```
 
-### 2. Dar permissão de execução
+### 2. Baixar scripts usando curl ou wget
+
+**Opção A - Usando curl:**
 ```bash
-chmod +x install-ubuntu.sh
-chmod +x uninstall-ubuntu.sh
-chmod +x backup-ubuntu.sh
+# Baixar script principal de setup
+curl -O https://raw.githubusercontent.com/moisoft/just-dance-event-hub/main/scripts/ubuntu-webserver-setup.sh
+
+# Baixar outros scripts necessários
+curl -O https://raw.githubusercontent.com/moisoft/just-dance-event-hub/main/scripts/ubuntu-apache-config.sh
+curl -O https://raw.githubusercontent.com/moisoft/just-dance-event-hub/main/scripts/ubuntu-nginx-config.sh
+curl -O https://raw.githubusercontent.com/moisoft/just-dance-event-hub/main/scripts/ubuntu-validation.sh
+curl -O https://raw.githubusercontent.com/moisoft/just-dance-event-hub/main/scripts/backup-ubuntu.sh
+curl -O https://raw.githubusercontent.com/moisoft/just-dance-event-hub/main/scripts/health-check-ubuntu.sh
 ```
 
-### 3. Verificar arquivos
+**Opção B - Usando wget:**
+```bash
+# Baixar script principal de setup
+wget https://raw.githubusercontent.com/moisoft/just-dance-event-hub/main/scripts/ubuntu-webserver-setup.sh
+
+# Baixar outros scripts necessários
+wget https://raw.githubusercontent.com/moisoft/just-dance-event-hub/main/scripts/ubuntu-apache-config.sh
+wget https://raw.githubusercontent.com/moisoft/just-dance-event-hub/main/scripts/ubuntu-nginx-config.sh
+wget https://raw.githubusercontent.com/moisoft/just-dance-event-hub/main/scripts/ubuntu-validation.sh
+wget https://raw.githubusercontent.com/moisoft/just-dance-event-hub/main/scripts/backup-ubuntu.sh
+wget https://raw.githubusercontent.com/moisoft/just-dance-event-hub/main/scripts/health-check-ubuntu.sh
+```
+
+### 3. Dar permissão de execução
+```bash
+chmod +x *.sh
+```
+
+### 4. Verificar arquivos baixados
 ```bash
 ls -la *.sh
-ls -la *.zip
 ```
 
-### 4. Executar instalação
+### 5. Executar setup principal
 ```bash
-./install-ubuntu.sh
+# Setup completo com escolha de servidor web
+./ubuntu-webserver-setup.sh
+
+# Ou setup específico
+./ubuntu-apache-config.sh   # Para Apache
+./ubuntu-nginx-config.sh    # Para Nginx
 ```
 
 ## 📝 Exemplo de Sessão Completa
@@ -206,4 +220,4 @@ Se encontrar problemas:
 
 ---
 
-**Lembre-se:** Sempre faça backup antes de qualquer operação crítica! 
+**Lembre-se:** Sempre faça backup antes de qualquer operação crítica!

@@ -41,60 +41,12 @@ Uma plataforma completa para gerenciamento de eventos de Just Dance, incluindo s
 - **Axios** para requisições HTTP
 - **React Router** para navegação
 
-## 🚀 Instalação Rápida
+## 🚀 Pré-requisitos
 
-### Pré-requisitos
 - Ubuntu 18.04+ ou Windows 10/11
 - Node.js 18+
 - PostgreSQL 12+
 - Git
-
-### Instalação Automática (Ubuntu)
-```bash
-# 1. Baixe o instalador
-curl -O https://raw.githubusercontent.com/moisoft/just-dance-event-hub/main/scripts/install-ubuntu.sh
-
-# 2. Dê permissão de execução
-chmod +x install-ubuntu.sh
-
-# 3. Execute o instalador
-./install-ubuntu.sh
-```
-
-### Instalação Automática (Windows)
-```powershell
-# 1. Abra o PowerShell como Administrador
-
-# 2. Navegue até o diretório de scripts
-cd "C:\caminho\para\just-dance-event-hub\scripts"
-
-# 3. Permita a execução de scripts (se necessário)
-Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
-
-# 4. Execute o instalador
-.\install-windows.ps1
-```
-
-### Instalação Manual
-```bash
-# 1. Clone o repositório
-# (Apenas se quiser instalar manualmente)
-git clone https://github.com/moisoft/just-dance-event-hub.git
-cd just-dance-event-hub
-
-# 2. Configure o backend
-cd backend
-npm install
-cp env.example .env
-# Edite o arquivo .env com suas configurações
-npm run build
-npm start
-
-# 3. Configure o frontend
-cd ../frontend
-npm install
-npm start
-```
 
 ## 📁 Estrutura do Projeto
 
