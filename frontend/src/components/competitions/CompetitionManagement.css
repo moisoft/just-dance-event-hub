@@ -421,33 +421,195 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .competition-management {
+    padding: 12px;
+  }
+
   .competitions-container {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 16px;
   }
   
   .competition-header {
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
     align-items: stretch;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+  }
+
+  .competition-header h2 {
+    font-size: 22px;
+    text-align: center;
+  }
+  
+  .btn-create-competition {
+    padding: 10px 16px;
+    font-size: 14px;
+    width: 100%;
+  }
+
+  .competitions-list,
+  .competition-details-panel {
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  .competitions-list h3,
+  .competition-details-panel h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .competition-card {
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+
+  .competition-info h4 {
+    font-size: 16px;
+    margin-bottom: 8px;
   }
   
   .competition-details {
     flex-direction: column;
     gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  .competition-participants,
+  .competition-date {
+    font-size: 12px;
+  }
+
+  .competition-actions {
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .btn-register,
+  .btn-start {
+    width: 100%;
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .competition-info-detailed h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .competition-info-detailed p {
+    font-size: 14px;
+    margin: 6px 0;
+  }
+
+  .competition-rules {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .participants-list h4 {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .participant-item {
+    padding: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .participant-info {
+    font-size: 14px;
   }
   
   .modal {
     width: 95%;
     margin: 10px;
+    max-height: 85vh;
+  }
+
+  .modal-header {
+    padding: 12px;
+  }
+
+  .modal-header h3 {
+    font-size: 18px;
+  }
+
+  .modal-body {
+    padding: 12px;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-group label {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 8px;
+    font-size: 14px;
   }
   
   .modal-footer {
     flex-direction: column;
+    padding: 12px;
+    gap: 8px;
   }
   
   .btn-cancel,
   .btn-create {
     width: 100%;
+    padding: 10px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .competition-management {
+    padding: 8px;
+  }
+
+  .competition-header h2 {
+    font-size: 20px;
+  }
+
+  .competitions-list,
+  .competition-details-panel {
+    padding: 10px;
+  }
+
+  .competition-card {
+    padding: 10px;
+  }
+
+  .competition-info h4 {
+    font-size: 15px;
+  }
+
+  .competition-type,
+  .competition-format,
+  .competition-status {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+
+  .modal-header h3 {
+    font-size: 16px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 13px;
   }
 }

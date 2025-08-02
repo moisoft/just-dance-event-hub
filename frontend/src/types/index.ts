@@ -3,6 +3,7 @@ export interface User {
   nickname: string;
   email: string;
   papel: 'jogador' | 'staff' | 'admin';
+  role?: 'jogador' | 'staff' | 'admin'; // Adicionando campo role como alternativa a papel
   xp: number;
   nivel: number;
   avatar_ativo_url: string;
@@ -110,10 +111,12 @@ export interface Avatar {
 
 export interface QueueItem {
   id: string;
-  type: 'solo' | 'team' | 'tournament_match';
+  type: 'solo' | 'team' | 'tournament_match' | 'duo' | 'trio' | 'quarteto';
   player?: User;
   players?: User[];
+  player_ids?: string[]; // Adicionando campo player_ids como alternativa a players
   song: Song;
+  music_id?: string; // Adicionando campo music_id como alternativa a song
   coach_image_url: string;
   tournament_name?: string;
   status: string;
@@ -122,9 +125,11 @@ export interface QueueItem {
 export interface Tournament {
   id: string;
   name: string;
-  status: 'Open for Registration' | 'Coming Soon' | 'Closed';
+  event_id?: string; // Adicionando campo event_id
+  status: 'Open for Registration' | 'Coming Soon' | 'Closed' | 'inscricoes' | 'em_andamento' | 'finalizado';
   start_time: string;
   registered_players: string[]; // Array of user IDs
+  max_participants?: number; // Adicionando campo max_participants
 }
 
 export interface RankingEntry {
@@ -136,6 +141,19 @@ export interface Rankings {
   [songId: string]: {
     [userId: string]: RankingEntry;
   };
+}
+
+export interface Module {
+  id: string;
+  name: string;
+  code: string;
+  description?: string;
+  version?: string;
+  active: boolean;
+}
+
+export interface Music extends Song {
+  // Music é um alias para Song com possíveis extensões futuras
 }
 
 export type AppState = 'auth' | 'hub' | 'in_event' | 'staff_panel' | 'admin_panel' | 'team_hub' | 'kiosk_mode';

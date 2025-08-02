@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express';
+import featureDisabledMiddleware from '../middlewares/featureDisabledMiddleware';
 
 const router = Router();
 
@@ -379,7 +380,12 @@ router.delete('/queue/:id', (_req, res) => {
   res.json({ success: true, message: 'Item removido da fila com sucesso' });
 });
 
-// Rotas para gerenciar torneios
+// Rotas para gerenciar torneios - Desativadas
+// Aplicar middleware de funcionalidade desativada a todas as rotas de torneios
+router.use('/tournaments', featureDisabledMiddleware('Torneios'));
+router.use('/tournaments/:id', featureDisabledMiddleware('Torneios'));
+
+// As rotas abaixo estão mantidas para referência, mas não serão acessíveis devido ao middleware acima
 router.get('/tournaments', (_req, res) => {
   const mockTournaments = [
     {
@@ -421,7 +427,12 @@ router.delete('/tournaments/:id', (req, res) => {
   });
 });
 
-// Competition routes
+// Competition routes - Desativadas
+// Aplicar middleware de funcionalidade desativada a todas as rotas de competições
+router.use('/competitions', featureDisabledMiddleware('Competições'));
+router.use('/competitions/:id', featureDisabledMiddleware('Competições'));
+
+// As rotas abaixo estão mantidas para referência, mas não serão acessíveis devido ao middleware acima
 router.post('/competitions', (req, res) => {
   const { name, type, competition_code, start_date, max_participants } = req.body;
   res.json({

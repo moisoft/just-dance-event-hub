@@ -67,46 +67,111 @@ export const eventApi = {
 
 export const adminApi = {
   // Usuários
+  user: {
+    getUsers: () => callApi('/admin/users', 'GET'),
+    createUser: (userData: any) => callApi('/admin/users', 'POST', userData),
+    updateUser: (id: string, userData: any) => callApi(`/admin/users/${id}`, 'PUT', userData),
+    deleteUser: (id: string) => callApi(`/admin/users/${id}`, 'DELETE'),
+  },
+  
+  // Eventos
+  event: {
+    getEvents: () => callApi('/admin/events', 'GET'),
+    createEvent: (eventData: any) => callApi('/admin/events', 'POST', eventData),
+    updateEvent: (id: string, eventData: any) => callApi(`/admin/events/${id}`, 'PUT', eventData),
+    deleteEvent: (id: string) => callApi(`/admin/events/${id}`, 'DELETE'),
+  },
+  
+  // Competições
+  competition: {
+    getCompetitions: () => callApi('/admin/competitions', 'GET'),
+    createCompetition: (competitionData: any) => callApi('/admin/competitions', 'POST', competitionData),
+    updateCompetition: (id: string, competitionData: any) => callApi(`/admin/competitions/${id}`, 'PUT', competitionData),
+    deleteCompetition: (id: string) => callApi(`/admin/competitions/${id}`, 'DELETE'),
+  },
+  
+  // Músicas
+  music: {
+    getMusics: () => callApi('/admin/musics', 'GET'),
+    createMusic: (musicData: any) => callApi('/admin/musics', 'POST', musicData),
+    updateMusic: (id: string, musicData: any) => callApi(`/admin/musics/${id}`, 'PUT', musicData),
+    deleteMusic: (id: string) => callApi(`/admin/musics/${id}`, 'DELETE'),
+  },
+  
+  // Coaches
+  coach: {
+    getCoaches: () => callApi('/admin/coaches', 'GET'),
+    createCoach: (coachData: any) => callApi('/admin/coaches', 'POST', coachData),
+    updateCoach: (id: string, coachData: any) => callApi(`/admin/coaches/${id}`, 'PUT', coachData),
+    deleteCoach: (id: string) => callApi(`/admin/coaches/${id}`, 'DELETE'),
+  },
+  
+  // Fila
+  queue: {
+    getQueue: () => callApi('/admin/queue', 'GET'),
+    getQueueItems: () => callApi('/admin/queue', 'GET'),
+    createQueueItem: (queueData: any) => callApi('/admin/queue', 'POST', queueData),
+    updateQueueItem: (id: string, queueData: any) => callApi(`/admin/queue/${id}`, 'PUT', queueData),
+    deleteQueueItem: (id: string) => callApi(`/admin/queue/${id}`, 'DELETE'),
+  },
+  
+  // Torneios
+  tournament: {
+    getTournaments: () => callApi('/admin/tournaments', 'GET'),
+    createTournament: (tournamentData: any) => callApi('/admin/tournaments', 'POST', tournamentData),
+    updateTournament: (id: string, tournamentData: any) => callApi(`/admin/tournaments/${id}`, 'PUT', tournamentData),
+    deleteTournament: (id: string) => callApi(`/admin/tournaments/${id}`, 'DELETE'),
+  },
+  
+  // Módulos
+  module: {
+    getModules: () => callApi('/admin/modules', 'GET'),
+    createModule: (moduleData: any) => callApi('/admin/modules', 'POST', moduleData),
+    updateModule: (id: string, moduleData: any) => callApi(`/admin/modules/${id}`, 'PUT', moduleData),
+    deleteModule: (id: string) => callApi(`/admin/modules/${id}`, 'DELETE'),
+  },
+  
+  // Métodos legados para compatibilidade
   getUsers: () => callApi('/admin/users', 'GET'),
   createUser: (userData: any) => callApi('/admin/users', 'POST', userData),
   updateUser: (id: string, userData: any) => callApi(`/admin/users/${id}`, 'PUT', userData),
   deleteUser: (id: string) => callApi(`/admin/users/${id}`, 'DELETE'),
   
-  // Eventos
   getEvents: () => callApi('/admin/events', 'GET'),
   createEvent: (eventData: any) => callApi('/admin/events', 'POST', eventData),
   updateEvent: (id: string, eventData: any) => callApi(`/admin/events/${id}`, 'PUT', eventData),
   deleteEvent: (id: string) => callApi(`/admin/events/${id}`, 'DELETE'),
   
-  // Competições
   getCompetitions: () => callApi('/admin/competitions', 'GET'),
   createCompetition: (competitionData: any) => callApi('/admin/competitions', 'POST', competitionData),
   updateCompetition: (id: string, competitionData: any) => callApi(`/admin/competitions/${id}`, 'PUT', competitionData),
   deleteCompetition: (id: string) => callApi(`/admin/competitions/${id}`, 'DELETE'),
   
-  // Músicas
   getMusics: () => callApi('/admin/musics', 'GET'),
   createMusic: (musicData: any) => callApi('/admin/musics', 'POST', musicData),
   updateMusic: (id: string, musicData: any) => callApi(`/admin/musics/${id}`, 'PUT', musicData),
   deleteMusic: (id: string) => callApi(`/admin/musics/${id}`, 'DELETE'),
   
-  // Coaches
   getCoaches: () => callApi('/admin/coaches', 'GET'),
   createCoach: (coachData: any) => callApi('/admin/coaches', 'POST', coachData),
   updateCoach: (id: string, coachData: any) => callApi(`/admin/coaches/${id}`, 'PUT', coachData),
   deleteCoach: (id: string) => callApi(`/admin/coaches/${id}`, 'DELETE'),
   
-  // Fila
   getQueue: () => callApi('/admin/queue', 'GET'),
+  getQueueItems: () => callApi('/admin/queue', 'GET'),
   createQueueItem: (queueData: any) => callApi('/admin/queue', 'POST', queueData),
   updateQueueItem: (id: string, queueData: any) => callApi(`/admin/queue/${id}`, 'PUT', queueData),
   deleteQueueItem: (id: string) => callApi(`/admin/queue/${id}`, 'DELETE'),
   
-  // Torneios
   getTournaments: () => callApi('/admin/tournaments', 'GET'),
   createTournament: (tournamentData: any) => callApi('/admin/tournaments', 'POST', tournamentData),
   updateTournament: (id: string, tournamentData: any) => callApi(`/admin/tournaments/${id}`, 'PUT', tournamentData),
-  deleteTournament: (id: string) => callApi(`/admin/tournaments/${id}`, 'DELETE')
+  deleteTournament: (id: string) => callApi(`/admin/tournaments/${id}`, 'DELETE'),
+  
+  getModules: () => callApi('/admin/modules', 'GET'),
+  createModule: (moduleData: any) => callApi('/admin/modules', 'POST', moduleData),
+  updateModule: (id: string, moduleData: any) => callApi(`/admin/modules/${id}`, 'PUT', moduleData),
+  deleteModule: (id: string) => callApi(`/admin/modules/${id}`, 'DELETE')
 };
 
 export const staffApi = {

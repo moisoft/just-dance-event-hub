@@ -87,7 +87,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ className = '' 
 
       {/* Notification Panel */}
       {isExpanded && (
-        <div className="absolute top-16 right-0 w-96 max-h-96 bg-gray-900/95 backdrop-blur-lg border border-white/20 rounded-xl shadow-2xl overflow-hidden">
+        <div className="absolute top-16 right-0 w-full xs:w-80 sm:w-96 max-h-[80vh] bg-gray-900/95 backdrop-blur-lg border border-white/20 rounded-xl shadow-2xl overflow-hidden">
           {/* Header */}
           <div className="p-4 border-b border-white/10">
             <div className="flex items-center justify-between mb-3">
@@ -126,7 +126,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ className = '' 
           </div>
 
           {/* Notifications List */}
-          <div className="max-h-64 overflow-y-auto">
+          <div className="max-h-[40vh] xs:max-h-64 overflow-y-auto">
             {filteredNotifications.length === 0 ? (
               <div className="p-6 text-center text-white/60">
                 <span className="text-2xl mb-2 block">📭</span>

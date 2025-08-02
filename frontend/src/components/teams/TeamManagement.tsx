@@ -51,7 +51,8 @@ const TeamManagement: React.FC<TeamManagementProps> = ({ eventId }) => {
     const loadTeams = React.useCallback(async () => {
         try {
             setLoading(true);
-            const response = await fetch(`/api/teams/events/${eventId.toString()}/teams`, {
+            const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+            const response = await fetch(`${API_BASE_URL}/api/teams/events/${eventId.toString()}/teams`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -72,7 +73,8 @@ const TeamManagement: React.FC<TeamManagementProps> = ({ eventId }) => {
 
     const loadUserTeam = React.useCallback(async () => {
         try {
-            const response = await fetch(`/api/teams/events/${eventId.toString()}/teams?user=${user?.id}`, {
+            const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+            const response = await fetch(`${API_BASE_URL}/api/teams/events/${eventId.toString()}/teams?user=${user?.id}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -136,7 +138,9 @@ const TeamManagement: React.FC<TeamManagementProps> = ({ eventId }) => {
         setError(null);
 
         try {
-            const response = await fetch(`/api/teams/events/${eventId.toString()}/teams`, {
+            // Corrigindo a URL para usar a URL base da API configurada no .env
+            const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+            const response = await fetch(`${API_BASE_URL}/api/teams/events/${eventId.toString()}/teams`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -175,7 +179,8 @@ const TeamManagement: React.FC<TeamManagementProps> = ({ eventId }) => {
         setError(null);
 
         try {
-            const response = await fetch('/api/teams/teams/join', {
+            const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+            const response = await fetch(`${API_BASE_URL}/api/teams/teams/join`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -214,7 +219,8 @@ const TeamManagement: React.FC<TeamManagementProps> = ({ eventId }) => {
         }
 
         try {
-            const response = await fetch(`/api/teams/teams/${userTeam.id.toString()}/leave`, {
+            const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+            const response = await fetch(`${API_BASE_URL}/api/teams/teams/${userTeam.id.toString()}/leave`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -359,7 +365,7 @@ const TeamManagement: React.FC<TeamManagementProps> = ({ eventId }) => {
                                             value={maxMembers}
                                             onChange={(e) => setMaxMembers(Number(e.target.value))}
                                         >
-                                            {[2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
+                                            {[2, 3, 4].map(num => (
                                                 <option key={num} value={num}>{num}</option>
                                             ))}
                                         </select>

@@ -3,11 +3,15 @@ import { Router } from 'express';
 import { CompetitionController } from '../controllers/competitionController';
 import authMiddleware from '../middlewares/authMiddleware';
 import { validateCompetitionCreation, validateCompetitionRegistration } from '../middlewares/validation';
+import featureDisabledMiddleware from '../middlewares/featureDisabledMiddleware';
 
 const router = Router();
 
 // Todas as rotas requerem autenticação
 router.use(authMiddleware);
+
+// Aplicar middleware de funcionalidade desativada a todas as rotas de competições
+router.use(featureDisabledMiddleware('Competições'));
 
 // Criar uma nova competição
 router.post('/events/:eventId/competitions', validateCompetitionCreation, CompetitionController.createCompetition);

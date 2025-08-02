@@ -22,7 +22,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ user }) => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative overflow-y-auto overflow-x-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
         <div className="absolute inset-0 opacity-20">

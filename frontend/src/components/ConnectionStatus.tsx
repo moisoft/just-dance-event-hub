@@ -48,15 +48,15 @@ const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
   }
 
   return (
-    <div className={`bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg p-4 ${className}`}>
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="text-white font-semibold flex items-center gap-2">
+    <div className={`bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg p-3 xs:p-4 ${className}`}>
+      <div className="flex items-center justify-between mb-2 xs:mb-3">
+        <h3 className="text-white font-semibold text-sm xs:text-base flex items-center gap-2">
           <span>🔗</span>
           Status da Conexão
         </h3>
         <div className="flex items-center gap-2">
-          <span className="text-lg">{getStatusIcon()}</span>
-          <span className={`text-sm font-medium ${
+          <span className="text-base xs:text-lg">{getStatusIcon()}</span>
+          <span className={`text-xs xs:text-sm font-medium ${
             state.isConnected ? 'text-green-400' : 'text-red-400'
           }`}>
             {getStatusText()}
@@ -64,7 +64,7 @@ const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
         </div>
       </div>
 
-      <div className="space-y-2 text-sm">
+      <div className="space-y-1.5 xs:space-y-2 text-xs xs:text-sm">
         <div className="flex justify-between items-center">
           <span className="text-white/70">Última atualização:</span>
           <span className="text-white">{formatLastUpdate()}</span>
@@ -87,7 +87,7 @@ const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
       </div>
 
       {!state.isConnected && (
-        <div className="mt-3 p-2 bg-red-500/20 border border-red-500/30 rounded-lg">
+        <div className="mt-2 xs:mt-3 p-1.5 xs:p-2 bg-red-500/20 border border-red-500/30 rounded-lg">
           <p className="text-red-300 text-xs">
             ⚠️ Conexão perdida. Tentando reconectar...
           </p>
@@ -95,7 +95,7 @@ const ConnectionStatus: React.FC<ConnectionStatusProps> = ({
       )}
 
       {state.isConnected && (
-        <div className="mt-3 p-2 bg-green-500/20 border border-green-500/30 rounded-lg">
+        <div className="mt-2 xs:mt-3 p-1.5 xs:p-2 bg-green-500/20 border border-green-500/30 rounded-lg">
           <p className="text-green-300 text-xs">
             ✅ Comunicação em tempo real ativa
           </p>

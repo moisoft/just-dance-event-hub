@@ -72,32 +72,32 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white p-4 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white p-2 xs:p-4 relative overflow-y-auto">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse animation-delay-2000"></div>
-        <div className="absolute top-40 left-40 w-80 h-80 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse animation-delay-4000"></div>
+        <div className="absolute -top-40 -right-40 w-60 xs:w-80 h-60 xs:h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-60 xs:w-80 h-60 xs:h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse animation-delay-2000"></div>
+        <div className="absolute top-40 left-40 w-60 xs:w-80 h-60 xs:h-80 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse animation-delay-4000"></div>
       </div>
       
-      <div className="relative z-10 bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-2xl w-full max-w-md border border-white/20">
-        <div className="text-center mb-8">
-          <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
-            <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+      <div className="relative z-10 bg-white/10 backdrop-blur-lg p-4 xs:p-6 sm:p-8 rounded-2xl shadow-2xl w-full max-w-md border border-white/20 my-4 xs:my-6">
+        <div className="text-center mb-4 xs:mb-6 sm:mb-8">
+          <div className="w-16 h-16 xs:w-20 xs:h-20 mx-auto mb-3 xs:mb-4 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
+            <svg className="w-8 h-8 xs:w-10 xs:h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clipRule="evenodd" />
             </svg>
           </div>
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+          <h2 className="text-2xl xs:text-3xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
             Just Dance Hub
           </h2>
-          <p className="text-white/70 mt-2">
+          <p className="text-sm xs:text-base text-white/70 mt-1 xs:mt-2">
             {isLogin ? 'Bem-vindo de volta!' : 'Junte-se à comunidade!'}
           </p>
         </div>
 
-        <div className="flex bg-white/10 rounded-xl p-1 mb-6">
+        <div className="flex bg-white/10 rounded-xl p-1 mb-4 xs:mb-5 sm:mb-6">
           <button
-            className={`flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-all duration-300 ${
+            className={`flex-1 py-1.5 xs:py-2 px-2 xs:px-4 rounded-lg text-xs xs:text-sm font-semibold transition-all duration-300 ${
               isLogin 
                 ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg transform scale-105' 
                 : 'text-white/70 hover:text-white hover:bg-white/10'
@@ -108,7 +108,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
             Login
           </button>
           <button
-            className={`flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-all duration-300 ${
+            className={`flex-1 py-1.5 xs:py-2 px-2 xs:px-4 rounded-lg text-xs xs:text-sm font-semibold transition-all duration-300 ${
               !isLogin 
                 ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg transform scale-105' 
                 : 'text-white/70 hover:text-white hover:bg-white/10'
@@ -120,15 +120,15 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
           </button>
         </div>
 
-        <form onSubmit={handleAuth} className="space-y-6">
-          <div className="space-y-2">
-            <label className="block text-white/80 text-sm font-medium" htmlFor="email">
+        <form onSubmit={handleAuth} className="space-y-4 xs:space-y-5 sm:space-y-6">
+          <div className="space-y-1 xs:space-y-2">
+            <label className="block text-white/80 text-xs xs:text-sm font-medium" htmlFor="email">
               Email
             </label>
             <input
               type="email"
               id="email"
-              className="w-full py-3 px-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300 backdrop-blur-sm"
+              className="w-full py-2 xs:py-3 px-3 xs:px-4 bg-white/10 border border-white/20 rounded-xl text-sm xs:text-base text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300 backdrop-blur-sm"
               placeholder="seu@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -136,14 +136,14 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
               required
             />
           </div>
-          <div className="space-y-2">
-            <label className="block text-white/80 text-sm font-medium" htmlFor="password">
+          <div className="space-y-1 xs:space-y-2">
+            <label className="block text-white/80 text-xs xs:text-sm font-medium" htmlFor="password">
               Senha
             </label>
             <input
               type="password"
               id="password"
-              className="w-full py-3 px-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300 backdrop-blur-sm"
+              className="w-full py-2 xs:py-3 px-3 xs:px-4 bg-white/10 border border-white/20 rounded-xl text-sm xs:text-base text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300 backdrop-blur-sm"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -152,14 +152,14 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
             />
           </div>
           {!isLogin && (
-            <div className="space-y-2">
-              <label className="block text-white/80 text-sm font-medium" htmlFor="nickname">
+            <div className="space-y-1 xs:space-y-2">
+              <label className="block text-white/80 text-xs xs:text-sm font-medium" htmlFor="nickname">
                 Apelido
               </label>
               <input
                 type="text"
                 id="nickname"
-                className="w-full py-3 px-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300 backdrop-blur-sm"
+                className="w-full py-2 xs:py-3 px-3 xs:px-4 bg-white/10 border border-white/20 rounded-xl text-sm xs:text-base text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300 backdrop-blur-sm"
                 placeholder="Seu apelido"
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
@@ -171,7 +171,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 focus:ring-offset-transparent transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center"
+            className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-2 xs:py-3 px-3 xs:px-4 text-sm xs:text-base rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 focus:ring-offset-transparent transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center"
           >
             {isLoading ? (
               <>
@@ -187,7 +187,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
           </button>
         </form>
 
-        <div className="mt-8">
+        <div className="mt-5 xs:mt-6 sm:mt-8">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-white/20"></div>
@@ -197,11 +197,11 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
             </div>
           </div>
           
-          <div className="mt-6 grid grid-cols-3 gap-3">
+          <div className="mt-4 xs:mt-5 sm:mt-6 grid grid-cols-3 gap-2 xs:gap-3">
             <button
               onClick={() => simulateLogin('jogador')}
               disabled={isLoading}
-              className="group relative overflow-hidden bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-medium py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="group relative overflow-hidden bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-medium py-2 xs:py-3 px-2 xs:px-4 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
               <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
               <span className="relative z-10 text-xs">🎮 Jogador</span>
@@ -209,7 +209,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
             <button
               onClick={() => simulateLogin('staff')}
               disabled={isLoading}
-              className="group relative overflow-hidden bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-medium py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="group relative overflow-hidden bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-medium py-2 xs:py-3 px-2 xs:px-4 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
               <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
               <span className="relative z-10 text-xs">👥 Staff</span>
@@ -217,7 +217,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
             <button
               onClick={() => simulateLogin('admin')}
               disabled={isLoading}
-              className="group relative overflow-hidden bg-gradient-to-r from-pink-500 to-red-600 hover:from-pink-600 hover:to-red-700 text-white font-medium py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="group relative overflow-hidden bg-gradient-to-r from-pink-500 to-red-600 hover:from-pink-600 hover:to-red-700 text-white font-medium py-2 xs:py-3 px-2 xs:px-4 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
               <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
               <span className="relative z-10 text-xs">⚡ Admin</span>

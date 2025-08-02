@@ -75,7 +75,7 @@ export const DEFAULT_MODULE_CONFIGS: ModuleConfig = {
         show_xp: true,
     },
     chat: {
-        enabled: true,
+        enabled: false,
         max_message_length: 200,
         allow_emojis: true,
     },
@@ -152,7 +152,18 @@ export class ModuleService {
      * Verifica se um módulo deve estar ativo por padrão
      */
     private static isModuleEnabledByDefault(module: string): boolean {
-        const enabledByDefault = ['queue', 'xp_system', 'leaderboard', 'chat'];
+        // Módulos habilitados por padrão
+        const enabledByDefault = ['queue', 'xp_system', 'leaderboard'];
+        
+        // Módulos explicitamente desabilitados (torneio e competições)
+        const disabledModules = ['tournament', 'team_mode'];
+        
+        // Se o módulo estiver na lista de desabilitados, retorna false
+        if (disabledModules.includes(module)) {
+            return false;
+        }
+        
+        // Caso contrário, verifica se está na lista de habilitados por padrão
         return enabledByDefault.includes(module);
     }
 
@@ -194,7 +205,7 @@ export class ModuleService {
             {
                 name: 'chat',
                 description: 'Chat em tempo real',
-                defaultEnabled: true
+                defaultEnabled: false
             },
             {
                 name: 'voting',
@@ -203,4 +214,4 @@ export class ModuleService {
             }
         ];
     }
-} 
+}

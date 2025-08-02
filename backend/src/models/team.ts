@@ -85,7 +85,7 @@ Team.init(
             defaultValue: 4,
             validate: {
                 min: 2,
-                max: 6
+                max: 4
             }
         },
         status: {

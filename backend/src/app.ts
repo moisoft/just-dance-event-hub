@@ -85,10 +85,15 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/api/auth', authRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/queues', queueRoutes);
-app.use('/api/tournaments', tournamentRoutes);
+
+// Rotas de torneios e competições - Funcionalidades temporariamente desativadas
+// Estas rotas ainda estão registradas, mas todas as requisições serão bloqueadas pelo middleware
+// featureDisabledMiddleware que foi aplicado nos arquivos de rotas correspondentes
+app.use('/api/tournaments', tournamentRoutes); // Desativado
+app.use('/api/competitions', competitionRoutes); // Desativado
+
 app.use('/api/modules', moduleRoutes);
 app.use('/api/teams', teamRoutes);
-app.use('/api/competitions', competitionRoutes);
 app.use('/admin', adminRoutes);
 
 // Rotas Mock (para teste sem banco de dados)

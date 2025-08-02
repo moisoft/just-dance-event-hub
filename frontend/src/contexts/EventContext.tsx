@@ -128,6 +128,20 @@ export const EventProvider: React.FC<EventProviderProps> = ({ children }) => {
     message: string,
     from: EventState['notifications'][0]['from'] = 'system'
   ) => {
+    // Verificar se já existe uma notificação similar para evitar duplicatas
+    // que poderiam causar loops infinitos
+    const existingSimilar = state.notifications.some(
+      n => n.message === message && n.type === type && n.from === from && 
+           // Verificar se a notificação foi criada nos últimos 2 segundos
+           (new Date().getTime() - new Date(n.timestamp).getTime() < 2000)
+    );
+
+    // Se já existe uma notificação similar recente, não adicionar outra
+    if (existingSimilar) {
+      console.log('Notificação similar já existe, ignorando:', { type, message, from });
+      return;
+    }
+
     const notification = {
       id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
       type,

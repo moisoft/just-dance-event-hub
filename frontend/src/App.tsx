@@ -17,7 +17,6 @@ import TeamHubScreen from './components/TeamHubScreen';
 import BottomNavBar from './components/BottomNavBar';
 import NotificationCenter from './components/NotificationCenter';
 import ConnectionStatus from './components/ConnectionStatus';
-import RealTimeChat from './components/RealTimeChat';
 import { EventProvider, useEvent } from './contexts/EventContext';
 import { WebSocketProvider } from './contexts/WebSocketContext';
 import { AuthProvider } from './contexts/AuthContext';
@@ -115,7 +114,7 @@ function AppContent() {
         return <EventHubScreen user={currentUser} onEnterEvent={handleEnterEvent} />;
       case 'in_event':
         return (
-          <div className="flex flex-col min-h-screen">
+          <div className="flex flex-col min-h-screen pb-20">
             {activeScreen === 'dashboard' && <PlayerDashboard user={currentUser} />}
             {activeScreen === 'music' && (
               <MusicSelectionScreen
@@ -167,17 +166,13 @@ function AppContent() {
   };
 
   return (
-    <div className="App bg-gray-900 min-h-screen relative">
+    <div className="App bg-gray-900 min-h-screen relative w-full overflow-auto">
       {renderScreen()}
       
       {/* Componentes de comunicação em tempo real - apenas quando usuário está logado */}
       {currentUser && (
         <>
           <NotificationCenter />
-          <RealTimeChat 
-            userType={currentUser.papel as 'admin' | 'staff' | 'player'} 
-            userName={currentUser.nickname}
-          />
           
           {/* Status de conexão no canto inferior esquerdo */}
           <div className="fixed bottom-4 left-4 z-30">

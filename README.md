@@ -44,7 +44,7 @@ Uma plataforma completa para gerenciamento de eventos de Just Dance, incluindo s
 ## 🚀 Instalação Rápida
 
 ### Pré-requisitos
-- Ubuntu 18.04+ ou similar
+- Ubuntu 18.04+ ou Windows 10/11
 - Node.js 18+
 - PostgreSQL 12+
 - Git
@@ -59,6 +59,20 @@ chmod +x install-ubuntu.sh
 
 # 3. Execute o instalador
 ./install-ubuntu.sh
+```
+
+### Instalação Automática (Windows)
+```powershell
+# 1. Abra o PowerShell como Administrador
+
+# 2. Navegue até o diretório de scripts
+cd "C:\caminho\para\just-dance-event-hub\scripts"
+
+# 3. Permita a execução de scripts (se necessário)
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
+
+# 4. Execute o instalador
+.\install-windows.ps1
 ```
 
 ### Instalação Manual
@@ -101,9 +115,12 @@ just-dance-event-hub/
 │   │   ├── services/       # Serviços de API
 │   │   └── types/          # Tipos TypeScript
 ├── scripts/                # Scripts de deploy
-│   ├── install-ubuntu.sh   # Instalação automática
-│   ├── backup-ubuntu.sh    # Backup automático
-│   └── health-check-ubuntu.sh # Verificação de saúde
+│   ├── install-ubuntu.sh   # Instalação automática (Ubuntu)
+│   ├── backup-ubuntu.sh    # Backup automático (Ubuntu)
+│   ├── health-check-ubuntu.sh # Verificação de saúde (Ubuntu)
+│   ├── install-windows.ps1 # Instalação automática (Windows)
+│   ├── uninstall-windows.ps1 # Desinstalação (Windows)
+│   └── health-check-windows.ps1 # Verificação de saúde (Windows)
 └── docs/                   # Documentação
 ```
 
@@ -115,7 +132,12 @@ just-dance-event-hub/
 - `scripts/backup-ubuntu.sh` - Backup automático
 - `scripts/health-check-ubuntu.sh` - Verificação de saúde
 
-### Comandos de Gerenciamento
+### Windows
+- `scripts/install-windows.ps1` - Instalação automática completa
+- `scripts/uninstall-windows.ps1` - Desinstalação completa
+- `scripts/health-check-windows.ps1` - Verificação de saúde
+
+### Comandos de Gerenciamento (Ubuntu)
 ```bash
 # Status da aplicação
 sudo just-dance-hub status
@@ -130,11 +152,28 @@ sudo just-dance-hub restart
 sudo just-dance-hub monit
 ```
 
+### Comandos de Gerenciamento (Windows)
+```powershell
+# Status da aplicação
+.\just-dance-hub.ps1 status
+
+# Ver logs
+.\just-dance-hub.ps1 logs
+
+# Reiniciar aplicação
+.\just-dance-hub.ps1 restart
+
+# Monitorar recursos
+.\just-dance-hub.ps1 monit
+```
+
 ## 📚 Documentação
 
 - [📖 Documentação Completa](docs/README.md)
 - [🚀 Guia de Deploy](docs/DEPLOY_INSTRUCTIONS.md)
 - [🔧 Scripts Ubuntu](docs/UBUNTU_SCRIPTS_README.md)
+- [🪟 Scripts Windows](docs/WINDOWS_SCRIPTS_README.md)
+- [🇧🇷 Como Usar Scripts Windows](docs/COMO_USAR_SCRIPTS_WINDOWS.md)
 - [🏥 Health Check](docs/README.md#health-check)
 - [🔄 Backup e Restauração](docs/README.md#backup)
 

@@ -3,24 +3,32 @@
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
+    font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
 }
 
 .team-header {
     margin-bottom: 30px;
+    text-align: center;
 }
 
 .team-header h2 {
-    color: #333;
-    margin-bottom: 10px;
+    color: #fff;
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 2rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    letter-spacing: -0.5px;
 }
 
 .error-message {
-    background-color: #fee;
-    color: #c33;
-    padding: 10px;
-    border-radius: 5px;
+    background-color: rgba(255, 87, 87, 0.15);
+    color: #ff5757;
+    padding: 12px 16px;
+    border-radius: 12px;
     margin-bottom: 20px;
-    border: 1px solid #fcc;
+    border: 1px solid rgba(255, 87, 87, 0.3);
+    backdrop-filter: blur(10px);
+    font-weight: 500;
 }
 
 .loading {
@@ -32,7 +40,27 @@
 
 .loading-spinner {
     font-size: 18px;
-    color: #666;
+    color: #fff;
+    position: relative;
+    padding-left: 30px;
+}
+
+.loading-spinner:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
 /* User Team Section */
@@ -41,200 +69,299 @@
 }
 
 .team-card {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e0e0e0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px);
+    transition: all 0.3s ease;
 }
 
 .user-team {
-    border: 2px solid #4CAF50;
-    background: linear-gradient(135deg, #f8fff8 0%, #ffffff 100%);
+    border: 2px solid rgba(76, 175, 80, 0.6);
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(255, 255, 255, 0.15) 100%);
 }
 
 .team-info h3 {
-    color: #333;
-    margin-bottom: 10px;
+    color: #fff;
+    margin-bottom: 12px;
     font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 .team-info p {
-    color: #666;
-    margin: 5px 0;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 8px 0;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.team-info p:before {
+    content: '•';
+    color: rgba(76, 175, 80, 0.8);
+    font-size: 18px;
 }
 
 /* Team Members */
 .team-members {
-    margin: 20px 0;
+    margin: 24px 0;
 }
 
 .team-members h4 {
-    color: #333;
-    margin-bottom: 15px;
+    color: #fff;
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    position: relative;
+    display: inline-block;
+}
+
+.team-members h4:after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, rgba(76, 175, 80, 0.8), rgba(76, 175, 80, 0.2));
+    border-radius: 3px;
 }
 
 .members-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 16px;
 }
 
 .member {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px;
-    background: #f9f9f9;
-    border-radius: 8px;
-    border: 1px solid #e0e0e0;
+    gap: 12px;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.2s ease;
+    backdrop-filter: blur(5px);
+}
+
+.member:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.12);
 }
 
 .member.lider {
-    background: linear-gradient(135deg, #fff3e0 0%, #f9f9f9 100%);
-    border-color: #ff9800;
+    background: linear-gradient(135deg, rgba(255, 152, 0, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%);
+    border-color: rgba(255, 152, 0, 0.4);
 }
 
 .member-avatar {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .member-name {
-    font-weight: 500;
-    color: #333;
+    font-weight: 600;
+    color: #fff;
+    font-size: 15px;
 }
 
 .leader-badge {
-    background: #ff9800;
+    background: linear-gradient(90deg, #ff9800, #ff5722);
     color: white;
-    padding: 2px 8px;
-    border-radius: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
     font-size: 12px;
     font-weight: bold;
+    box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);
 }
 
 /* Team Actions */
 .team-actions {
-    margin: 20px 0;
+    margin: 24px 0;
 }
 
 .invite-section {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    background: rgba(33, 150, 243, 0.1);
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(33, 150, 243, 0.3);
 }
 
 .invite-section label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-    color: #333;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #fff;
+    font-size: 15px;
+    letter-spacing: -0.3px;
 }
 
 .invite-code-container {
     display: flex;
-    gap: 10px;
+    gap: 12px;
     align-items: center;
 }
 
 .invite-code {
     flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background: #f9f9f9;
-    font-family: monospace;
+    padding: 12px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    font-family: 'JetBrains Mono', monospace;
     font-size: 16px;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+    color: #fff;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .copy-button {
-    padding: 10px 15px;
-    background: #2196F3;
+    padding: 12px 18px;
+    background: linear-gradient(135deg, #2196F3, #1976D2);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.copy-button:before {
+    content: '📋';
+    font-size: 16px;
 }
 
 .copy-button:hover {
-    background: #1976D2;
+    background: linear-gradient(135deg, #1E88E5, #1565C0);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(33, 150, 243, 0.4);
 }
 
 /* Team Controls */
 .team-controls {
     display: flex;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 12px;
+    margin-top: 24px;
+    justify-content: flex-end;
 }
 
 .leave-button {
-    padding: 10px 20px;
-    background: #f44336;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #f44336, #d32f2f);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
+    font-weight: 600;
+    font-size: 15px;
+    box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.leave-button:before {
+    content: '🚪';
+    font-size: 16px;
 }
 
 .leave-button:hover {
-    background: #d32f2f;
+    background: linear-gradient(135deg, #e53935, #c62828);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(244, 67, 54, 0.4);
 }
 
 /* No Team Section */
 .no-team-section {
     text-align: center;
-    padding: 40px 20px;
-    background: #f9f9f9;
-    border-radius: 12px;
+    padding: 48px 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
     margin-bottom: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
 }
 
 .no-team-section p {
-    color: #666;
+    color: rgba(255, 255, 255, 0.9);
     font-size: 18px;
-    margin-bottom: 30px;
+    margin-bottom: 32px;
+    font-weight: 500;
+    line-height: 1.5;
 }
 
 .team-actions {
     display: flex;
-    gap: 15px;
+    gap: 20px;
     justify-content: center;
     flex-wrap: wrap;
+    margin-top: 30px;
 }
 
 .create-team-button,
 .join-team-button {
-    padding: 12px 24px;
+    padding: 14px 28px;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 200px;
+    justify-content: center;
 }
 
 .create-team-button {
-    background: #4CAF50;
+    background: linear-gradient(135deg, #4CAF50, #388E3C);
     color: white;
+}
+
+.create-team-button:before {
+    content: '🏆';
+    font-size: 18px;
 }
 
 .create-team-button:hover {
-    background: #45a049;
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, #43A047, #2E7D32);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(76, 175, 80, 0.3);
 }
 
 .join-team-button {
-    background: #2196F3;
+    background: linear-gradient(135deg, #2196F3, #1976D2);
     color: white;
 }
 
+.join-team-button:before {
+    content: '👥';
+    font-size: 18px;
+}
+
 .join-team-button:hover {
-    background: #1976D2;
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, #1E88E5, #1565C0);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(33, 150, 243, 0.3);
 }
 
 /* Modal */
@@ -244,179 +371,502 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    backdrop-filter: blur(8px);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .modal {
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
+    background: rgba(30, 30, 30, 0.9);
+    padding: 32px;
+    border-radius: 16px;
     width: 90%;
     max-width: 500px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: slideUp 0.4s ease;
+    backdrop-filter: blur(10px);
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 .modal h3 {
-    color: #333;
-    margin-bottom: 20px;
+    color: #fff;
+    margin-bottom: 24px;
     text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    position: relative;
+    padding-bottom: 12px;
+}
+
+.modal h3:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #4CAF50, #2196F3);
+    border-radius: 3px;
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-    color: #333;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 15px;
 }
 
 .form-group input,
 .form-group select {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    padding: 14px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
     font-size: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    transition: all 0.3s;
 }
 
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
-    border-color: #2196F3;
-    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+    border-color: rgba(33, 150, 243, 0.7);
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .form-actions {
     display: flex;
-    gap: 10px;
+    gap: 12px;
     justify-content: flex-end;
+    margin-top: 32px;
 }
 
 .form-actions button {
-    padding: 10px 20px;
+    padding: 12px 24px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s;
+    font-weight: 600;
+    transition: all 0.3s;
 }
 
 .form-actions button[type="submit"] {
-    background: #4CAF50;
+    background: linear-gradient(135deg, #4CAF50, #388E3C);
     color: white;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+    flex: 1;
 }
 
 .form-actions button[type="submit"]:hover {
-    background: #45a049;
+    background: linear-gradient(135deg, #43A047, #2E7D32);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
 }
 
 .form-actions button[type="button"] {
-    background: #f5f5f5;
-    color: #333;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .form-actions button[type="button"]:hover {
-    background: #e0e0e0;
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
 }
 
 /* All Teams Section */
 .all-teams-section {
-    margin-top: 40px;
+    margin-top: 60px;
+    position: relative;
+    padding-top: 20px;
+}
+
+.all-teams-section:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1));
+    border-radius: 3px;
 }
 
 .all-teams-section h3 {
-    color: #333;
-    margin-bottom: 20px;
+    color: #fff;
+    margin-bottom: 24px;
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .teams-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
 }
 
 .teams-grid .team-card {
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.teams-grid .team-card:before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    z-index: -1;
+    transform: scale(0.98);
+    transition: all 0.4s;
+    border-radius: 18px;
 }
 
 .teams-grid .team-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.teams-grid .team-card:hover:before {
+    transform: scale(1);
 }
 
 .team-info h4 {
-    color: #333;
-    margin-bottom: 10px;
+    color: #fff;
+    margin-bottom: 12px;
     font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
 }
 
 .team-members-preview {
     display: flex;
     align-items: center;
-    gap: 5px;
-    margin-top: 15px;
+    gap: 8px;
+    margin-top: 18px;
 }
 
 .member-avatar-small {
-    width: 30px;
-    height: 30px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s;
+}
+
+.member-avatar-small:hover {
+    transform: scale(1.15);
+    border-color: rgba(76, 175, 80, 0.6);
+    z-index: 2;
+}
+
+.team-members-preview img:nth-child(2) {
+    margin-left: -10px;
+}
+
+.team-members-preview img:nth-child(3) {
+    margin-left: -10px;
 }
 
 .more-members {
-    background: #666;
+    background: linear-gradient(135deg, #607D8B, #455A64);
     color: white;
-    width: 30px;
-    height: 30px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 12px;
     font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    margin-left: -10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
     .team-management {
-        padding: 15px;
+        padding: 16px;
+    }
+    
+    .team-header h2 {
+        font-size: 22px;
+        margin-bottom: 12px;
+    }
+    
+    .error-message {
+        padding: 10px;
+        font-size: 14px;
+        margin-bottom: 16px;
+    }
+    
+    .loading {
+        min-height: 150px;
+    }
+    
+    .loading-spinner {
+        font-size: 16px;
+    }
+    
+    .user-team-section {
+        margin-bottom: 32px;
+    }
+    
+    .team-card {
+        padding: 16px;
+        border-radius: 12px;
+    }
+    
+    .team-info h3 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+    
+    .team-info p {
+        font-size: 14px;
+        margin: 6px 0;
+    }
+    
+    .team-members {
+        margin: 16px 0;
+    }
+    
+    .team-members h4 {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+    
+    .members-list {
+        gap: 12px;
+        justify-content: center;
+    }
+    
+    .member {
+        padding: 10px;
+        gap: 10px;
+        border-radius: 8px;
+        flex-direction: row;
+        align-items: center;
+        text-align: left;
+        width: calc(50% - 6px);
+    }
+    
+    .member-avatar {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .member-name {
+        font-size: 14px;
+    }
+    
+    .leader-badge {
+        padding: 2px 8px;
+        font-size: 10px;
     }
     
     .team-actions {
+        margin: 16px 0;
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
+    }
+    
+    .invite-section {
+        padding: 14px;
+    }
+    
+    .invite-section label {
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+    
+    .invite-code-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .invite-code {
+        padding: 12px;
+        font-size: 14px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .copy-button {
+        padding: 12px 16px;
+        font-size: 14px;
+        width: 100%;
+    }
+    
+    .team-controls {
+        gap: 10px;
+        margin-top: 16px;
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .leave-button {
+        padding: 12px 16px;
+        font-size: 14px;
+        width: 100%;
+    }
+    
+    .no-team-section {
+        padding: 30px 20px;
+        border-radius: 12px;
+        margin-bottom: 32px;
+    }
+    
+    .no-team-section p {
+        font-size: 16px;
+        margin-bottom: 24px;
     }
     
     .create-team-button,
     .join-team-button {
         width: 100%;
-        max-width: 250px;
+        max-width: 280px;
+        padding: 12px 20px;
+        font-size: 15px;
     }
     
     .teams-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
     }
     
     .modal {
         width: 95%;
         padding: 20px;
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+    
+    .modal h3 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .form-group {
+        margin-bottom: 18px;
+    }
+    
+    .form-group label {
+        font-size: 14px;
+        margin-bottom: 6px;
+    }
+    
+    .form-group input,
+    .form-group select {
+        padding: 12px;
+        font-size: 14px;
     }
     
     .form-actions {
         flex-direction: column;
+        gap: 10px;
+        margin-top: 24px;
     }
     
     .form-actions button {
         width: 100%;
+        padding: 12px;
+        font-size: 15px;
+    }
+    
+    .team-members-preview {
+        margin-top: 14px;
+        justify-content: center;
+    }
+    
+    .member-avatar-small {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .more-members {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .team-management {
+        padding: 10px;
+    }
+    
+    .team-header h2 {
+        font-size: 18px;
+    }
+    
+    .team-card {
+        padding: 12px;
+    }
+    
+    .team-info h3 {
+        font-size: 18px;
+    }
+    
+    .team-info p {
+        font-size: 13px;
+    }
+    
+    .member {
+        width: 100%;
+        flex-direction: row;
+        text-align: left;
+    }
+    
+    .modal {
+        width: 98%;
+        padding: 12px;
+    }
+    
+    .modal h3 {
+        font-size: 16px;
+    }
+    
+    .form-group label {
+        font-size: 13px;
+    }
+    
+    .form-group input,
+    .form-group select {
+        font-size: 13px;
     }
 }

@@ -30,10 +30,10 @@ export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) =
     }
 
     try {
-      const wsUrl = process.env.REACT_APP_WS_URL || 'ws://localhost:5000';
+      const wsUrl = process.env.REACT_APP_WS_URL || 'ws://localhost:8080';
       const url = eventId 
-        ? `${wsUrl}/ws?eventId=${eventId}&role=${userRole}&userId=${userId}`
-        : `${wsUrl}/ws?role=${userRole}&userId=${userId}`;
+        ? `${wsUrl}?eventId=${eventId}&role=${userRole}&userId=${userId}`
+        : `${wsUrl}?role=${userRole}&userId=${userId}`;
       
       wsRef.current = new WebSocket(url);
 
@@ -41,7 +41,8 @@ export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) =
         console.log('WebSocket conectado');
         dispatch({ type: 'SET_CONNECTION_STATUS', payload: true });
         reconnectAttempts.current = 0;
-        addNotification('success', 'Conectado ao sistema em tempo real', 'system');
+        // Não chamar addNotification aqui para evitar possíveis loops
+        // Apenas atualizar o estado de conexão
       };
 
       wsRef.current.onmessage = (event) => {
@@ -65,18 +66,20 @@ export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) =
             connect();
           }, delay);
         } else {
-          addNotification('error', 'Conexão perdida. Recarregue a página.', 'system');
+          console.error('Máximo de tentativas de reconexão atingido');
+          // Não chamar addNotification aqui para evitar loop infinito
         }
       };
 
       wsRef.current.onerror = (error) => {
         console.error('Erro WebSocket:', error);
-        addNotification('error', 'Erro de conexão', 'system');
+        // Não chamar addNotification aqui para evitar loop infinito
+        // Em vez disso, apenas registrar o erro no console
       };
 
     } catch (error) {
       console.error('Erro ao conectar WebSocket:', error);
-      addNotification('error', 'Falha ao conectar', 'system');
+      // Não chamar addNotification aqui para evitar loop infinito
     }
   }, [eventId, userRole, userId, dispatch, addNotification]);
 
@@ -87,52 +90,28 @@ export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) =
     switch (message.type) {
       case 'QUEUE_UPDATED':
         dispatch({ type: 'UPDATE_QUEUE', payload: message.payload });
-        if (message.from !== userRole) {
-          const from = message.from === 'player' ? 'system' : message.from as 'admin' | 'staff' | 'system';
-          addNotification('info', 'Fila atualizada', from);
-        }
+        // Não chamar addNotification aqui para evitar possíveis loops
         break;
 
       case 'QUEUE_ITEM_ADDED':
         dispatch({ type: 'ADD_QUEUE_ITEM', payload: message.payload });
-        if (message.from !== userRole) {
-          const item = message.payload as QueueItem;
-          const from = message.from === 'player' ? 'system' : message.from as 'admin' | 'staff' | 'system';
-          addNotification('info', `Nova música adicionada: ${item.song.name}`, from);
-        }
+        // Não chamar addNotification aqui para evitar possíveis loops
         break;
 
       case 'QUEUE_ITEM_STATUS_CHANGED':
         const { id, status, updates } = message.payload;
         dispatch({ type: 'UPDATE_QUEUE_ITEM', payload: { id, updates: { status, ...updates } } });
-        
-        if (message.from !== userRole) {
-          const statusMessages = {
-            playing: 'Música iniciada',
-            completed: 'Música concluída',
-            skipped: 'Música pulada',
-            pending: 'Música voltou para pendente'
-          };
-          const from = message.from === 'player' ? 'system' : message.from as 'admin' | 'staff' | 'system';
-          addNotification('info', statusMessages[status as keyof typeof statusMessages] || 'Status atualizado', from);
-        }
+        // Não chamar addNotification aqui para evitar possíveis loops
         break;
 
       case 'CURRENTLY_PLAYING_CHANGED':
         dispatch({ type: 'SET_CURRENTLY_PLAYING', payload: message.payload });
-        if (message.payload && message.from !== userRole) {
-          const item = message.payload as QueueItem;
-          const from = message.from === 'player' ? 'system' : message.from as 'admin' | 'staff' | 'system';
-          addNotification('info', `Tocando agora: ${item.song.name}`, from);
-        }
+        // Não chamar addNotification aqui para evitar possíveis loops
         break;
 
       case 'TOURNAMENT_UPDATED':
         dispatch({ type: 'UPDATE_TOURNAMENTS', payload: message.payload });
-        if (message.from !== userRole) {
-          const from = message.from === 'player' ? 'system' : message.from as 'admin' | 'staff' | 'system';
-          addNotification('info', 'Torneios atualizados', from);
-        }
+        // Não chamar addNotification aqui para evitar possíveis loops
         break;
 
       case 'USER_JOINED':
@@ -141,9 +120,7 @@ export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) =
           type: 'UPDATE_CONNECTED_USERS', 
           payload: [...state.connectedUsers, joinedUser]
         });
-        if (userRole === 'admin' || userRole === 'staff') {
-          addNotification('info', `${joinedUser.nickname} entrou no evento`, 'system');
-        }
+        // Não chamar addNotification aqui para evitar possíveis loops
         break;
 
       case 'USER_LEFT':
@@ -155,17 +132,47 @@ export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) =
         break;
 
       case 'ADMIN_ANNOUNCEMENT':
-        addNotification('info', message.payload.message, 'admin');
+        // Adicionar diretamente ao estado em vez de chamar addNotification
+        dispatch({
+          type: 'ADD_NOTIFICATION',
+          payload: {
+            id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+            type: 'info',
+            message: message.payload.message,
+            timestamp: new Date(),
+            from: 'admin'
+          }
+        });
         break;
 
       case 'STAFF_NOTIFICATION':
         if (userRole === 'staff' || userRole === 'admin') {
-          addNotification('info', message.payload.message, 'staff');
+          // Adicionar diretamente ao estado em vez de chamar addNotification
+          dispatch({
+            type: 'ADD_NOTIFICATION',
+            payload: {
+              id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+              type: 'info',
+              message: message.payload.message,
+              timestamp: new Date(),
+              from: 'staff'
+            }
+          });
         }
         break;
 
       case 'SYSTEM_NOTIFICATION':
-        addNotification(message.payload.type || 'info', message.payload.message, 'system');
+        // Adicionar diretamente ao estado em vez de chamar addNotification
+        dispatch({
+          type: 'ADD_NOTIFICATION',
+          payload: {
+            id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+            type: message.payload.type || 'info',
+            message: message.payload.message,
+            timestamp: new Date(),
+            from: 'system'
+          }
+        });
         break;
 
       default:
@@ -185,7 +192,8 @@ export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) =
       };
       wsRef.current.send(JSON.stringify(message));
     } else {
-      addNotification('error', 'Não conectado. Tentando reconectar...', 'system');
+      console.warn('WebSocket não está conectado. Tentando reconectar...');
+      // Não chamar addNotification aqui para evitar loop infinito
       connect();
     }
   }, [userRole, eventId, addNotification, connect]);
@@ -200,7 +208,7 @@ export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) =
   }, [sendMessage]);
 
   const addQueueItem = useCallback((item: QueueItem) => {
-    sendMessage('ADD_QUEUE_ITEM', item);
+    sendMessage('PLAYER_JOIN_QUEUE', item);
   }, [sendMessage]);
 
   const removeQueueItem = useCallback((itemId: string) => {
@@ -245,6 +253,51 @@ export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) =
     }
   }, [eventId, connect]);
 
+  // Gerenciamento de listeners de eventos
+  const eventListeners = useRef<Record<string, Array<(data: any) => void>>>({});
+
+  // Função para registrar um listener de evento
+  const on = useCallback((eventType: string, callback: (data: any) => void) => {
+    if (!eventListeners.current[eventType]) {
+      eventListeners.current[eventType] = [];
+    }
+    eventListeners.current[eventType].push(callback);
+  }, []);
+
+  // Função para remover um listener de evento
+  const off = useCallback((eventType: string, callback: (data: any) => void) => {
+    if (!eventListeners.current[eventType]) return;
+    eventListeners.current[eventType] = eventListeners.current[eventType].filter(
+      listener => listener !== callback
+    );
+  }, []);
+
+  // Modificar handleMessage para disparar os listeners registrados
+  const handleMessageWithListeners = useCallback((message: WebSocketMessage) => {
+    // Primeiro, processa a mensagem normalmente
+    handleMessage(message);
+    
+    // Depois, dispara os listeners registrados para este tipo de mensagem
+    const listeners = eventListeners.current[message.type];
+    if (listeners && listeners.length > 0) {
+      listeners.forEach(listener => listener(message.payload));
+    }
+  }, [handleMessage]);
+
+  // Atualizar a função onmessage para usar handleMessageWithListeners
+  useEffect(() => {
+    if (wsRef.current) {
+      wsRef.current.onmessage = (event) => {
+        try {
+          const message: WebSocketMessage = JSON.parse(event.data);
+          handleMessageWithListeners(message);
+        } catch (error) {
+          console.error('Erro ao processar mensagem WebSocket:', error);
+        }
+      };
+    }
+  }, [handleMessageWithListeners]);
+
   return {
     isConnected: state.isConnected,
     sendMessage,
@@ -255,6 +308,8 @@ export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) =
     sendAnnouncement,
     sendStaffNotification,
     connect,
+    on,
+    off
   };
 };
 

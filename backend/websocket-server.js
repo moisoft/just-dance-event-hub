@@ -127,21 +127,8 @@ wss.on('connection', (ws, req) => {
           break;
           
         case 'CHAT_MESSAGE':
-          const chatMessage = message.payload;
-          
-          if (chatMessage.isPrivate && chatMessage.targetUser) {
-            // Mensagem privada
-            sendToUser(chatMessage.targetUser, {
-              type: 'PRIVATE_MESSAGE',
-              payload: chatMessage
-            });
-          } else {
-            // Mensagem pública
-            broadcast({
-              type: 'CHAT_MESSAGE',
-              payload: chatMessage
-            }, ws);
-          }
+          // Funcionalidade de chat removida
+          console.log('Mensagem de chat recebida, mas a funcionalidade foi desativada');
           break;
           
         case 'ADMIN_ANNOUNCEMENT':
@@ -185,6 +172,7 @@ wss.on('connection', (ws, req) => {
           const newQueueItem = message.payload;
           globalState.queue.push(newQueueItem);
           
+          // Enviar atualização da fila completa
           broadcast({
             type: 'QUEUE_UPDATED',
             payload: {
@@ -195,6 +183,12 @@ wss.on('connection', (ws, req) => {
                 songName: newQueueItem.song.name
               }
             }
+          });
+          
+          // Enviar notificação específica de item adicionado
+          broadcast({
+            type: 'QUEUE_ITEM_ADDED',
+            payload: newQueueItem
           });
           
           // Notificar staff sobre novo player na fila

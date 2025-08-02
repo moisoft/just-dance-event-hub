@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+
+#root {
+  min-height: 100%;
+  height: auto;
+  width: 100%;
+  position: relative;
+  overflow-x: hidden;
+}
+
 /* Custom animations */
 @keyframes float {
   0%, 100% {
@@ -67,6 +82,19 @@
   animation: slide-in 0.3s ease-out;
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out;
+}
+
 /* Glassmorphism effect */
 .glass {
   background: rgba(255, 255, 255, 0.1);
@@ -100,6 +128,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  position: relative;
+  min-height: 100%;
+  height: auto;
+  width: 100%;
 }
 
 code {
