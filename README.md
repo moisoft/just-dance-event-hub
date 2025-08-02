@@ -107,32 +107,58 @@ just-dance-event-hub/
 │   │   ├── routes/         # Rotas da API
 │   │   ├── middlewares/    # Middlewares
 │   │   └── utils/          # Utilitários
-│   └── scripts/            # Scripts de setup
+│   └── scripts/            # Scripts de setup do backend
 ├── frontend/               # Interface React
 │   ├── src/
 │   │   ├── components/     # Componentes React
 │   │   ├── pages/          # Páginas
 │   │   ├── services/       # Serviços de API
 │   │   └── types/          # Tipos TypeScript
-├── scripts/                # Scripts de deploy
+├── config/                 # Arquivos de configuração
+│   ├── apache-ssl.conf     # Configuração SSL Apache
+│   └── nginx-ssl.conf      # Configuração SSL Nginx
+├── scripts/                # Scripts de automação
 │   ├── install-ubuntu.sh   # Instalação automática (Ubuntu)
+│   ├── ubuntu-webserver-setup.sh # Setup servidor web Ubuntu
+│   ├── ubuntu-apache-config.sh # Configuração Apache Ubuntu
+│   ├── ubuntu-nginx-config.sh # Configuração Nginx Ubuntu
+│   ├── ubuntu-validation.sh # Validação sistema Ubuntu
 │   ├── backup-ubuntu.sh    # Backup automático (Ubuntu)
 │   ├── health-check-ubuntu.sh # Verificação de saúde (Ubuntu)
 │   ├── install-windows.ps1 # Instalação automática (Windows)
+│   ├── production-setup.ps1 # Setup produção Windows
+│   ├── production-validation.ps1 # Validação sistema Windows
+│   ├── apache-setup.ps1    # Setup Apache Windows
+│   ├── security-hardening.ps1 # Hardening de segurança
+│   ├── test-system.ps1     # Teste do sistema
 │   ├── uninstall-windows.ps1 # Desinstalação (Windows)
 │   └── health-check-windows.ps1 # Verificação de saúde (Windows)
-└── docs/                   # Documentação
+├── docs/                   # Documentação
+│   ├── COMO_USAR_SCRIPTS_UBUNTU.md # Guia scripts Ubuntu
+│   ├── COMO_USAR_SCRIPTS_WINDOWS.md # Guia scripts Windows
+│   ├── DEPLOY_INSTRUCTIONS.md # Instruções de deploy
+│   └── README.md           # Documentação principal
+└── error-middleware-app/   # Aplicação middleware de erro
 ```
 
-## 🔧 Scripts de Deploy
+## 🔧 Scripts de Automação
 
-### Ubuntu
+### Ubuntu Server
+- `scripts/ubuntu-webserver-setup.sh` - Setup completo com escolha Nginx/Apache
+- `scripts/ubuntu-apache-config.sh` - Configuração avançada Apache
+- `scripts/ubuntu-nginx-config.sh` - Configuração avançada Nginx
+- `scripts/ubuntu-validation.sh` - Validação completa do sistema
 - `scripts/install-ubuntu.sh` - Instalação automática completa
 - `scripts/uninstall-ubuntu.sh` - Desinstalação completa
 - `scripts/backup-ubuntu.sh` - Backup automático
 - `scripts/health-check-ubuntu.sh` - Verificação de saúde
 
 ### Windows
+- `scripts/production-setup.ps1` - Setup completo para produção
+- `scripts/production-validation.ps1` - Validação do sistema
+- `scripts/apache-setup.ps1` - Configuração Apache
+- `scripts/security-hardening.ps1` - Hardening de segurança
+- `scripts/test-system.ps1` - Teste básico do sistema
 - `scripts/install-windows.ps1` - Instalação automática completa
 - `scripts/uninstall-windows.ps1` - Desinstalação completa
 - `scripts/health-check-windows.ps1` - Verificação de saúde
@@ -169,11 +195,21 @@ sudo just-dance-hub monit
 
 ## 📚 Documentação
 
+### Guias Principais
 - [📖 Documentação Completa](docs/README.md)
 - [🚀 Guia de Deploy](docs/DEPLOY_INSTRUCTIONS.md)
-- [🔧 Scripts Ubuntu](docs/UBUNTU_SCRIPTS_README.md)
-- [🪟 Scripts Windows](docs/WINDOWS_SCRIPTS_README.md)
-- [🇧🇷 Como Usar Scripts Windows](docs/COMO_USAR_SCRIPTS_WINDOWS.md)
+- [🐧 Guia Ubuntu Server](UBUNTU_SETUP_GUIDE.md)
+- [🏭 Guia de Produção](PRODUCTION_GUIDE.md)
+- [⚡ Deploy Rápido](QUICK_DEPLOY.md)
+- [🌐 Guia Servidor Web](WEB_SERVER_GUIDE.md)
+
+### Scripts e Automação
+- [🐧 Como Usar Scripts Ubuntu](docs/COMO_USAR_SCRIPTS_UBUNTU.md)
+- [🪟 Como Usar Scripts Windows](docs/COMO_USAR_SCRIPTS_WINDOWS.md)
+
+### Configurações
+- [⚙️ Configurações SSL](config/) - Arquivos de configuração Apache e Nginx
+- [🔒 Segurança](SECURITY.md) - Práticas de segurança
 - [🏥 Health Check](docs/README.md#health-check)
 - [🔄 Backup e Restauração](docs/README.md#backup)
 
