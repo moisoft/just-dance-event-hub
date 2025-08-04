@@ -84,8 +84,9 @@ chmod +x *.sh
 # 6. Verificar instalação
 sudo just-dance-hub status
 
-# 7. Testar API
-curl http://localhost:3000/api/health
+# 7. Testar API (substitua SEU_ENDERECO_WEB pelo endereço do seu servidor)
+curl http://SEU_ENDERECO_WEB:3000/api/health
+# Exemplo: curl http://meuservidor.com:3000/api/health
 ```
 
 ## 🔧 Comandos de Gerenciamento
@@ -151,8 +152,9 @@ sudo just-dance-hub status
 # 2. Verificar se o banco está funcionando
 sudo -u postgres psql -d just_dance_hub -c "SELECT 1;"
 
-# 3. Testar a API
-curl http://localhost:3000/api/health
+# 3. Testar a API (substitua SEU_ENDERECO_WEB pelo endereço do seu servidor)
+curl http://SEU_ENDERECO_WEB:3000/api/health
+# Exemplo: curl http://meuservidor.com:3000/api/health
 
 # 4. Verificar logs
 sudo just-dance-hub logs

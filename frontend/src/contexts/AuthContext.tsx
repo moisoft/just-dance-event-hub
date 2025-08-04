@@ -72,7 +72,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await authApi.login({ email, password });
+      const response = await authApi.mockLogin({ email, password });
       if (!response.success || !response.data) {
         throw new Error(response.error || 'Login failed');
       }

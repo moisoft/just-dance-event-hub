@@ -54,10 +54,15 @@ pm2 logs
 ```
 
 ### 5. Acesse a Aplicação
-- **Frontend**: http://localhost:3000
-- **API**: http://localhost:3000/api
-- **Health Check**: http://localhost:3000/health
-- **WebSocket**: ws://localhost:8080
+⚠️ **Substitua SEU_ENDERECO_WEB pelo endereço do seu servidor**
+- **Frontend**: http://SEU_ENDERECO_WEB:3000
+- **API**: http://SEU_ENDERECO_WEB:3000/api
+- **Health Check**: http://SEU_ENDERECO_WEB:3000/health
+- **WebSocket**: ws://SEU_ENDERECO_WEB:8080
+
+**Exemplo com domínio:**
+- **Frontend**: http://meuservidor.com:3000
+- **API**: http://meuservidor.com:3000/api
 
 ## Credenciais Padrão
 
@@ -140,8 +145,9 @@ Get-ChildItem C:\backups\just-dance-hub
 
 ### Monitoramento
 ```powershell
-# Health check
-Invoke-RestMethod http://localhost:3000/health
+# Health check (substitua SEU_ENDERECO_WEB pelo endereço do seu servidor)
+Invoke-RestMethod http://SEU_ENDERECO_WEB:3000/health
+# Exemplo: Invoke-RestMethod http://meuservidor.com:3000/health
 
 # Status do sistema
 .\health-check-windows.ps1
@@ -163,8 +169,10 @@ pm2 restart all
 
 ### Erro de banco de dados
 ```powershell
-# Testar conexão
+# Testar conexão (use localhost se o banco estiver no mesmo servidor)
 psql -h localhost -U just_dance_user -d just_dance_hub_prod
+# Ou use o endereço do servidor de banco se estiver separado
+# psql -h SEU_SERVIDOR_BANCO -U just_dance_user -d just_dance_hub_prod
 
 # Verificar serviço PostgreSQL
 Get-Service postgresql*
@@ -172,8 +180,10 @@ Get-Service postgresql*
 
 ### WebSocket não conecta
 ```powershell
-# Verificar porta WebSocket
-Test-NetConnection localhost -Port 8080
+# Verificar porta WebSocket (substitua SEU_ENDERECO_WEB pelo endereço do seu servidor)
+Test-NetConnection SEU_ENDERECO_WEB -Port 8080
+# Exemplo: Test-NetConnection meuservidor.com -Port 8080
+# Para servidor local: Test-NetConnection localhost -Port 8080
 
 # Verificar firewall
 netsh advfirewall firewall show rule name="Just Dance Hub WebSocket"

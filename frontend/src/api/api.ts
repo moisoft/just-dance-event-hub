@@ -8,13 +8,19 @@ interface ApiResponse<T> {
   error?: string;
 }
 
-async function callApi<T>(endpoint: string, method: string, data?: any): Promise<ApiResponse<T>> {
+async function callApi<T>(endpoint: string, method: string, data?: any, token?: string | null): Promise<ApiResponse<T>> {
   const url = `${API_BASE_URL}${endpoint}`;
+  const headers: any = {
+    'Content-Type': 'application/json',
+  };
+
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   const options: RequestInit = {
     method,
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers,
   };
 
   if (data) {
@@ -43,6 +49,14 @@ export const authApi = {
   login: (credentials: any) => callApi('/auth/login', 'POST', credentials),
   register: (userData: any) => callApi('/auth/register', 'POST', userData),
   mockLogin: (credentials: any) => callApi('/api/mock/auth/login', 'POST', credentials),
+  getProfile: () => {
+    const token = localStorage.getItem('token');
+    return callApi('/auth/profile', 'GET', null, token);
+  },
+  updateProfile: (profileData: any) => {
+    const token = localStorage.getItem('token');
+    return callApi('/auth/profile', 'PUT', profileData, token);
+  },
 };
 
 // Define the event response type
@@ -175,6 +189,6 @@ export const adminApi = {
 };
 
 export const staffApi = {
-  getQueue: () => callApi('/api/mock/staff/queue', 'GET'),
-  updateQueueItem: (itemId: string, status: string) => callApi(`/api/mock/staff/queue/${itemId}`, 'PUT', { status }),
+  getQueue: () => callApi('/staff/queue', 'GET'),
+  updateQueueItem: (itemId: string, status: string) => callApi(`/staff/queue/${itemId}`, 'PUT', { status }),
 };

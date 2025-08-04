@@ -2,6 +2,13 @@
 # Versão: 1.0.0
 # Autor: Just Dance Event Hub Team
 
+# Parâmetros
+param(
+    [string]$Domain = "localhost",
+    [int]$ApiPort = 5000,
+    [int]$FrontendPort = 3000
+)
+
 # Cores para output
 $Green = "\033[0;32m"
 $Yellow = "\033[1;33m"
@@ -169,7 +176,7 @@ function Setup-PostgreSQL {
         psql -U $DB_USER -c "CREATE DATABASE $DB_NAME;" -t
         Log "Banco de dados $DB_NAME criado com sucesso!"
     } else {
-        Log "Banco de dados $DB_NAME já existe."
+        Log "Banco de dados $DB_NAME ja existe."
     }
     
     Log "PostgreSQL configurado com sucesso!"
@@ -180,7 +187,7 @@ function Setup-Environment {
     Log "Configurando variáveis de ambiente..."
     
     # Backend .env
-    $backendEnvPath = "$APP_DIR\backend\.env"
+    $backendEnvPath = Join-Path $APP_DIR 'backend\.env'
     if (Test-Path $backendEnvPath) {
         Warn "Arquivo .env do backend já existe. Deseja sobrescrevê-lo?"
         $overwrite = Read-Host "Sobrescrever? (S/N)"
@@ -207,7 +214,7 @@ JWT_SECRET=$JWT_SECRET
 JWT_EXPIRES_IN=24h
 
 # Configurações do Frontend
-FRONTEND_URL=http://localhost:3000
+FRONTEND_URL=http://$Domain`:$FrontendPort
 
 # Configurações de Rate Limiting
 RATE_LIMIT_WINDOW_MS=900000
@@ -218,9 +225,9 @@ AUTH_RATE_LIMIT_MAX_REQUESTS=5
     Set-Content -Path $backendEnvPath -Value $backendEnvContent
     
     # Frontend .env
-    $frontendEnvPath = "$APP_DIR\frontend\.env"
+    $frontendEnvPath = Join-Path $APP_DIR 'frontend\.env'
     if (Test-Path $frontendEnvPath) {
-        Warn "Arquivo .env do frontend já existe. Deseja sobrescrevê-lo?"
+        Warn "Arquivo .env do frontend ja existe. Deseja sobrescreve-lo?"
         $overwrite = Read-Host "Sobrescrever? (S/N)"
         if ($overwrite -ne "S" -and $overwrite -ne "s") {
             Log "Mantendo arquivo .env existente."
@@ -230,13 +237,13 @@ AUTH_RATE_LIMIT_MAX_REQUESTS=5
     
     $frontendEnvContent = @"
 # Frontend Environment Variables
-REACT_APP_API_BASE_URL=http://localhost:5000
+REACT_APP_API_BASE_URL=http://$Domain`:$ApiPort
 REACT_APP_ENVIRONMENT=development
 "@
     
     Set-Content -Path $frontendEnvPath -Value $frontendEnvContent
     
-    Log "Variáveis de ambiente configuradas com sucesso!"
+    Log "Variaveis de ambiente configuradas com sucesso!"
 }
 
 # Função para instalar dependências da aplicação
@@ -245,12 +252,12 @@ function Install-AppDependencies {
     
     # Backend
     Info "Instalando dependências do backend..."
-    Set-Location "$APP_DIR\backend"
+    Set-Location (Join-Path $APP_DIR "backend")
     npm install
     
     # Frontend
     Info "Instalando dependências do frontend..."
-    Set-Location "$APP_DIR\frontend"
+    Set-Location (Join-Path $APP_DIR "frontend")
     npm install
     
     # Voltar para o diretório original
@@ -265,14 +272,14 @@ function Build-Application {
     
     # Backend
     Info "Compilando backend..."
-    Set-Location "$APP_DIR\backend"
+    Set-Location (Join-Path $APP_DIR "backend")
     npm run build
     
     # Frontend (opcional)
     $buildFrontend = Read-Host "Deseja compilar o frontend para produção? (S/N)"
     if ($buildFrontend -eq "S" -or $buildFrontend -eq "s") {
         Info "Compilando frontend..."
-        Set-Location "$APP_DIR\frontend"
+        Set-Location (Join-Path $APP_DIR "frontend")
         npm run build
     }
     
@@ -287,7 +294,7 @@ function Setup-PM2 {
     Log "Configurando PM2..."
     
     # Criar arquivo de configuração do PM2
-    $ecosystemPath = "$APP_DIR\ecosystem.config.js"
+    $ecosystemPath = Join-Path $APP_DIR 'ecosystem.config.js'
     $ecosystemContent = @"
 module.exports = {
   apps: [
@@ -321,7 +328,8 @@ module.exports = {
     Set-Content -Path $ecosystemPath -Value $ecosystemContent
     
     # Criar script de gerenciamento
-    $scriptPath = "$APP_DIR\$APP_NAME.ps1"
+    $scriptName = "$APP_NAME.ps1"
+    $scriptPath = Join-Path $APP_DIR $scriptName
     $scriptContent = @"
 param(
     [Parameter(Mandatory=`$true)]
@@ -362,9 +370,9 @@ function Monitor-App {
 }
 
 function Start-DevMode {
-    `$backendProcess = Start-Process powershell -ArgumentList "-NoExit", "-Command", "Set-Location '$APP_DIR\backend'; npm run dev" -PassThru
-    `$websocketProcess = Start-Process powershell -ArgumentList "-NoExit", "-Command", "Set-Location '$APP_DIR\backend'; npm run websocket:dev" -PassThru
-    `$frontendProcess = Start-Process powershell -ArgumentList "-NoExit", "-Command", "Set-Location '$APP_DIR\frontend'; npm start" -PassThru
+    `$backendProcess = Start-Process powershell -ArgumentList "-NoExit", "-Command", "Set-Location '$APP_DIR/backend'; npm run dev" -PassThru
+`$websocketProcess = Start-Process powershell -ArgumentList "-NoExit", "-Command", "Set-Location '$APP_DIR/backend'; npm run websocket:dev" -PassThru
+`$frontendProcess = Start-Process powershell -ArgumentList "-NoExit", "-Command", "Set-Location '$APP_DIR/frontend'; npm start" -PassThru
     
     Write-Host "Aplicação iniciada em modo de desenvolvimento!"
     Write-Host "Pressione qualquer tecla para encerrar todos os processos..."
@@ -417,7 +425,7 @@ function Create-AdminUser {
     $env:ADMIN_PASSWORD = $adminPassword
     
     # Executar script de setup do banco de dados
-    Set-Location "$APP_DIR\backend"
+    Set-Location (Join-Path $APP_DIR "backend")
     node scripts/setup-prod-db.js
     
     # Limpar variáveis de ambiente sensíveis
@@ -455,8 +463,8 @@ function Show-FinalInfo {
     
     Write-Host ""
     Write-Host "${Blue}🌐 Acesso à Aplicação:${NC}"
-    Write-Host "  • API: http://localhost:5000"
-    Write-Host "  • Frontend: http://localhost:3000"
+    Write-Host "  • API: http://$Domain`:$ApiPort"
+    Write-Host "  • Frontend: http://$Domain`:$FrontendPort"
     
     Write-Host ""
     Write-Host "${Blue}📊 Endpoints Principais:${NC}"
@@ -479,9 +487,9 @@ function Show-FinalInfo {
     if ($startApp -eq "S" -or $startApp -eq "s") {
         $startDev = Read-Host "Iniciar em modo de desenvolvimento? (S/N)"
         if ($startDev -eq "S" -or $startDev -eq "s") {
-            & "$APP_DIR\$APP_NAME.ps1" dev
+            & (Join-Path $APP_DIR "$APP_NAME.ps1") dev
         } else {
-            & "$APP_DIR\$APP_NAME.ps1" start
+            & (Join-Path $APP_DIR "$APP_NAME.ps1") start
         }
     }
 }

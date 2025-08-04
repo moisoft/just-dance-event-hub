@@ -2,6 +2,36 @@
 # Script de Validação da Configuração de Produção - Ubuntu Server
 # Just Dance Event Hub
 
+# Parâmetros
+DOMAIN="localhost"
+API_PORT=3000
+
+# Processar argumentos
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -d|--domain)
+            DOMAIN="$2"
+            shift 2
+            ;;
+        -p|--port)
+            API_PORT="$2"
+            shift 2
+            ;;
+        -h|--help)
+            echo "Uso: $0 [opções]"
+            echo "Opções:"
+            echo "  -d, --domain DOMINIO  Domínio para validar (padrão: localhost)"
+            echo "  -p, --port PORTA     Porta da API (padrão: 3000)"
+            echo "  -h, --help           Mostrar esta ajuda"
+            exit 0
+            ;;
+        *)
+            echo "Opção desconhecida: $1"
+            exit 1
+            ;;
+    esac
+done
+
 set -e
 
 # Cores para output
@@ -308,10 +338,16 @@ check_http_connectivity() {
     done
     
     # Testar endpoints
-    local endpoints=(
-        "http://localhost:3001/health"
-        "http://localhost/health"
-    )
+    local endpoints=()
+    
+    # Adicionar endpoint baseado no domínio configurado
+    if [ "$DOMAIN" = "localhost" ]; then
+        endpoints+=("http://localhost:$API_PORT/health")
+        endpoints+=("http://localhost/health")
+    else
+        endpoints+=("http://$DOMAIN/health")
+        endpoints+=("https://$DOMAIN/health")
+    fi
     
     for endpoint in "${endpoints[@]}"; do
         if curl -s -f "$endpoint" &>/dev/null; then

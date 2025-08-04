@@ -4,6 +4,42 @@
 # Versão: 1.0.0
 # Autor: Just Dance Event Hub Team
 
+# Parâmetros
+DOMAIN="localhost"
+API_PORT=3000
+FRONTEND_PORT=3000
+
+# Processar argumentos
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -d|--domain)
+            DOMAIN="$2"
+            shift 2
+            ;;
+        -p|--port)
+            API_PORT="$2"
+            shift 2
+            ;;
+        -f|--frontend-port)
+            FRONTEND_PORT="$2"
+            shift 2
+            ;;
+        -h|--help)
+            echo "Uso: $0 [opções]"
+            echo "Opções:"
+            echo "  -d, --domain DOMINIO        Domínio para testar (padrão: localhost)"
+            echo "  -p, --port PORTA           Porta da API (padrão: 3000)"
+            echo "  -f, --frontend-port PORTA  Porta do frontend (padrão: 3000)"
+            echo "  -h, --help                 Mostrar esta ajuda"
+            exit 0
+            ;;
+        *)
+            echo "Opção desconhecida: $1"
+            exit 1
+            ;;
+    esac
+done
+
 set -e  # Parar em caso de erro
 
 # Cores para output
@@ -278,10 +314,10 @@ test_api() {
     
     # Verificar se a aplicação está respondendo
     if command -v curl &> /dev/null; then
-        # Tentar localhost primeiro
-        if curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/api/health | grep -q "200"; then
-            log "API respondendo em localhost:3000"
-            API_URL="http://localhost:3000"
+        # Testar API com domínio configurado
+        API_URL="http://$DOMAIN:$API_PORT"
+        if curl -s -o /dev/null -w "%{http_code}" "$API_URL/api/health" | grep -q "200"; then
+            log "API respondendo em $API_URL"
         else
             # Tentar com Nginx se disponível
             if command -v nginx &> /dev/null; then
@@ -415,4 +451,4 @@ main() {
 }
 
 # Executar função principal
-main "$@" 
+main "$@"

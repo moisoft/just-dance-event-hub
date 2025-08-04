@@ -259,7 +259,11 @@ function Set-Monitoring {
     $healthCheckScript = @"
 # Health Check Script
 `$response = try {
-    Invoke-RestMethod -Uri "http://localhost:3000/health" -TimeoutSec 10
+    if ([string]::IsNullOrEmpty($Domain)) {
+        Invoke-RestMethod -Uri "http://localhost:3000/health" -TimeoutSec 10
+    } else {
+        Invoke-RestMethod -Uri "https://$Domain/health" -TimeoutSec 10
+    }
 } catch {
     Write-Error "Health check failed: `$_"
     exit 1

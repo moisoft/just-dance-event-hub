@@ -72,8 +72,9 @@ pm2 startup
 pm2 status
 pm2 logs just-dance-hub
 
-# Testar API
-curl http://localhost:3000/api/health
+# Testar API (substitua SEU_ENDERECO_WEB pelo endereço do seu servidor)
+curl http://SEU_ENDERECO_WEB:3000/api/health
+# Exemplo: curl http://meuservidor.com:3000/api/health
 ```
 
 ### 🔧 Comandos Úteis
@@ -181,4 +182,4 @@ pm2 restart just-dance-hub
 
 ---
 
-**🎉 Deploy concluído! A API está pronta para uso em produção.** 
+**🎉 Deploy concluído! A API está pronta para uso em produção.**

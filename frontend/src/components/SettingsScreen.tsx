@@ -3,9 +3,10 @@ import { User } from '../types';
 
 interface SettingsScreenProps {
   user: User;
+  onNavigate: (screen: string) => void;
 }
 
-const SettingsScreen: React.FC<SettingsScreenProps> = ({ user }) => {
+const SettingsScreen: React.FC<SettingsScreenProps> = ({ user, onNavigate }) => {
   const [rewardCode, setRewardCode] = useState('');
   const [notifications, setNotifications] = useState(true);
   const [soundEffects, setSoundEffects] = useState(true);
@@ -76,7 +77,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ user }) => {
               
               <button
                 className="w-full bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
-                onClick={() => alert('Navegar para tela de edição de perfil (simulado)')}
+                onClick={() => onNavigate('editProfile')}
               >
                 <span className="flex items-center justify-center gap-2">
                   <span className="text-lg">✏️</span>

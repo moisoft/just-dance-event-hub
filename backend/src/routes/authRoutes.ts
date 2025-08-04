@@ -11,5 +11,6 @@ router.post('/login', validate(userSchemas.login), AuthController.login);
 
 // Rotas protegidas
 router.get('/profile', authMiddleware, AuthController.getProfile);
+router.put('/profile', authMiddleware, AuthController.updateProfile);
 
 export default router;

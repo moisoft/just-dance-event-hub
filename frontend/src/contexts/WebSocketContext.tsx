@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode, useRef } from 'react';
 import { useAuth } from './AuthContext';
 
 interface WebSocketContextType {
@@ -34,6 +34,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
   const [isConnected, setIsConnected] = useState(false);
   const [lastMessage, setLastMessage] = useState<any>(null);
   const { token, isAuthenticated } = useAuth();
+  const socketRef = useRef<WebSocket | null>(null);
 
   const connectWebSocket = useCallback(() => {
     if (!isAuthenticated || !token) return;
@@ -65,9 +66,14 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
     ws.onclose = () => {
       console.log('WebSocket disconnected');
       setIsConnected(false);
-      // Attempt to reconnect after a delay
+      // Clear the socket reference
+      if (socketRef.current === ws) {
+        socketRef.current = null;
+        setSocket(null);
+      }
+      // Attempt to reconnect after a delay only if still authenticated
       setTimeout(() => {
-        if (isAuthenticated) {
+        if (isAuthenticated && !socketRef.current) {
           connectWebSocket();
         }
       }, 5000);
@@ -79,22 +85,27 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
     };
 
     setSocket(ws);
+    socketRef.current = ws;
 
     return () => {
+      if (socketRef.current === ws) {
+        socketRef.current = null;
+      }
       ws.close();
     };
   }, [url, token, isAuthenticated]);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && !socketRef.current) {
       const cleanup = connectWebSocket();
       return cleanup;
-    } else if (socket) {
-      socket.close();
+    } else if (!isAuthenticated && socketRef.current) {
+      socketRef.current.close();
+      socketRef.current = null;
       setSocket(null);
       setIsConnected(false);
     }
-  }, [isAuthenticated, connectWebSocket, socket]);
+  }, [isAuthenticated, connectWebSocket]);
 
   const sendMessage = useCallback(
     (type: string, data: any) => {

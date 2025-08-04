@@ -7,6 +7,7 @@ import CompetitionsHubScreen from './components/CompetitionsHubScreen';
 import TournamentRegistrationScreen from './components/TournamentRegistrationScreen';
 import RegistrationConfirmationScreen from './components/RegistrationConfirmationScreen';
 import SettingsScreen from './components/SettingsScreen';
+import EditProfileScreen from './components/EditProfileScreen';
 import StaffPanelScreen from './components/StaffPanelScreen';
 import AdminScreen from './components/AdminScreen';
 import ManageSongsScreen from './components/ManageSongsScreen';
@@ -32,6 +33,7 @@ function AppContent() {
   const [registeredTournament, setRegisteredTournament] = useState<Tournament | null>(null);
   const [eventCode, setEventCode] = useState('');
   const [adminSubScreen, setAdminSubScreen] = useState<'main' | 'songs' | 'users' | 'avatars'>('main');
+  const [showEditProfile, setShowEditProfile] = useState(false);
   const { dispatch } = useEvent();
 
   useEffect(() => {
@@ -101,6 +103,24 @@ function AppContent() {
     setRegisteredTournament(null);
     setEventCode('');
     setAdminSubScreen('main');
+    setShowEditProfile(false);
+  };
+
+  const handleNavigateToEditProfile = (screen: string) => {
+    if (screen === 'editProfile') {
+      setShowEditProfile(true);
+    }
+  };
+
+  const handleSaveProfile = (updatedUser: User) => {
+    setCurrentUser(updatedUser);
+    setShowEditProfile(false);
+    // TODO: Aqui você pode adicionar a chamada para a API para salvar no backend
+    console.log('Perfil atualizado:', updatedUser);
+  };
+
+  const handleBackFromEditProfile = () => {
+    setShowEditProfile(false);
   };
 
   const renderScreen = () => {
@@ -140,7 +160,16 @@ function AppContent() {
                 <CompetitionsHubScreen onSelectTournament={setSelectedTournament} />
               )
             )}
-            {activeScreen === 'settings' && <SettingsScreen user={currentUser} />}
+            {activeScreen === 'settings' && !showEditProfile && (
+              <SettingsScreen user={currentUser} onNavigate={handleNavigateToEditProfile} />
+            )}
+            {activeScreen === 'settings' && showEditProfile && (
+              <EditProfileScreen
+                user={currentUser}
+                onSave={handleSaveProfile}
+                onBack={handleBackFromEditProfile}
+              />
+            )}
             <BottomNavBar activeScreen={activeScreen} onScreenChange={setActiveScreen} />
           </div>
         );

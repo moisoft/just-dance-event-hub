@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useEvent } from '../contexts/EventContext';
-import { QueueItem, User, Tournament } from '../types';
+import { QueueItem, User } from '../types';
 
 interface WebSocketMessage {
   type: string;
@@ -17,11 +17,111 @@ interface UseWebSocketProps {
 }
 
 export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) => {
-  const { state, dispatch, addNotification } = useEvent();
+  const { state, dispatch } = useEvent();
   const wsRef = useRef<WebSocket | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const reconnectAttempts = useRef(0);
   const maxReconnectAttempts = 5;
+
+  // Gerenciamento de listeners de eventos
+  const eventListeners = useRef<Record<string, Array<(data: any) => void>>>({});
+
+  // Função para processar mensagens recebidas
+  const handleMessageWithListeners = useCallback((message: WebSocketMessage) => {
+    console.log('Mensagem recebida:', message);
+
+    switch (message.type) {
+      case 'QUEUE_UPDATED':
+        // O backend envia { queue: [...], update: {...} }
+        // Precisamos extrair apenas a fila
+        const queueData = message.payload.queue || message.payload;
+        dispatch({ type: 'UPDATE_QUEUE', payload: queueData });
+        break;
+
+      case 'QUEUE_ITEM_ADDED':
+        dispatch({ type: 'ADD_QUEUE_ITEM', payload: message.payload });
+        break;
+
+      case 'QUEUE_ITEM_STATUS_CHANGED':
+        const { id, status, updates } = message.payload;
+        dispatch({ type: 'UPDATE_QUEUE_ITEM', payload: { id, updates: { status, ...updates } } });
+        break;
+
+      case 'CURRENTLY_PLAYING_CHANGED':
+        dispatch({ type: 'SET_CURRENTLY_PLAYING', payload: message.payload });
+        break;
+
+      case 'TOURNAMENT_UPDATED':
+        dispatch({ type: 'UPDATE_TOURNAMENTS', payload: message.payload });
+        break;
+
+      case 'USER_JOINED':
+        const joinedUser = message.payload as User;
+        dispatch({ 
+          type: 'UPDATE_CONNECTED_USERS', 
+          payload: [...state.connectedUsers, joinedUser]
+        });
+        break;
+
+      case 'USER_LEFT':
+        const leftUserId = message.payload as string;
+        dispatch({ 
+          type: 'UPDATE_CONNECTED_USERS', 
+          payload: state.connectedUsers.filter(u => u.id !== leftUserId)
+        });
+        break;
+
+      case 'ADMIN_ANNOUNCEMENT':
+        dispatch({
+          type: 'ADD_NOTIFICATION',
+          payload: {
+            id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+            type: 'info',
+            message: message.payload.message,
+            timestamp: new Date(),
+            from: 'admin'
+          }
+        });
+        break;
+
+      case 'STAFF_NOTIFICATION':
+        if (userRole === 'staff' || userRole === 'admin') {
+          dispatch({
+            type: 'ADD_NOTIFICATION',
+            payload: {
+              id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+              type: 'info',
+              message: message.payload.message,
+              timestamp: new Date(),
+              from: 'staff'
+            }
+          });
+        }
+        break;
+
+      case 'SYSTEM_NOTIFICATION':
+        dispatch({
+          type: 'ADD_NOTIFICATION',
+          payload: {
+            id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+            type: message.payload.type || 'info',
+            message: message.payload.message,
+            timestamp: new Date(),
+            from: 'system'
+          }
+        });
+        break;
+
+      default:
+         console.log('Tipo de mensagem não reconhecido:', message.type);
+     }
+     
+     // Depois, dispara os listeners registrados para este tipo de mensagem
+     const listeners = eventListeners.current[message.type];
+     if (listeners && listeners.length > 0) {
+       listeners.forEach(listener => listener(message.payload));
+     }
+   }, [dispatch, userRole, state.connectedUsers]);
 
   // Função para conectar ao WebSocket
   const connect = useCallback(() => {
@@ -48,7 +148,7 @@ export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) =
       wsRef.current.onmessage = (event) => {
         try {
           const message: WebSocketMessage = JSON.parse(event.data);
-          handleMessage(message);
+          handleMessageWithListeners(message);
         } catch (error) {
           console.error('Erro ao processar mensagem WebSocket:', error);
         }
@@ -56,18 +156,24 @@ export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) =
 
       wsRef.current.onclose = () => {
         console.log('WebSocket desconectado');
-        dispatch({ type: 'SET_CONNECTION_STATUS', payload: false });
+        
+        // Apenas atualizar o status se realmente mudou
+        if (state.isConnected) {
+          dispatch({ type: 'SET_CONNECTION_STATUS', payload: false });
+        }
         
         // Tentar reconectar se não foi um fechamento intencional
         if (reconnectAttempts.current < maxReconnectAttempts) {
           const delay = Math.min(1000 * Math.pow(2, reconnectAttempts.current), 30000);
           reconnectTimeoutRef.current = setTimeout(() => {
             reconnectAttempts.current++;
-            connect();
+            // Verificar se ainda precisamos reconectar antes de chamar connect
+            if (!wsRef.current || wsRef.current.readyState === WebSocket.CLOSED) {
+              connect();
+            }
           }, delay);
         } else {
           console.error('Máximo de tentativas de reconexão atingido');
-          // Não chamar addNotification aqui para evitar loop infinito
         }
       };
 
@@ -81,104 +187,9 @@ export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) =
       console.error('Erro ao conectar WebSocket:', error);
       // Não chamar addNotification aqui para evitar loop infinito
     }
-  }, [eventId, userRole, userId, dispatch, addNotification]);
+  }, [eventId, userRole, userId, dispatch, handleMessageWithListeners, state]);
 
-  // Função para processar mensagens recebidas
-  const handleMessage = useCallback((message: WebSocketMessage) => {
-    console.log('Mensagem recebida:', message);
 
-    switch (message.type) {
-      case 'QUEUE_UPDATED':
-        dispatch({ type: 'UPDATE_QUEUE', payload: message.payload });
-        // Não chamar addNotification aqui para evitar possíveis loops
-        break;
-
-      case 'QUEUE_ITEM_ADDED':
-        dispatch({ type: 'ADD_QUEUE_ITEM', payload: message.payload });
-        // Não chamar addNotification aqui para evitar possíveis loops
-        break;
-
-      case 'QUEUE_ITEM_STATUS_CHANGED':
-        const { id, status, updates } = message.payload;
-        dispatch({ type: 'UPDATE_QUEUE_ITEM', payload: { id, updates: { status, ...updates } } });
-        // Não chamar addNotification aqui para evitar possíveis loops
-        break;
-
-      case 'CURRENTLY_PLAYING_CHANGED':
-        dispatch({ type: 'SET_CURRENTLY_PLAYING', payload: message.payload });
-        // Não chamar addNotification aqui para evitar possíveis loops
-        break;
-
-      case 'TOURNAMENT_UPDATED':
-        dispatch({ type: 'UPDATE_TOURNAMENTS', payload: message.payload });
-        // Não chamar addNotification aqui para evitar possíveis loops
-        break;
-
-      case 'USER_JOINED':
-        const joinedUser = message.payload as User;
-        dispatch({ 
-          type: 'UPDATE_CONNECTED_USERS', 
-          payload: [...state.connectedUsers, joinedUser]
-        });
-        // Não chamar addNotification aqui para evitar possíveis loops
-        break;
-
-      case 'USER_LEFT':
-        const leftUserId = message.payload as string;
-        dispatch({ 
-          type: 'UPDATE_CONNECTED_USERS', 
-          payload: state.connectedUsers.filter(u => u.id !== leftUserId)
-        });
-        break;
-
-      case 'ADMIN_ANNOUNCEMENT':
-        // Adicionar diretamente ao estado em vez de chamar addNotification
-        dispatch({
-          type: 'ADD_NOTIFICATION',
-          payload: {
-            id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
-            type: 'info',
-            message: message.payload.message,
-            timestamp: new Date(),
-            from: 'admin'
-          }
-        });
-        break;
-
-      case 'STAFF_NOTIFICATION':
-        if (userRole === 'staff' || userRole === 'admin') {
-          // Adicionar diretamente ao estado em vez de chamar addNotification
-          dispatch({
-            type: 'ADD_NOTIFICATION',
-            payload: {
-              id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
-              type: 'info',
-              message: message.payload.message,
-              timestamp: new Date(),
-              from: 'staff'
-            }
-          });
-        }
-        break;
-
-      case 'SYSTEM_NOTIFICATION':
-        // Adicionar diretamente ao estado em vez de chamar addNotification
-        dispatch({
-          type: 'ADD_NOTIFICATION',
-          payload: {
-            id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
-            type: message.payload.type || 'info',
-            message: message.payload.message,
-            timestamp: new Date(),
-            from: 'system'
-          }
-        });
-        break;
-
-      default:
-        console.log('Tipo de mensagem não reconhecido:', message.type);
-    }
-  }, [dispatch, addNotification, userRole, state.connectedUsers]);
 
   // Função para enviar mensagens
   const sendMessage = useCallback((type: string, payload: any) => {
@@ -196,7 +207,7 @@ export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) =
       // Não chamar addNotification aqui para evitar loop infinito
       connect();
     }
-  }, [userRole, eventId, addNotification, connect]);
+  }, [userRole, eventId, connect]);
 
   // Funções específicas para diferentes ações
   const updateQueueItemStatus = useCallback((itemId: string, status: string, additionalUpdates?: any) => {
@@ -253,9 +264,6 @@ export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) =
     }
   }, [eventId, connect]);
 
-  // Gerenciamento de listeners de eventos
-  const eventListeners = useRef<Record<string, Array<(data: any) => void>>>({});
-
   // Função para registrar um listener de evento
   const on = useCallback((eventType: string, callback: (data: any) => void) => {
     if (!eventListeners.current[eventType]) {
@@ -271,18 +279,6 @@ export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) =
       listener => listener !== callback
     );
   }, []);
-
-  // Modificar handleMessage para disparar os listeners registrados
-  const handleMessageWithListeners = useCallback((message: WebSocketMessage) => {
-    // Primeiro, processa a mensagem normalmente
-    handleMessage(message);
-    
-    // Depois, dispara os listeners registrados para este tipo de mensagem
-    const listeners = eventListeners.current[message.type];
-    if (listeners && listeners.length > 0) {
-      listeners.forEach(listener => listener(message.payload));
-    }
-  }, [handleMessage]);
 
   // Atualizar a função onmessage para usar handleMessageWithListeners
   useEffect(() => {

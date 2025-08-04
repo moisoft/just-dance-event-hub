@@ -2,6 +2,13 @@
 # Versão: 1.0.0
 # Autor: Just Dance Event Hub Team
 
+# Parâmetros
+param(
+    [string]$Domain = "localhost",
+    [int]$ApiPort = 5000,
+    [int]$FrontendPort = 3000
+)
+
 # Cores para output
 $Green = "\033[0;32m"
 $Yellow = "\033[1;33m"
@@ -251,12 +258,13 @@ function Test-API {
     
     # Verificar se a aplicação está respondendo
     try {
-        $response = Invoke-WebRequest -Uri "http://localhost:5000/api/health" -UseBasicParsing -ErrorAction SilentlyContinue
+        $apiBaseUrl = "http://$Domain:$ApiPort"
+        $response = Invoke-WebRequest -Uri "$apiBaseUrl/api/health" -UseBasicParsing -ErrorAction SilentlyContinue
         if ($response.StatusCode -eq 200) {
-            Log "API respondendo em localhost:5000"
+            Log "API respondendo em $apiBaseUrl"
             
             # Testar endpoints específicos
-            $healthResponse = Invoke-WebRequest -Uri "http://localhost:5000/api/health" -UseBasicParsing -ErrorAction SilentlyContinue
+            $healthResponse = Invoke-WebRequest -Uri "$apiBaseUrl/api/health" -UseBasicParsing -ErrorAction SilentlyContinue
             if ($healthResponse.StatusCode -eq 200) {
                 Log "Endpoint /api/health OK"
             } else {
@@ -265,7 +273,7 @@ function Test-API {
             
             # Teste de eventos (pode retornar 401 se não autenticado, mas deve responder)
             try {
-                $eventsResponse = Invoke-WebRequest -Uri "http://localhost:5000/api/events" -UseBasicParsing -ErrorAction SilentlyContinue
+                $eventsResponse = Invoke-WebRequest -Uri "$apiBaseUrl/api/events" -UseBasicParsing -ErrorAction SilentlyContinue
                 Log "Endpoint /api/events respondendo (HTTP $($eventsResponse.StatusCode))"
             } catch {
                 if ($_.Exception.Response.StatusCode.value__ -eq 401) {
@@ -283,9 +291,10 @@ function Test-API {
     
     # Verificar frontend
     try {
-        $frontendResponse = Invoke-WebRequest -Uri "http://localhost:3000" -UseBasicParsing -ErrorAction SilentlyContinue
+        $frontendUrl = "http://$Domain:$FrontendPort"
+        $frontendResponse = Invoke-WebRequest -Uri "$frontendUrl" -UseBasicParsing -ErrorAction SilentlyContinue
         if ($frontendResponse.StatusCode -eq 200) {
-            Log "Frontend respondendo em localhost:3000"
+            Log "Frontend respondendo em $frontendUrl"
         } else {
             Warn "Frontend respondendo com status $($frontendResponse.StatusCode)"
         }

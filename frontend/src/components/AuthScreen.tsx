@@ -19,7 +19,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
     try {
       let response;
       if (isLogin) {
-        response = await authApi.login({ email, password });
+        response = await authApi.mockLogin({ email, password });
       } else {
         response = await authApi.register({ email, password, nickname });
       }

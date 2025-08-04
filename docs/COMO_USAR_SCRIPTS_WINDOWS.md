@@ -85,8 +85,9 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 # 6. Verificar instalação
 .\health-check-windows.ps1
 
-# 7. Testar API
-Invoke-WebRequest -Uri http://localhost:5000/api/health
+# 7. Testar API (substitua SEU_ENDERECO_WEB pelo endereço do seu servidor)
+Invoke-WebRequest -Uri http://SEU_ENDERECO_WEB:5000/api/health
+# Exemplo: Invoke-WebRequest -Uri http://meuservidor.com:5000/api/health
 ```
 
 ## 🔧 Comandos de Gerenciamento
