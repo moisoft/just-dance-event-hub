@@ -1,29 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import AuthScreen from './components/AuthScreen';
-import EventHubScreen from './components/EventHubScreen';
-import PlayerDashboard from './components/PlayerDashboard';
-import MusicSelectionScreen from './components/MusicSelectionScreen';
-import CompetitionsHubScreen from './components/CompetitionsHubScreen';
-import TournamentRegistrationScreen from './components/TournamentRegistrationScreen';
-import RegistrationConfirmationScreen from './components/RegistrationConfirmationScreen';
-import SettingsScreen from './components/SettingsScreen';
-import EditProfileScreen from './components/EditProfileScreen';
-import StaffPanelScreen from './components/StaffPanelScreen';
-import AdminScreen from './components/AdminScreen';
-import ManageSongsScreen from './components/ManageSongsScreen';
-import ManageUsersScreen from './components/ManageUsersScreen';
-import ManageAvatarsScreen from './components/ManageAvatarsScreen';
-import KioskScreen from './components/KioskScreen';
-import TeamHubScreen from './components/TeamHubScreen';
+import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
+
+// Lazy load components for better performance
+const AuthScreen = lazy(() => import('./components/AuthScreen'));
+const EventHubScreen = lazy(() => import('./components/EventHubScreen'));
+const PlayerDashboard = lazy(() => import('./components/PlayerDashboard'));
+const MusicSelectionScreen = lazy(() => import('./components/MusicSelectionScreen'));
+const CompetitionsHubScreen = lazy(() => import('./components/CompetitionsHubScreen'));
+const TournamentRegistrationScreen = lazy(() => import('./components/TournamentRegistrationScreen'));
+const RegistrationConfirmationScreen = lazy(() => import('./components/RegistrationConfirmationScreen'));
+const SettingsScreen = lazy(() => import('./components/SettingsScreen'));
+const EditProfileScreen = lazy(() => import('./components/EditProfileScreen'));
+const StaffPanelScreen = lazy(() => import('./components/StaffPanelScreen'));
+const AdminScreen = lazy(() => import('./components/AdminScreen'));
+const ManageSongsScreen = lazy(() => import('./components/ManageSongsScreen'));
+const ManageUsersScreen = lazy(() => import('./components/ManageUsersScreen'));
+const ManageAvatarsScreen = lazy(() => import('./components/ManageAvatarsScreen'));
+const KioskScreen = lazy(() => import('./components/KioskScreen'));
+const TeamHubScreen = lazy(() => import('./components/TeamHubScreen'));
+
+// Keep these components loaded immediately as they're always visible
 import BottomNavBar from './components/BottomNavBar';
 import NotificationCenter from './components/NotificationCenter';
 import ConnectionStatus from './components/ConnectionStatus';
+
+// Contexts
 import { EventProvider, useEvent } from './contexts/EventContext';
 import { WebSocketProvider } from './contexts/WebSocketContext';
 import { AuthProvider } from './contexts/AuthContext';
-import { User, AppState, InEventScreen, Tournament } from './types';
+
+// Types and data
+import type { User, AppState, InEventScreen, Tournament } from './types';
 import { mockTournaments } from './data/mockData';
 import { eventApi } from './api/api';
+
+// Loading component
+const LoadingSpinner: React.FC = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
+  </div>
+);
 
 function AppContent() {
   const [appState, setAppState] = useState<AppState>('auth');
@@ -42,7 +57,7 @@ function AppContent() {
     }
   }, [currentUser]);
 
-  const handleLogin = (user: User) => {
+  const handleLogin = useCallback((user: User) => {
     console.log('handleLogin chamado com usuário:', user);
     setCurrentUser(user);
     if (user.papel === 'admin') {
@@ -55,9 +70,9 @@ function AppContent() {
       console.log('Redirecionando para hub');
       setAppState('hub');
     }
-  };
+  }, []);
 
-  const handleEnterEvent = (code: string) => {
+  const handleEnterEvent = useCallback((code: string) => {
     setEventCode(code);
     setAppState('in_event');
     setActiveScreen('dashboard');
@@ -83,19 +98,19 @@ function AppContent() {
       .catch(error => {
         console.error('Error fetching event data:', error);
       });
-  };
+  }, [dispatch]);
 
-  const handleRegisterTournament = (tournamentId: string) => {
+  const handleRegisterTournament = useCallback((tournamentId: string) => {
     const tournament = mockTournaments.find(t => t.id === tournamentId);
-    if (tournament) {
-      tournament.registered_players.push(currentUser!.id); // Simulate registration
+    if (tournament && currentUser) {
+      tournament.registered_players.push(currentUser.id); // Simulate registration
       setRegisteredTournament(tournament);
       setAppState('in_event'); // Stay in event context
       setActiveScreen('competitions'); // Go back to competitions view
     }
-  };
+  }, [currentUser]);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     setCurrentUser(null);
     setAppState('auth');
     setActiveScreen('dashboard');
@@ -104,45 +119,54 @@ function AppContent() {
     setEventCode('');
     setAdminSubScreen('main');
     setShowEditProfile(false);
-  };
+  }, []);
 
-  const handleNavigateToEditProfile = (screen: string) => {
+  const handleNavigateToEditProfile = useCallback((screen: string) => {
     if (screen === 'editProfile') {
       setShowEditProfile(true);
     }
-  };
+  }, []);
 
-  const handleSaveProfile = (updatedUser: User) => {
+  const handleSaveProfile = useCallback((updatedUser: User) => {
     setCurrentUser(updatedUser);
     setShowEditProfile(false);
     // TODO: Aqui você pode adicionar a chamada para a API para salvar no backend
     console.log('Perfil atualizado:', updatedUser);
-  };
+  }, []);
 
-  const handleBackFromEditProfile = () => {
+  const handleBackFromEditProfile = useCallback(() => {
     setShowEditProfile(false);
-  };
+  }, []);
 
   const renderScreen = () => {
     // Se não há usuário logado, mostrar tela de autenticação
     if (!currentUser) {
-      return <AuthScreen onLogin={handleLogin} />;
+      return (
+        <Suspense fallback={<LoadingSpinner />}>
+          <AuthScreen onLogin={handleLogin} />
+        </Suspense>
+      );
     }
 
     switch (appState) {
       case 'hub':
-        return <EventHubScreen user={currentUser} onEnterEvent={handleEnterEvent} />;
+        return (
+          <Suspense fallback={<LoadingSpinner />}>
+            <EventHubScreen user={currentUser} onEnterEvent={handleEnterEvent} />
+          </Suspense>
+        );
       case 'in_event':
         return (
           <div className="flex flex-col min-h-screen pb-20">
-            {activeScreen === 'dashboard' && <PlayerDashboard user={currentUser} />}
-            {activeScreen === 'music' && (
-              <MusicSelectionScreen
-                user={currentUser}
-                onViewCompetitions={() => setActiveScreen('competitions')}
-                onNavigateToTeamHub={() => setAppState('team_hub')}
-              />
-            )}
+            <Suspense fallback={<LoadingSpinner />}>
+              {activeScreen === 'dashboard' && <PlayerDashboard user={currentUser} />}
+              {activeScreen === 'music' && (
+                <MusicSelectionScreen
+                  user={currentUser}
+                  onViewCompetitions={() => setActiveScreen('competitions')}
+                  onNavigateToTeamHub={() => setAppState('team_hub')}
+                />
+              )}
             {activeScreen === 'competitions' && (
               registeredTournament ? (
                 <RegistrationConfirmationScreen

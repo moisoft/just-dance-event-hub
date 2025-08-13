@@ -2,10 +2,14 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import compression from 'compression';
 import dotenv from 'dotenv';
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 
-// Importar rotas
+// Load environment variables first
+dotenv.config();
+
+// Import routes
 import authRoutes from './routes/authRoutes';
 import eventRoutes from './routes/eventRoutes';
 import queueRoutes from './routes/queueRoutes';
@@ -17,7 +21,7 @@ import adminRoutes from './routes/adminRoutes';
 import teamRoutes from './routes/teamRoutes';
 import competitionRoutes from './routes/competitionRoutes';
 
-// Importar middlewares
+// Import middlewares
 import { errorHandler } from './middlewares/errorHandler';
 import { i18nMiddleware } from './middlewares/i18nMiddleware';
 
@@ -34,16 +38,25 @@ import './models/teamMember';
 import './models/competition';
 import './models/competitionParticipant';
 
-// Importar configuração do banco
+// Import database configuration
 import { connectDB } from './utils/database';
-
-// Carregar variáveis de ambiente
-dotenv.config();
 
 const app = express();
 
-// Middleware de segurança
-app.use(helmet());
+// Security middleware
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https:"],
+    },
+  },
+}));
+
+// Compression middleware
+app.use(compression());
 
 // Middleware de internacionalização (deve vir antes dos rate limiters)
 app.use(i18nMiddleware);

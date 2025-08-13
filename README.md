@@ -1,5 +1,7 @@
 # 🎵 Just Dance Event Hub
 
+[![CI/CD Pipeline](https://github.com/moisoft/just-dance-event-hub/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/moisoft/just-dance-event-hub/actions)
+[![codecov](https://codecov.io/gh/moisoft/just-dance-event-hub/branch/main/graph/badge.svg)](https://codecov.io/gh/moisoft/just-dance-event-hub)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-4.9+-blue)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18+-blue)](https://reactjs.org/)
@@ -10,7 +12,7 @@
 
 > 🎮 **Uma plataforma completa e open source para gerenciamento de eventos de Just Dance**
 
-Uma plataforma completa para gerenciamento de eventos de Just Dance, incluindo sistema de filas, torneios, autenticação de usuários e muito mais. **100% Open Source** e construída com tecnologias modernas.
+Uma plataforma completa e moderna para gerenciamento de eventos de Just Dance, incluindo sistema de filas inteligentes, torneios competitivos, autenticação de usuários e dashboards interativos em tempo real. **100% Open Source** e construída com tecnologias modernas e práticas de desenvolvimento de ponta.
 
 ## 🌟 Características
 
