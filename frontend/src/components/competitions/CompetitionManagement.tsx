@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './CompetitionManagement.css';
+import { adminApi } from '../../api/api';
 
 interface Competition {
   id: number;
@@ -71,17 +72,12 @@ const CompetitionManagement: React.FC<CompetitionManagementProps> = ({ eventId, 
   const loadCompetitions = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/competitions/event/${eventId}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
+      const response = await adminApi.getCompetitions(eventId);
       
-      if (response.ok) {
-        const data = await response.json();
-        setCompetitions(data);
+      if (response.success && response.data) {
+        setCompetitions(response.data);
       } else {
-        setError('Erro ao carregar competições');
+        setError('Erro ao carregar competições: ' + (response.message || 'Erro desconhecido'));
       }
     } catch (err) {
       setError('Erro de conexão');
@@ -92,15 +88,10 @@ const CompetitionManagement: React.FC<CompetitionManagementProps> = ({ eventId, 
 
   const loadParticipants = async (competitionId: number) => {
     try {
-      const response = await fetch(`/api/competitions/${competitionId}/participants`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
+      const response = await adminApi.getCompetitionParticipants(competitionId);
       
-      if (response.ok) {
-        const data = await response.json();
-        setParticipants(data);
+      if (response.success && response.data) {
+        setParticipants(response.data);
       }
     } catch (err) {
       console.error('Erro ao carregar participantes:', err);
@@ -110,19 +101,12 @@ const CompetitionManagement: React.FC<CompetitionManagementProps> = ({ eventId, 
   const createCompetition = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/competitions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({
-          ...newCompetition,
-          id_evento: eventId
-        })
+      const response = await adminApi.createCompetition({
+        ...newCompetition,
+        id_evento: eventId
       });
 
-      if (response.ok) {
+      if (response.success) {
         setShowCreateModal(false);
         setNewCompetition({
           nome: '',
@@ -136,8 +120,7 @@ const CompetitionManagement: React.FC<CompetitionManagementProps> = ({ eventId, 
         });
         loadCompetitions();
       } else {
-        const errorData = await response.json();
-        setError(errorData.message || 'Erro ao criar competição');
+        setError(response.message || 'Erro ao criar competição');
       }
     } catch (err) {
       setError('Erro de conexão');
@@ -148,25 +131,17 @@ const CompetitionManagement: React.FC<CompetitionManagementProps> = ({ eventId, 
 
   const registerForCompetition = async (competitionId: number) => {
     try {
-      const response = await fetch(`/api/competitions/${competitionId}/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({
-          tipo_participacao: 'individual'
-        })
+      const response = await adminApi.registerForCompetition(competitionId, {
+        tipo_participacao: 'individual'
       });
 
-      if (response.ok) {
+      if (response.success) {
         loadCompetitions();
         if (selectedCompetition?.id === competitionId) {
           loadParticipants(competitionId);
         }
       } else {
-        const errorData = await response.json();
-        setError(errorData.message || 'Erro ao se inscrever na competição');
+        setError(response.message || 'Erro ao se inscrever na competição');
       }
     } catch (err) {
       setError('Erro de conexão');
@@ -175,18 +150,12 @@ const CompetitionManagement: React.FC<CompetitionManagementProps> = ({ eventId, 
 
   const startCompetition = async (competitionId: number) => {
     try {
-      const response = await fetch(`/api/competitions/${competitionId}/start`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
+      const response = await adminApi.startCompetition(competitionId);
 
-      if (response.ok) {
+      if (response.success) {
         loadCompetitions();
       } else {
-        const errorData = await response.json();
-        setError(errorData.message || 'Erro ao iniciar competição');
+        setError(response.message || 'Erro ao iniciar competição');
       }
     } catch (err) {
       setError('Erro de conexão');

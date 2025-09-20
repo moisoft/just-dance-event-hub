@@ -44,16 +44,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const validateToken = async () => {
       if (token) {
         try {
-          // Fetch user data
-          const response = await fetch(`${process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000'}/users/me`, {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          });
-          
-          if (response.ok) {
-            const userData = await response.json();
-            setUser(userData);
+          const response = await authApi.getProfile();
+          if (response.success && response.data) {
+            setUser(response.data);
           } else {
             throw new Error('Failed to validate token');
           }
@@ -72,9 +65,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await authApi.mockLogin({ email, password });
+      const response = await authApi.login(email, password);
       if (!response.success || !response.data) {
-        throw new Error(response.error || 'Login failed');
+        throw new Error(response.message || 'Login failed');
       }
       
       // Handle different response structures

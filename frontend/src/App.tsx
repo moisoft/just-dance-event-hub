@@ -26,7 +26,7 @@ import ConnectionStatus from './components/ConnectionStatus';
 // Contexts
 import { EventProvider, useEvent } from './contexts/EventContext';
 import { WebSocketProvider } from './contexts/WebSocketContext';
-import { AuthProvider } from './contexts/AuthContext';
+import { SupabaseAuthProvider, useSupabaseAuth } from './contexts/SupabaseAuthContext';
 
 // Types and data
 import type { User, AppState, InEventScreen, Tournament } from './types';
@@ -41,8 +41,8 @@ const LoadingSpinner: React.FC = () => (
 );
 
 function AppContent() {
+  const { user: currentUser, loading } = useSupabaseAuth();
   const [appState, setAppState] = useState<AppState>('auth');
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [activeScreen, setActiveScreen] = useState<InEventScreen>('dashboard');
   const [selectedTournament, setSelectedTournament] = useState<Tournament | null>(null);
   const [registeredTournament, setRegisteredTournament] = useState<Tournament | null>(null);
@@ -240,11 +240,11 @@ function AppContent() {
 function App() {
   return (
     <EventProvider>
-      <AuthProvider>
+      <SupabaseAuthProvider>
         <WebSocketProvider>
           <AppContent />
         </WebSocketProvider>
-      </AuthProvider>
+      </SupabaseAuthProvider>
     </EventProvider>
   );
 }

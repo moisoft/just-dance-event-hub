@@ -185,7 +185,26 @@ export const adminApi = {
   getModules: () => callApi('/admin/modules', 'GET'),
   createModule: (moduleData: any) => callApi('/admin/modules', 'POST', moduleData),
   updateModule: (id: string, moduleData: any) => callApi(`/admin/modules/${id}`, 'PUT', moduleData),
-  deleteModule: (id: string) => callApi(`/admin/modules/${id}`, 'DELETE')
+  deleteModule: (id: string) => callApi(`/admin/modules/${id}`, 'DELETE'),
+  
+  // Métodos específicos para competições
+  getCompetitions: (eventId?: number) => {
+    const token = localStorage.getItem('token');
+    const endpoint = eventId ? `/api/competitions/event/${eventId}` : '/admin/competitions';
+    return callApi(endpoint, 'GET', null, token);
+  },
+  getCompetitionParticipants: (competitionId: number) => {
+    const token = localStorage.getItem('token');
+    return callApi(`/api/competitions/${competitionId}/participants`, 'GET', null, token);
+  },
+  registerForCompetition: (competitionId: number, data: any) => {
+    const token = localStorage.getItem('token');
+    return callApi(`/api/competitions/${competitionId}/register`, 'POST', data, token);
+  },
+  startCompetition: (competitionId: number) => {
+    const token = localStorage.getItem('token');
+    return callApi(`/api/competitions/${competitionId}/start`, 'POST', null, token);
+  }
 };
 
 export const staffApi = {
