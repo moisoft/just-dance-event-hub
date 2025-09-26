@@ -511,7 +511,7 @@ export class StorageService {
     if (error) return { size: 0, error };
     
     const file = data?.find(f => f.name === path.split('/').pop());
-    return { size: file?.metadata?.size || 0, error: null };
+    return { size: file?.metadata?.['size'] || 0, error: null };
   }
 
   // Validar tipo de arquivo
@@ -540,12 +540,4 @@ export class StorageService {
   }
 }
 
-// Exportar todos os serviços
-export {
-  AuthService,
-  EventService,
-  QueueService,
-  TeamService,
-  CompetitionService,
-  StorageService
-};
+// As classes já são exportadas individualmente acima

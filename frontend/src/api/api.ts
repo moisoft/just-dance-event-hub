@@ -1,6 +1,6 @@
 // api.ts
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+const API_BASE_URL = process.env['REACT_APP_API_BASE_URL'] || 'http://localhost:5000';
 
 interface ApiResponse<T> {
   success: boolean;
@@ -156,11 +156,6 @@ export const adminApi = {
   updateEvent: (id: string, eventData: any) => callApi(`/admin/events/${id}`, 'PUT', eventData),
   deleteEvent: (id: string) => callApi(`/admin/events/${id}`, 'DELETE'),
   
-  getCompetitions: () => callApi('/admin/competitions', 'GET'),
-  createCompetition: (competitionData: any) => callApi('/admin/competitions', 'POST', competitionData),
-  updateCompetition: (id: string, competitionData: any) => callApi(`/admin/competitions/${id}`, 'PUT', competitionData),
-  deleteCompetition: (id: string) => callApi(`/admin/competitions/${id}`, 'DELETE'),
-  
   getMusics: () => callApi('/admin/musics', 'GET'),
   createMusic: (musicData: any) => callApi('/admin/musics', 'POST', musicData),
   updateMusic: (id: string, musicData: any) => callApi(`/admin/musics/${id}`, 'PUT', musicData),
@@ -193,6 +188,9 @@ export const adminApi = {
     const endpoint = eventId ? `/api/competitions/event/${eventId}` : '/admin/competitions';
     return callApi(endpoint, 'GET', null, token);
   },
+  createCompetition: (competitionData: any) => callApi('/admin/competitions', 'POST', competitionData),
+  updateCompetition: (id: string, competitionData: any) => callApi(`/admin/competitions/${id}`, 'PUT', competitionData),
+  deleteCompetition: (id: string) => callApi(`/admin/competitions/${id}`, 'DELETE'),
   getCompetitionParticipants: (competitionId: number) => {
     const token = localStorage.getItem('token');
     return callApi(`/api/competitions/${competitionId}/participants`, 'GET', null, token);

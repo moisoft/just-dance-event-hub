@@ -50,7 +50,7 @@ const PlayerDashboard: React.FC<PlayerDashboardProps> = ({ user }) => {
       "Assista aos coaches para pegar os movimentos mais sutis!",
       "Divirta-se! A alegria é a chave para uma ótima performance!"
     ];
-    setTip(tips[Math.floor(Math.random() * tips.length)]);
+    setTip(tips[Math.floor(Math.random() * tips.length)] || null);
     setLoadingTip(false);
   };
 

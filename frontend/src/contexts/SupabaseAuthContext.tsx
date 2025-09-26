@@ -1,15 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { AuthService } from '../services/supabaseService';
-
-interface User {
-  id: string;
-  email: string;
-  nickname?: string;
-  papel?: string;
-  xp?: number;
-  nivel?: number;
-  is_super_admin?: boolean;
-}
+import { User } from '../types';
 
 interface AuthContextType {
   user: User | null;
@@ -47,11 +38,12 @@ export const SupabaseAuthProvider: React.FC<SupabaseAuthProviderProps> = ({ chil
           setUser({
             id: user.id,
             email: user.email || '',
-            nickname: user.user_metadata?.nickname,
-            papel: user.user_metadata?.papel,
-            xp: user.user_metadata?.xp || 0,
-            nivel: user.user_metadata?.nivel || 1,
-            is_super_admin: user.user_metadata?.is_super_admin || false
+            nickname: user.user_metadata?.['nickname'],
+            papel: user.user_metadata?.['papel'],
+            xp: user.user_metadata?.['xp'] || 0,
+            nivel: user.user_metadata?.['nivel'] || 1,
+            is_super_admin: user.user_metadata?.['is_super_admin'] || false,
+            avatar_ativo_url: user.user_metadata?.['avatar_ativo_url'] || ''
           });
         }
       } catch (error) {
@@ -74,7 +66,8 @@ export const SupabaseAuthProvider: React.FC<SupabaseAuthProviderProps> = ({ chil
             papel: session.user.user_metadata?.papel,
             xp: session.user.user_metadata?.xp || 0,
             nivel: session.user.user_metadata?.nivel || 1,
-            is_super_admin: session.user.user_metadata?.is_super_admin || false
+            is_super_admin: session.user.user_metadata?.is_super_admin || false,
+            avatar_ativo_url: session.user.user_metadata?.avatar_ativo_url || ''
           });
         } else {
           setUser(null);

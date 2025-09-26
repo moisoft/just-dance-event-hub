@@ -28,7 +28,7 @@ interface WebSocketProviderProps {
 
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ 
   children, 
-  url = process.env.REACT_APP_WS_URL || 'ws://localhost:8080'
+  url = process.env['REACT_APP_WS_URL'] || 'ws://localhost:8080'
 }) => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -105,6 +105,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
       setSocket(null);
       setIsConnected(false);
     }
+    return undefined;
   }, [isAuthenticated, connectWebSocket]);
 
   const sendMessage = useCallback(

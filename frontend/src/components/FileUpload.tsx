@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useStorage } from '../hooks/useStorage';
-import { StorageService } from '../services/supabaseService';
+// import { StorageService } from '../services/supabaseService';
 
 interface FileUploadProps {
   bucket: 'avatars' | 'music-covers' | 'music-videos' | 'event-images' | 'user-uploads';
@@ -32,7 +32,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
     maxSizeMB,
     allowedTypes: accept.split(',').map(type => type.trim()),
     onSuccess: onUploadSuccess,
-    onError: onUploadError
+    onError: onUploadError || (() => {})
   });
 
   const handleFileSelect = async (file: File) => {

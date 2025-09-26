@@ -20,7 +20,7 @@ const MusicDetailModal: React.FC<MusicDetailModalProps> = ({ song, playerRanking
     
     // Auto-select first coach if there's only one
     if (song.coach_images.length === 1) {
-      setSelectedCoach(song.coach_images[0]);
+      setSelectedCoach(song.coach_images[0] || null);
     }
     
     // Add escape key listener

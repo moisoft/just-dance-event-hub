@@ -12,9 +12,9 @@ const SettingsScreen = lazy(() => import('./components/SettingsScreen'));
 const EditProfileScreen = lazy(() => import('./components/EditProfileScreen'));
 const StaffPanelScreen = lazy(() => import('./components/StaffPanelScreen'));
 const AdminScreen = lazy(() => import('./components/AdminScreen'));
-const ManageSongsScreen = lazy(() => import('./components/ManageSongsScreen'));
-const ManageUsersScreen = lazy(() => import('./components/ManageUsersScreen'));
-const ManageAvatarsScreen = lazy(() => import('./components/ManageAvatarsScreen'));
+// const ManageSongsScreen = lazy(() => import('./components/ManageSongsScreen'));
+// const ManageUsersScreen = lazy(() => import('./components/ManageUsersScreen'));
+// const ManageAvatarsScreen = lazy(() => import('./components/ManageAvatarsScreen'));
 const KioskScreen = lazy(() => import('./components/KioskScreen'));
 const TeamHubScreen = lazy(() => import('./components/TeamHubScreen'));
 
@@ -41,13 +41,12 @@ const LoadingSpinner: React.FC = () => (
 );
 
 function AppContent() {
-  const { user: currentUser, loading } = useSupabaseAuth();
+  const { user: currentUser } = useSupabaseAuth();
   const [appState, setAppState] = useState<AppState>('auth');
   const [activeScreen, setActiveScreen] = useState<InEventScreen>('dashboard');
   const [selectedTournament, setSelectedTournament] = useState<Tournament | null>(null);
   const [registeredTournament, setRegisteredTournament] = useState<Tournament | null>(null);
-  const [eventCode, setEventCode] = useState('');
-  const [adminSubScreen, setAdminSubScreen] = useState<'main' | 'songs' | 'users' | 'avatars'>('main');
+  // const [adminSubScreen, setAdminSubScreen] = useState<'main' | 'songs' | 'users' | 'avatars'>('main');
   const [showEditProfile, setShowEditProfile] = useState(false);
   const { dispatch } = useEvent();
 
@@ -59,7 +58,6 @@ function AppContent() {
 
   const handleLogin = useCallback((user: User) => {
     console.log('handleLogin chamado com usuário:', user);
-    setCurrentUser(user);
     if (user.papel === 'admin') {
       console.log('Redirecionando para admin_panel');
       setAppState('admin_panel');
@@ -73,7 +71,6 @@ function AppContent() {
   }, []);
 
   const handleEnterEvent = useCallback((code: string) => {
-    setEventCode(code);
     setAppState('in_event');
     setActiveScreen('dashboard');
     
@@ -111,13 +108,11 @@ function AppContent() {
   }, [currentUser]);
 
   const handleLogout = useCallback(() => {
-    setCurrentUser(null);
     setAppState('auth');
     setActiveScreen('dashboard');
     setSelectedTournament(null);
     setRegisteredTournament(null);
-    setEventCode('');
-    setAdminSubScreen('main');
+    // setAdminSubScreen('main');
     setShowEditProfile(false);
   }, []);
 
@@ -128,7 +123,6 @@ function AppContent() {
   }, []);
 
   const handleSaveProfile = useCallback((updatedUser: User) => {
-    setCurrentUser(updatedUser);
     setShowEditProfile(false);
     // TODO: Aqui você pode adicionar a chamada para a API para salvar no backend
     console.log('Perfil atualizado:', updatedUser);
@@ -167,33 +161,34 @@ function AppContent() {
                   onNavigateToTeamHub={() => setAppState('team_hub')}
                 />
               )}
-            {activeScreen === 'competitions' && (
-              registeredTournament ? (
-                <RegistrationConfirmationScreen
-                  tournament={registeredTournament}
-                  onBackToCompetitions={() => setRegisteredTournament(null)}
-                />
-              ) : selectedTournament ? (
-                <TournamentRegistrationScreen
-                  tournament={selectedTournament}
+              {activeScreen === 'competitions' && (
+                registeredTournament ? (
+                  <RegistrationConfirmationScreen
+                    tournament={registeredTournament}
+                    onBackToCompetitions={() => setRegisteredTournament(null)}
+                  />
+                ) : selectedTournament ? (
+                  <TournamentRegistrationScreen
+                    tournament={selectedTournament}
+                    user={currentUser}
+                    onRegister={handleRegisterTournament}
+                    onBack={() => setSelectedTournament(null)}
+                  />
+                ) : (
+                  <CompetitionsHubScreen onSelectTournament={setSelectedTournament} />
+                )
+              )}
+              {activeScreen === 'settings' && !showEditProfile && (
+                <SettingsScreen user={currentUser} onNavigate={handleNavigateToEditProfile} />
+              )}
+              {activeScreen === 'settings' && showEditProfile && (
+                <EditProfileScreen
                   user={currentUser}
-                  onRegister={handleRegisterTournament}
-                  onBack={() => setSelectedTournament(null)}
+                  onSave={handleSaveProfile}
+                  onBack={handleBackFromEditProfile}
                 />
-              ) : (
-                <CompetitionsHubScreen onSelectTournament={setSelectedTournament} />
-              )
-            )}
-            {activeScreen === 'settings' && !showEditProfile && (
-              <SettingsScreen user={currentUser} onNavigate={handleNavigateToEditProfile} />
-            )}
-            {activeScreen === 'settings' && showEditProfile && (
-              <EditProfileScreen
-                user={currentUser}
-                onSave={handleSaveProfile}
-                onBack={handleBackFromEditProfile}
-              />
-            )}
+              )}
+            </Suspense>
             <BottomNavBar activeScreen={activeScreen} onScreenChange={setActiveScreen} />
           </div>
         );

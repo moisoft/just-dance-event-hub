@@ -48,16 +48,16 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({ user, onSave, onB
   const validateForm = () => {
     const newErrors: {[key: string]: string} = {};
 
-    if (!formData.nickname.trim()) {
-      newErrors.nickname = 'Nickname é obrigatório';
-    } else if (formData.nickname.length < 3) {
-      newErrors.nickname = 'Nickname deve ter pelo menos 3 caracteres';
+    if (!formData['nickname'].trim()) {
+      newErrors['nickname'] = 'Nickname é obrigatório';
+    } else if (formData['nickname'].length < 3) {
+      newErrors['nickname'] = 'Nickname deve ter pelo menos 3 caracteres';
     }
 
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email é obrigatório';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Email inválido';
+    if (!formData['email'].trim()) {
+      newErrors['email'] = 'Email é obrigatório';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData['email'])) {
+      newErrors['email'] = 'Email inválido';
     }
 
     setErrors(newErrors);
@@ -176,13 +176,13 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({ user, onSave, onB
                   value={formData.nickname}
                   onChange={handleChange}
                   className={`w-full bg-white/10 border rounded-xl py-3 px-4 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:border-transparent backdrop-blur-sm transition-all duration-300 ${
-                    errors.nickname ? 'border-red-500 focus:ring-red-500' : 'border-white/20 focus:ring-cyan-500'
+                    errors['nickname'] ? 'border-red-500 focus:ring-red-500' : 'border-white/20 focus:ring-cyan-500'
                   }`}
                   placeholder="Seu nickname"
                   required
                 />
-                {errors.nickname && (
-                  <p className="text-red-400 text-sm mt-1">{errors.nickname}</p>
+                {errors['nickname'] && (
+                  <p className="text-red-400 text-sm mt-1">{errors['nickname']}</p>
                 )}
               </div>
 
@@ -198,13 +198,13 @@ const EditProfileScreen: React.FC<EditProfileScreenProps> = ({ user, onSave, onB
                   value={formData.email}
                   onChange={handleChange}
                   className={`w-full bg-white/10 border rounded-xl py-3 px-4 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:border-transparent backdrop-blur-sm transition-all duration-300 ${
-                    errors.email ? 'border-red-500 focus:ring-red-500' : 'border-white/20 focus:ring-cyan-500'
+                    errors['email'] ? 'border-red-500 focus:ring-red-500' : 'border-white/20 focus:ring-cyan-500'
                   }`}
                   placeholder="seu@email.com"
                   required
                 />
-                {errors.email && (
-                  <p className="text-red-400 text-sm mt-1">{errors.email}</p>
+                {errors['email'] && (
+                  <p className="text-red-400 text-sm mt-1">{errors['email']}</p>
                 )}
               </div>
 

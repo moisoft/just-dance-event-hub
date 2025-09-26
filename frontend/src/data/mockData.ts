@@ -154,26 +154,26 @@ export const mockQueue: QueueItem[] = [
   {
     id: 'queue1',
     type: 'solo',
-    player: mockUsers[0],
-    song: mockSongs[0],
-    coach_image_url: mockSongs[0].coach_images[0],
+    player: mockUsers[0]!,
+    song: mockSongs[0]!,
+    coach_image_url: mockSongs[0]!.coach_images[0]!,
     status: 'pending'
   },
   {
     id: 'queue2',
     type: 'team',
-    players: [mockUsers[0], mockUsers[1]],
-    song: mockSongs[2],
-    coach_image_url: mockSongs[2].coach_images[0],
+    players: [mockUsers[0]!, mockUsers[1]!],
+    song: mockSongs[2]!,
+    coach_image_url: mockSongs[2]!.coach_images[0]!,
     status: 'pending'
   },
   {
     id: 'queue3',
     type: 'tournament_match',
-    players: [mockUsers[0], mockUsers[2]],
+    players: [mockUsers[0]!, mockUsers[2]!],
     tournament_name: 'Summer Championship',
-    song: mockSongs[1],
-    coach_image_url: mockSongs[1].coach_images[0],
+    song: mockSongs[1]!,
+    coach_image_url: mockSongs[1]!.coach_images[0]!,
     status: 'pending'
   }
 ];
@@ -184,7 +184,7 @@ export const mockTournaments: Tournament[] = [
     name: 'Just Dance Summer Championship',
     status: 'Open for Registration',
     start_time: '2024-08-15T18:00:00Z',
-    registered_players: [mockUsers[0].id]
+    registered_players: [mockUsers[0]!.id]
   },
   {
     id: 'tournament2',

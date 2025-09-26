@@ -130,7 +130,7 @@ export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) =
     }
 
     try {
-      const wsUrl = process.env.REACT_APP_WS_URL || 'ws://localhost:8080';
+      const wsUrl = process.env['REACT_APP_WS_URL'] || 'ws://localhost:8080';
       const url = eventId 
         ? `${wsUrl}?eventId=${eventId}&role=${userRole}&userId=${userId}`
         : `${wsUrl}?role=${userRole}&userId=${userId}`;
@@ -199,7 +199,7 @@ export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) =
         payload,
         from: userRole,
         timestamp: new Date().toISOString(),
-        eventId,
+        eventId: eventId || '',
       };
       wsRef.current.send(JSON.stringify(message));
     } else {
@@ -269,13 +269,13 @@ export const useWebSocket = ({ eventId, userRole, userId }: UseWebSocketProps) =
     if (!eventListeners.current[eventType]) {
       eventListeners.current[eventType] = [];
     }
-    eventListeners.current[eventType].push(callback);
+    eventListeners.current[eventType]!.push(callback);
   }, []);
 
   // Função para remover um listener de evento
   const off = useCallback((eventType: string, callback: (data: any) => void) => {
     if (!eventListeners.current[eventType]) return;
-    eventListeners.current[eventType] = eventListeners.current[eventType].filter(
+    eventListeners.current[eventType] = eventListeners.current[eventType]!.filter(
       listener => listener !== callback
     );
   }, []);

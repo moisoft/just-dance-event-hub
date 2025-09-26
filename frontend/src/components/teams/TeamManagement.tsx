@@ -51,7 +51,7 @@ const TeamManagement: React.FC<TeamManagementProps> = ({ eventId }) => {
     const loadTeams = React.useCallback(async () => {
         try {
             setLoading(true);
-            const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+            const API_BASE_URL = process.env['REACT_APP_API_BASE_URL'] || 'http://localhost:5000';
             const response = await fetch(`${API_BASE_URL}/api/teams/events/${eventId.toString()}/teams`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -73,7 +73,7 @@ const TeamManagement: React.FC<TeamManagementProps> = ({ eventId }) => {
 
     const loadUserTeam = React.useCallback(async () => {
         try {
-            const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+            const API_BASE_URL = process.env['REACT_APP_API_BASE_URL'] || 'http://localhost:5000';
             const response = await fetch(`${API_BASE_URL}/api/teams/events/${eventId.toString()}/teams?user=${user?.id}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -139,7 +139,7 @@ const TeamManagement: React.FC<TeamManagementProps> = ({ eventId }) => {
 
         try {
             // Corrigindo a URL para usar a URL base da API configurada no .env
-            const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+            const API_BASE_URL = process.env['REACT_APP_API_BASE_URL'] || 'http://localhost:5000';
             const response = await fetch(`${API_BASE_URL}/api/teams/events/${eventId.toString()}/teams`, {
                 method: 'POST',
                 headers: {
@@ -179,7 +179,7 @@ const TeamManagement: React.FC<TeamManagementProps> = ({ eventId }) => {
         setError(null);
 
         try {
-            const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+            const API_BASE_URL = process.env['REACT_APP_API_BASE_URL'] || 'http://localhost:5000';
             const response = await fetch(`${API_BASE_URL}/api/teams/teams/join`, {
                 method: 'POST',
                 headers: {
@@ -219,7 +219,7 @@ const TeamManagement: React.FC<TeamManagementProps> = ({ eventId }) => {
         }
 
         try {
-            const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+            const API_BASE_URL = process.env['REACT_APP_API_BASE_URL'] || 'http://localhost:5000';
             const response = await fetch(`${API_BASE_URL}/api/teams/teams/${userTeam.id.toString()}/leave`, {
                 method: 'DELETE',
                 headers: {
